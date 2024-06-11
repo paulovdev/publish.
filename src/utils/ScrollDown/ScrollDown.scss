@@ -1,0 +1,20 @@
+@import '../../index.scss';
+
+.scroll-down {
+  position: absolute;
+
+  width: 40px;
+  height: 40px;
+
+  bottom: 0;
+
+  padding: 0.5rem;
+
+  border-radius: 100%;
+  background-color: $mt;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}

@@ -1,0 +1,169 @@
+@import "../../../index.scss";
+
+#edit-profile-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .modal-content {
+        background: $background;
+        border: 1px solid $border;
+        padding: 20px;
+        border-radius: 5px;
+        width: 600px;
+
+        .header-text {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .close-edit {
+                position: relative;
+                width: 100%;
+
+                display: flex;
+                justify-content: end;
+
+
+                svg {
+                    color: $p;
+                    transform: scale(0.9);
+                    transition: all 0.3s;
+                    cursor: pointer;
+
+                    &:hover {
+                        transform: scale(1);
+                    }
+                }
+            }
+
+            .profile-information-text {
+                position: relative;
+                width: 100%;
+
+                h1 {
+                    font-size: 24px;
+                    font-weight: 800;
+                    letter-spacing: -1px;
+                    color: $p;
+
+                }
+            }
+        }
+
+        .border-bottom {
+            width: 100%;
+            height: 1px;
+            margin: 2rem 0;
+            background-color: $border;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+
+            label {
+                font-size: 16px;
+                color: $p;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: start;
+                flex-direction: column;
+            }
+
+            .profile-photo {
+                width: 100%;
+                align-self: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+
+                img {
+                    width: 100px;
+                    height: 100px;
+                    background-color: $mt;
+                    border-radius: 100%;
+
+                    transition: 0.3s all cubic-bezier(0.455, 0.03, 0.515, 0.955);
+                    cursor: pointer;
+
+                    &:hover {
+                        transform: scale(1.02);
+                    }
+                }
+
+                svg {
+                    position: absolute;
+                    cursor: pointer;
+                }
+            }
+
+            textarea {
+                height: 150px !important;
+                resize: none;
+            }
+
+            input,
+            textarea {
+                width: 100%;
+                height: 40px;
+                padding: 1rem;
+
+                outline: none;
+
+                border-radius: 0.5rem;
+                background-color: transparent;
+                border: 1px solid $border;
+                font-weight: 300;
+                font-size: 16px;
+                color: $p;
+
+                margin-bottom: 1rem;
+
+                &::placeholder {
+                    font-weight: 300;
+                    font-size: 16px;
+                    color: $p;
+                    opacity: .7;
+                }
+            }
+
+            button {
+                width: 100%;
+                height: 40px;
+
+                outline: none;
+                border: none;
+
+                background-color: $mt;
+                color: $p;
+
+                padding: 0.6rem 2rem;
+                border-radius: 0.5rem;
+
+                font-size: 14px;
+                font-weight: 500;
+
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+                &:hover {
+                    background-color: $bg-2;
+                }
+
+                &:disabled {
+                    cursor: not-allowed;
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
+}

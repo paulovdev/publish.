@@ -1,0 +1,92 @@
+@import "../../../index.scss";
+
+header {
+  position: fixed;
+  width: 100%;
+  height: fit-content;
+  top: 0;
+  padding: 30px 100px;
+
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 1rem;
+  z-index: 998;
+
+  img {
+    width: 40px;
+  }
+
+  .notification-button {
+    width: 50px;
+    height: 50px;
+    outline: none;
+    border: none;
+    background-color: $mt;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    transition: width 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    color: $p;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      color: #fff;
+    }
+  }
+
+  nav {
+    position: relative;
+
+    text-decoration: none;
+    list-style: none;
+
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    li {
+
+      a {
+        width: 100%;
+        height: 100%;
+
+        outline: none;
+        border: none;
+
+        color: $p;
+
+        padding: 0.6rem 2rem;
+        border-radius: 0.8rem;
+
+        font-size: 16px;
+        font-weight: 500;
+
+        text-align: center;
+        z-index: 1;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $bg-2;
+        }
+
+        &.active {
+          background-color: $mt;
+        }
+      }
+    }
+  }
+
+
+}
+
+@media (max-width: 809px) {
+  header {
+    padding: 20px;
+  }
+}

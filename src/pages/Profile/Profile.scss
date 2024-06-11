@@ -1,0 +1,142 @@
+@import "../../index.scss";
+
+#my-profile {
+  position: relative;
+
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  flex-direction: column;
+
+  .border-bottom {
+    width: 100%;
+    height: 1px;
+    margin: 2rem 0;
+    background-color: $border;
+  }
+
+  .my-posts-profile {
+    width: 100%;
+
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+    gap: 2rem;
+
+    h2 {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-top: 2rem;
+    }
+
+    p {
+      font-size: 18px;
+      font-weight: 400;
+      margin: 0 0 3rem 0;
+    }
+
+    .post-profile {
+      width: 100%;
+      height: 150px;
+      padding: 1rem;
+
+      border-radius: 0.5rem;
+      border: 1px solid $border;
+
+      h1 {
+        font-size: 24px;
+        font-weight: 900;
+        margin-bottom: 1rem;
+        letter-spacing: -1px;
+        color: $p;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+    }
+  }
+
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+    gap: 1rem;
+
+    .profile-photo {
+      display: flex;
+      align-items: start;
+      justify-content: start;
+      gap: 3rem;
+
+      img {
+        width: 200px;
+        height: 200px;
+        border-radius: 100%;
+        border: 1px solid $border;
+      }
+
+      .wrapper-text {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        word-break: break-all;
+
+        h1 {
+          width: 100%;
+          font-size: 38px;
+          font-weight: 900;
+          letter-spacing: -1px;
+        }
+
+        p {
+          max-width: 600px;
+          height: 100%;
+          color: $p;
+          opacity: .9;
+          font-weight: 400;
+          font-size: 16px;
+        }
+
+        button {
+          width: 100%;
+          height: 100%;
+
+          outline: none;
+          border: none;
+
+          background-color: $mt;
+          color: $p;
+
+          padding: 0.6rem 2rem;
+          border-radius: 0.5rem;
+
+          font-size: 14px;
+          font-weight: 500;
+
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+          &:hover {
+            background-color: $bg-2;
+          }
+        }
+      }
+    }
+
+
+  }
+}

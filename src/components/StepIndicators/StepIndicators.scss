@@ -1,0 +1,179 @@
+@import '../../index.scss';
+
+.step-indicators {
+    position: relative;
+
+    width: fit-content;
+
+    padding: 1rem;
+
+    border: 1px solid $border;
+    border-radius: 1rem;
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .indicator {
+        position: relative;
+        width: fit-content;
+
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .step-icon {
+            position: relative;
+            padding: 1rem;
+
+            background-color: $mt;
+            border-radius: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg {
+                color: $bg;
+            }
+        }
+
+        .step-content-text {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+
+            span {
+                color: $p;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            p {
+                color: $p;
+                font-size: 16px;
+                font-weight: 700;
+            }
+        }
+
+        .border-left-step {
+            width: 1px;
+            height: 60px;
+            background-color: $border;
+            margin: 0 1rem;
+
+        }
+
+        &.active {
+            .step-icon {
+                border: 1px solid $s;
+
+                svg {
+                    color: $p;
+                }
+            }
+        }
+
+        &:nth-last-child(1) {
+            .border-left-step {
+                background-color: transparent;
+                width: 0;
+                height: 0;
+                margin: 0;
+            }
+        }
+    }
+}
+
+@media (max-width: 809px) {
+    .step-indicators {
+        position: relative;
+
+        width: fit-content;
+
+        padding: 1rem;
+
+        border: 1px solid $border;
+        border-radius: 1rem;
+
+        display: flex;
+        align-items: center;
+        gap: 0rem;
+
+        .indicator {
+            position: relative;
+            width: fit-content;
+
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            .step-icon {
+                position: relative;
+                padding: 0rem;
+
+                background-color: transparent;
+                border-radius: 100%;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg {
+                    color: $bg;
+                }
+            }
+
+            .step-content-text {
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+
+                span {
+                    color: $p;
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+
+                p {
+                    color: $p;
+                    font-size: 16px;
+                    font-weight: 700;
+                }
+            }
+
+            .border-left-step {
+                width: 1px;
+                height: 50px;
+                background-color: $border;
+                margin: 0 1rem;
+
+            }
+
+            &.active {
+                .step-icon {
+                    border: 1px solid $s;
+                    background-color: $mt;
+                    padding: 1rem;
+
+                    svg {
+                        color: $p;
+                    }
+                }
+            }
+
+            &:nth-last-child(1) {
+                .border-left-step {
+                    background-color: transparent;
+                    width: 0;
+                    height: 0;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+@import '../../index.scss';
+
+.scroll-top {
+  position: relative;
+
+  width: 50px;
+  height: 50px;
+
+  padding: 0.5rem;
+  
+  border-radius: 100%;
+  background-color: $mt;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.not {
+  opacity: 0;
+}
+
+.show {
+  opacity: 1;
+}

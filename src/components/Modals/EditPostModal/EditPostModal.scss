@@ -1,0 +1,176 @@
+@import "../../../index.scss";
+
+#edit-post-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .modal-content {
+        background: $background;
+        border: 1px solid $border;
+        padding: 20px;
+        border-radius: 5px;
+        width: 900px;
+
+        .header-text {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .close-edit {
+                position: relative;
+                width: 100%;
+
+                display: flex;
+                justify-content: end;
+
+
+                svg {
+                    color: $p;
+                    transform: scale(0.9);
+                    transition: all 0.3s;
+                    cursor: pointer;
+
+                    &:hover {
+                        transform: scale(1);
+                    }
+                }
+            }
+
+            .profile-information-text {
+                position: relative;
+                width: 100%;
+
+                h1 {
+                    font-size: 24px;
+                    font-weight: 800;
+                    letter-spacing: -1px;
+                    color: $p;
+                    margin: 0;
+                }
+            }
+        }
+
+        .border-bottom {
+            width: 100%;
+            height: 1px;
+            margin: 2rem 0;
+            background-color: $border;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+
+            .input-wrapper-container {
+                width: 100%;
+
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+
+                .input-wrapper {
+                    width: 100%;
+                }
+            }
+
+            label {
+                font-size: 16px;
+                color: $p;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: start;
+                flex-direction: column;
+            }
+
+            input {
+                width: 100%;
+                height: 40px;
+                padding: 1rem;
+
+                outline: none;
+
+                border-radius: 0.5rem;
+                background-color: transparent;
+                border: 1px solid $border;
+                font-weight: 300;
+                font-size: 16px;
+                color: $p;
+
+                margin-bottom: 1rem;
+
+                &::placeholder {
+                    font-weight: 300;
+                    font-size: 16px;
+                    color: $p;
+                    opacity: .7;
+                }
+            }
+
+            select {
+                width: 100%;
+                height: 40px;
+                padding: 0 1rem;
+                margin-bottom: 1rem;
+                outline: none;
+                background-color: transparent;
+                border-radius: 0.4rem;
+                border: 1px solid $border;
+                font-weight: 300;
+                font-size: 16px;
+                color: $p;
+
+                option {
+                    color: $p;
+                    background-color: $mt;
+                }
+            }
+
+            .quill {
+                height: 400px !important;
+                overflow-y: scroll;
+            }
+
+            .btn {
+                position: fixed;
+                right: 0;
+                bottom: 20%;
+                width: 150px;
+                height: 50px;
+                padding: 1rem;
+                background-color: $mt;
+                border: 1px solid $border;
+                border-radius: 1rem 0 0 1rem;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 1rem;
+
+                transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+                &:hover {
+                    background-color: $bg-2;
+                }
+
+                svg {
+                    color: $p;
+                }
+
+                p {
+                    color: $p;
+                    font-size: 16px;
+                    font-weight: 500;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}

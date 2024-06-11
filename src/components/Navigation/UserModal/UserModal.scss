@@ -1,0 +1,136 @@
+@import "../../../index.scss";
+
+.user-modal {
+  display: relative;
+  height: 100%;
+  height: fit-content;
+
+  .profile-image {
+    position: relative;
+    display: flex;
+    align-items: start;
+    justify-content: end;
+    gap: 1rem;
+
+    border-radius: 100%;
+
+    cursor: pointer;
+    user-select: none;
+    transition: all .1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+    img {
+      width: 40px;
+      height: 40px;
+
+      background-color: $mt;
+      border: 1px solid $border;
+      border-radius: 100%;
+
+      cursor: pointer;
+    }
+
+    &:hover {
+      background-color: $bg-2;
+    }
+
+    &:active {
+      transform: scale(1.1);
+    }
+  }
+
+  .dropdown {
+    position: absolute;
+    width: 260px;
+    height: fit-content;
+    top: 100px;
+    right: 100px;
+    border-radius: 0.5rem;
+
+    background-color: $mt;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+
+    overflow: hidden;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .text {
+      width: 100%;
+      padding: 1rem;
+      display: flex;
+      justify-content: end;
+      align-items: end;
+      flex-direction: column;
+      gap: 0.4rem;
+
+      p {
+        font-size: 16px;
+        font-weight: 800;
+        color: $p;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: 500;
+        color: $p;
+        opacity: .7;
+      }
+    }
+
+    .profile-button,
+    button {
+      width: 250px;
+      height: 50px;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      color: $p;
+
+      outline: none;
+      border: none;
+
+      background-color: transparent;
+      border-radius: 0.5rem;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 1rem;
+
+      &:hover {
+        background-color: $bg-2;
+      }
+
+      &.active {
+        background-color: $bg-2;
+      }
+    }
+  }
+
+  .dropdown-active {
+    height: 1px;
+  }
+}
+
+
+
+@media (max-width:809px) {
+  .user-modal {
+    .dropdown {
+      position: absolute;
+      width: 260px;
+      height: 230px;
+      top: 80px;
+      right: 20px;
+    }
+
+    .dropdown-active {
+      height: 1px;
+    }
+  }
+}

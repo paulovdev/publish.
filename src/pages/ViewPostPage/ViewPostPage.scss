@@ -1,0 +1,255 @@
+@import "../../index.scss";
+
+#post-solo {
+  position: relative;
+
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  flex-direction: column;
+
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+
+    .image-background {
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      align-items: end;
+      justify-content: end;
+      flex-direction: column;
+
+      img {
+        width: 75%;
+        height: 500px;
+        border-radius: 0.5rem;
+        border: 1px solid $border;
+        background-color: $bg-2;
+        margin-bottom: 2rem;
+      }
+    }
+
+    .topic {
+      width: fit-content;
+      padding: 0.3rem 0.8rem;
+      border-radius: 0.5rem;
+      background-color: $mt;
+
+
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: $p;
+    }
+
+    .title-text {
+      position: relative;
+      width: 100%;
+
+      margin-bottom: 2rem;
+
+      display: flex;
+      
+      justify-content: start;
+      flex-direction: column;
+      gap: 1rem;
+
+
+      h1 {
+        font-size: 42px;
+        font-style: normal;
+        font-weight: 900;
+        letter-spacing: -2px;
+        color: $p;
+        margin-bottom: 1rem;
+
+        word-wrap: break-word;
+      }
+
+      p {
+        font-size: 14px;
+        font-weight: 400;
+        color: $p;
+        line-height: 1.3125rem;
+        opacity: .6;
+      }
+
+      .profile {
+        margin-bottom: 1rem;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 100%;
+          border: none;
+          background-color: $mt;
+          cursor: pointer;
+        }
+
+        span {
+          font-size: 14px;
+
+          font-weight: 400;
+          letter-spacing: 0em;
+          line-height: 22px;
+
+          color: $p;
+
+        }
+
+
+        .text {
+          width: 100%;
+          position: relative;
+          display: flex;
+          align-items: start;
+          justify-content: space-between;
+          flex-direction: column;
+          gap: 0.3rem;
+
+          .post-by {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+
+
+            p {
+              letter-spacing: -.02em;
+              font-size: 16px;
+              font-weight: 500;
+              opacity: .8;
+            }
+
+            span {
+              letter-spacing: -.02em;
+              font-size: 16px;
+              font-weight: 500;
+              color: $p;
+              opacity: 1;
+            }
+          }
+
+          a {
+            position: relative;
+            display: flex;
+            color: $p;
+            align-items: center;
+            gap: 0.2rem;
+            cursor: pointer;
+
+            p {
+              font-weight: 600;
+            }
+
+            svg {
+              transition: all 0.3s;
+            }
+
+            &:hover {
+              svg {
+                transform: translateY(-2px);
+              }
+            }
+          }
+
+          p {
+            color: $p;
+            font-size: 16px;
+            font-weight: 400;
+          }
+        }
+      }
+
+      .action-icons {
+        width: 100%;
+        display: flex;
+        align-items: start;
+        justify-content: start;
+        gap: 1rem;
+
+        .action-icon {
+          position: relative;
+
+          width: 40px;
+          height: 40px;
+          padding: 0.5rem;
+          border-radius: 100%;
+          background-color: $mt;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+      }
+
+    }
+
+
+  }
+
+  .post {
+    position: relative;
+    width: 100%;
+
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+    gap: 1rem;
+
+  }
+}
+
+@media (max-width: 809px) {
+  #post-solo {
+    .container {
+      .image-background {
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        align-items: end;
+        justify-content: end;
+        flex-direction: column;
+
+        img {
+          width: 100%;
+          height: auto;
+          margin-bottom: 1rem;
+        }
+      }
+
+
+      .title-text {
+        h1 {
+          font-size: 32px;
+        }
+
+        p {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .post {
+      gap: 0.5rem;
+    }
+  }
+}
