@@ -4,21 +4,23 @@ form {
     .search-input {
         width: 50px;
 
-        background-color: $mt;
+        background-color: var(--bg);
+        border: 1px solid var(--border);
         border-radius: 0.5rem;
         display: flex;
         align-items: center;
-        justify-content: start;
+        justify-content: end;
         transition: width 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
 
         button {
             width: 50px;
-            height: 50px;
+            height: 40px;
             outline: none;
             border: none;
             background-color: transparent;
-            color: $p;
+
+            color: var(--p);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -27,14 +29,14 @@ form {
 
         input {
             width: 0;
-            height: 50px;
+            height: 40px;
             outline: none;
             border: none;
             background-color: transparent;
             border-radius: 0.5rem;
             font-size: 14px;
             font-weight: 600;
-            color: $p;
+            color: var(--p);
             transition: width 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
             padding-left: 0;
             padding-right: 0;

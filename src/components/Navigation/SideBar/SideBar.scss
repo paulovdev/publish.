@@ -9,8 +9,8 @@
 
     padding: 2rem 0 0 1rem;
 
-    background-color: $background;
-    border: 1px solid $border;
+    background-color: var(--bg);
+    border: 1px solid var(--border);
     border-radius: 0 1rem 1rem 0;
 
     display: flex;
@@ -49,7 +49,7 @@
                     outline: none;
                     border: none;
                     background-color: transparent;
-                    color: $p;
+                    color: var(--p);
 
                     display: flex;
                     align-items: center;
@@ -92,7 +92,7 @@
                     span {
                         font-size: 14px;
                         font-weight: 500;
-                        color: $p;
+                        color: var(--p);
                         margin-left: 1rem;
                     }
 
@@ -108,15 +108,21 @@
                 }
 
                 &:hover {
-                    background-color: $bg-2;
-
+                    background-color: var(--border);
                 }
 
                 &.active {
-                    background-color: $mt;
+                    background-color: var(--bg-2);
+
+                    .side-text {
+                        span {
+                            color: var(--fixed-c);
+                        }
+                    }
 
                     svg {
                         opacity: 1;
+                        color: var(--fixed-c);
                     }
                 }
             }
@@ -148,7 +154,7 @@
         border-radius: 100%;
 
 
-        color: $p;
+        color: var(--p);
 
         display: flex;
         align-items: center;
@@ -157,7 +163,7 @@
         cursor: pointer;
 
         &:hover {
-            background-color: $mt;
+            background-color: var(--bg-2);
         }
     }
 
@@ -173,7 +179,7 @@
         outline: none;
         border: none;
 
-        background-color: $mt;
+        background-color: var(--bg-2);
         border-radius: 0.5rem;
         display: flex;
         align-items: start;
@@ -186,7 +192,7 @@
         span {
             font-size: 14px;
             font-weight: 500;
-            color: $p;
+            color: var(--p);
             opacity: .5;
 
             &:hover {
@@ -200,7 +206,7 @@
         padding: 1rem;
 
         .side-icon {
-            background-color: $mt;
+            background-color: var(--bg-2);
         }
     }
 
@@ -210,15 +216,8 @@
 
 
 section {
-    width: calc(100% - 90px) !important;
-    left: 90px !important;
-    padding: 100px 200px !important;
-    transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-}
-
-aside:hover~section {
-    width: calc(100% - 200px) !important;
-    left: 200px !important;
+    padding: 100px 150px !important;
+    transition: all 0.3s linear;
 }
 
 @media (max-width: 809px) {

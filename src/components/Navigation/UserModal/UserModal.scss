@@ -22,15 +22,11 @@
       width: 40px;
       height: 40px;
 
-      background-color: $mt;
-      border: 1px solid $border;
+      background-color: var(--bg-2);
+      border: 1px solid var(--border);
       border-radius: 100%;
 
       cursor: pointer;
-    }
-
-    &:hover {
-      background-color: $bg-2;
     }
 
     &:active {
@@ -46,11 +42,12 @@
     right: 100px;
     border-radius: 0.5rem;
 
-    background-color: $mt;
+    border: 1px solid var(--border);
+    background-color: var(--bg);
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 
     overflow: hidden;
-    z-index: 9999;
+    z-index: 999;
 
     display: flex;
     align-items: center;
@@ -69,13 +66,13 @@
       p {
         font-size: 16px;
         font-weight: 800;
-        color: $p;
+        color: var(--p);
       }
 
       span {
         font-size: 14px;
         font-weight: 500;
-        color: $p;
+        color: var(--p);
         opacity: .7;
       }
     }
@@ -86,7 +83,7 @@
       height: 50px;
       padding: 1rem;
       margin-bottom: 0.5rem;
-      color: $p;
+      color: var(--p);
 
       outline: none;
       border: none;
@@ -102,12 +99,10 @@
       justify-content: start;
       gap: 1rem;
 
-      &:hover {
-        background-color: $bg-2;
-      }
 
       &.active {
-        background-color: $bg-2;
+        background-color: var(--bg-2);
+        color: var(--fixed-c);
       }
     }
   }

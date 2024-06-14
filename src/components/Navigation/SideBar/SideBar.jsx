@@ -3,7 +3,9 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase/Firebase';
 import { NavLink } from "react-router-dom";
 import { GoHomeFill } from "react-icons/go";
-import { IoMdCube, IoMdCloudUpload } from "react-icons/io";
+import { IoMdCube } from "react-icons/io";
+import { MdFileUpload } from "react-icons/md";
+
 import { IoNotifications } from "react-icons/io5";
 import { TbGridDots } from "react-icons/tb";
 import NotificationCounter from '../../NotificationsComp/NotificationCounter';
@@ -50,7 +52,7 @@ const SideBar = () => {
         <aside id="sidebar">
             <ul>
                 <li>
-                    <NavLink to="/" className={({ isActive }) => isActive ? 'active side-container' : 'side-container'}>
+                    <NavLink to="/feed/all-posts" className={({ isActive }) => isActive ? 'active side-container' : 'side-container'}>
                         <div className='side-icon'>
                             <GoHomeFill size={22} />
                         </div>
@@ -78,7 +80,7 @@ const SideBar = () => {
                 <li>
                     <NavLink to="/create-post" className={({ isActive }) => isActive ? 'active side-container' : 'side-container'}>
                         <div className='side-icon'>
-                            <IoMdCloudUpload size={22} />
+                            <MdFileUpload size={22} />
                         </div>
                         <div className="side-text">
                             <span>Publicar</span>

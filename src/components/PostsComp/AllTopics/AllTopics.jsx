@@ -6,8 +6,9 @@ import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.css';
+
 import "./AllTopics.scss";
+import SelectedTopicsPosts from '../SelectedTopicsPosts/SelectedTopicsPosts';
 
 const AllTopics = () => {
     const { data: topics, isLoading } = useQuery('allTopics', async () => {
@@ -21,6 +22,10 @@ const AllTopics = () => {
 
     return (
         <div id='all-topics'>
+            <div className="emphasis-text">
+                <h2>Tópicos</h2>
+                <p>Explore os tópicos</p>
+            </div>
             {isLoading && (<Skeleton width={160} height={40} />)}
 
             {!isLoading && (
@@ -39,6 +44,8 @@ const AllTopics = () => {
                     ))}
                 </Swiper>
             )}
+
+            <SelectedTopicsPosts />
         </div>
     );
 };

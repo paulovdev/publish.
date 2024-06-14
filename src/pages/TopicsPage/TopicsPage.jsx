@@ -98,9 +98,7 @@ const TopicsPage = () => {
                     <p>Inicio</p>
                 </Link>
 
-                <h1>
-                    {!isLoading && !topicLoading && `Encontramos ${data.pages.reduce((acc, page) => acc + page.postsData.length, 0)} resultado${data.pages.reduce((acc, page) => acc + page.postsData.length, 0) === 1 ? "" : "s"} para "${topicName}":`}
-                </h1>
+           
                 <div className="border-bottom"></div>
 
 

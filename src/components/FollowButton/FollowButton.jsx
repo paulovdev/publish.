@@ -4,6 +4,7 @@ import { doc, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firest
 import { db } from '../../firebase/Firebase';
 import { Blog } from '../../context/Context';
 import Skeleton from 'react-loading-skeleton';
+import { toast } from 'react-toastify';
 
 const FollowButton = ({ userId }) => {
     const { currentUser } = Blog();
@@ -33,7 +34,7 @@ const FollowButton = ({ userId }) => {
         try {
             const userRef = doc(db, 'users', userId);
             await updateDoc(userRef, {
-                followers: arrayUnion(currentUser.uid),
+                followers: arrayUnion(currentUser.uid), 
             });
 
             if (currentUser) {

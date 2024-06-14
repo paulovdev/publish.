@@ -103,7 +103,7 @@ const ViewPostPage = () => {
             const newComment = {
                 userId: currentUser.uid,
                 text: commentText,
-                timestamp: Date.now()
+                timestamp: Date().toLocaleString()
             };
             addCommentMutation.mutate(newComment);
         }
@@ -129,7 +129,7 @@ const ViewPostPage = () => {
                 transition={{ duration: 0.5 }}>
                 <div className="container">
                     <div className="image-background">
-                        <Skeleton width={948} height={498} />
+                        <Skeleton width={800} height={400} />
                     </div>
                     <Skeleton width={120} height={20} />
                     <br />

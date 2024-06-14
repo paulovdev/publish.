@@ -68,7 +68,7 @@ const EditPostModal = ({ postId, onClick }) => {
                 <form onSubmit={updatePost}>
                     <div className="input-wrapper-container">
                         <div className="input-wrapper">
-                            <label>Titulo</label>
+                            <label>Titulo:</label>
                             <input
                                 type="text"
                                 placeholder="Titulo"
@@ -77,7 +77,7 @@ const EditPostModal = ({ postId, onClick }) => {
                             />
                         </div>
                         <div className="input-wrapper">
-                            <label>Titulo</label>
+                            <label>Tópico:</label>
                             <select value={selectedTopics} onChange={handleSelectChange}>
                                 {topics && topics.map(topic => (
                                     <option key={topic.id} value={topic.id}>
@@ -89,7 +89,7 @@ const EditPostModal = ({ postId, onClick }) => {
 
                     </div>
 
-                    <label>Texto</label>
+                    <label>Edite o conteúdo do seu post:</label>
                     <Editor
                         placeholder="Texto"
                         value={desc}

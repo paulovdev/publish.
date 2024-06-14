@@ -3,17 +3,16 @@ import { useInfiniteQuery } from 'react-query';
 import { doc, getDoc, collection, getDocs, query, orderBy, limit, startAfter, where } from "firebase/firestore";
 import { db } from '../../../firebase/Firebase';
 import { Blog } from "../../../context/Context";
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { readTime } from "../../../utils/ReadTime";
 import { SiReadme } from "react-icons/si";
 import { FaClock } from "react-icons/fa";
 import Skeleton from 'react-loading-skeleton';
 
-import "./SelectedTopicsPosts.scss"
+import "./FollowingPosts.scss"
 
-const SelectedTopicsPosts = () => {
+const FollowingPosts = () => {
     const { currentUser } = Blog();
-    const { id } = useParams();
 
     const fetchPosts = async ({ pageParam = null }) => {
         try {
@@ -22,16 +21,15 @@ const SelectedTopicsPosts = () => {
 
             if (userSnapshot.exists()) {
                 const userData = userSnapshot.data();
-                const selectedTopics = userData.selectedTopics || [];
+                const following = userData.following || [];
 
-                // Verifica se o tópico atual está entre os tópicos selecionados pelo usuário
-                if (!selectedTopics.includes(id)) {
+                if (following.length === 0) {
                     return { postsData: [], lastDoc: null };
                 }
 
                 const postsQuery = query(
                     collection(db, 'posts'),
-                    where("topics", "==", id), // Filtra posts pelo tópico específico
+                    where("userId", "in", following),
                     orderBy("created", "desc"),
                     limit(5),
                     ...(pageParam ? [startAfter(pageParam)] : [])
@@ -82,7 +80,7 @@ const SelectedTopicsPosts = () => {
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage
-    } = useInfiniteQuery(['selectedTopicsPosts', id], fetchPosts, {
+    } = useInfiniteQuery(['followingPosts'], fetchPosts, {
         getNextPageParam: (lastPage, allPages) => {
             return lastPage.lastDoc;
         }
@@ -98,7 +96,8 @@ const SelectedTopicsPosts = () => {
 
     return (
         <>
-            <div id='selected-topics-post'>
+            <div id='following-posts'>
+
                 {isLoading && (
                     <div className="post-container">
                         <div className="post-left-content">
@@ -154,10 +153,6 @@ const SelectedTopicsPosts = () => {
                                                 <span>{readTime({ __html: post.desc })} min de leitura</span>
                                             </div>
                                         </div>
-
-
-
-
                                     </div>
                                 </div>
                             ))}
@@ -183,4 +178,4 @@ const SelectedTopicsPosts = () => {
     );
 }
 
-export default SelectedTopicsPosts;
+export default FollowingPosts;

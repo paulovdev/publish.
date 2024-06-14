@@ -29,12 +29,15 @@
       flex-direction: column;
 
       img {
-        width: 75%;
-        height: 500px;
+        width: 100%;
+        height: 400px;
         border-radius: 0.5rem;
-        border: 1px solid $border;
+        border: 1px solid var(--border);
         background-color: $bg-2;
         margin-bottom: 2rem;
+
+
+        aspect-ratio: auto / 400;
       }
     }
 
@@ -42,14 +45,14 @@
       width: fit-content;
       padding: 0.3rem 0.8rem;
       border-radius: 0.5rem;
-      background-color: $mt;
+      background-color: var(--bg-2);
 
 
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: $p;
+      color: var(--p);
     }
 
     .title-text {
@@ -59,7 +62,7 @@
       margin-bottom: 2rem;
 
       display: flex;
-      
+
       justify-content: start;
       flex-direction: column;
       gap: 1rem;
@@ -67,11 +70,12 @@
 
       h1 {
         font-size: 42px;
-        font-style: normal;
-        font-weight: 900;
-        letter-spacing: -2px;
-        color: $p;
-        margin-bottom: 1rem;
+        font-weight: 700;
+        line-height: 52px;
+        margin-top: 1rem;
+        letter-spacing: -0.011em;
+        color: var(--p);
+        margin-bottom: -0.27em;
 
         word-wrap: break-word;
       }
@@ -79,7 +83,7 @@
       p {
         font-size: 14px;
         font-weight: 400;
-        color: $p;
+        color: var(--p);
         line-height: 1.3125rem;
         opacity: .6;
       }
@@ -97,7 +101,8 @@
           height: 40px;
           border-radius: 100%;
           border: none;
-          background-color: $mt;
+
+          background-color: var(--bg-2);
           cursor: pointer;
         }
 
@@ -108,7 +113,7 @@
           letter-spacing: 0em;
           line-height: 22px;
 
-          color: $p;
+          color: var(--p);
 
         }
 
@@ -139,7 +144,7 @@
               letter-spacing: -.02em;
               font-size: 16px;
               font-weight: 500;
-              color: $p;
+              color: var(--p);
               opacity: 1;
             }
           }
@@ -147,7 +152,7 @@
           a {
             position: relative;
             display: flex;
-            color: $p;
+            color: var(--p);
             align-items: center;
             gap: 0.2rem;
             cursor: pointer;
@@ -168,7 +173,7 @@
           }
 
           p {
-            color: $p;
+            color: var(--p);
             font-size: 16px;
             font-weight: 400;
           }
@@ -189,7 +194,7 @@
           height: 40px;
           padding: 0.5rem;
           border-radius: 100%;
-          background-color: $mt;
+          background-color: var(--bg-2);
 
           display: flex;
           align-items: center;

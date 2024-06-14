@@ -6,12 +6,12 @@
   margin-bottom: 1rem;
 
   border-radius: 0.4rem;
-  border: 1px solid $border;
+  border: 1px solid var(--border);
 
   padding: 1rem;
 
   .ql-toolbar {
-    background-color: $mt;
+    background-color: var(--bg);
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     border-radius: 0.8rem;
 
@@ -19,10 +19,10 @@
     align-items: start;
     justify-content: start;
 
-    font-weight: 300;
+    font-weight: 500;
     font-size: 16px;
 
-    color: $p;
+    color: var(--p) !important;
 
     button {
       height: 30px;
@@ -34,8 +34,7 @@
       svg {
         padding: 0;
         font-size: 32px;
-        color: $p;
-        opacity: .7;
+        color: var(--p) !important;
       }
     }
   }
@@ -59,11 +58,11 @@
     p {
       font-size: 16px;
       font-style: normal;
-      font-weight: 300;
+      font-weight: 500;
       letter-spacing: -0.2px;
       line-height: 2em;
 
-      color: $p;
+      color: var(--p);
       text-decoration: none;
       margin-bottom: 1rem;
 
@@ -88,10 +87,10 @@
         margin-left: 40px;
         font-size: 16px;
 
-        font-weight: 300;
+        font-weight: 500;
         letter-spacing: -0.2px;
         line-height: 2em;
-        color: $p;
+        color: var(--p);
         text-decoration: none;
       }
     }
@@ -103,7 +102,7 @@
       letter-spacing: -0.2px;
       line-height: 8px;
 
-      color: $p;
+      color: var(--p);
       text-decoration: none;
     }
 
@@ -117,7 +116,7 @@
 
       margin-bottom: 1rem;
       line-height: 1.4;
-      color: $p;
+      color: var(--p);
 
     }
 
@@ -183,11 +182,11 @@
   .ql-editor.ql-blank::before {
     padding: 0;
     font-style: normal;
-    font-weight: 300;
+    font-weight: 500;
     font-size: 16px;
     letter-spacing: -.003em;
 
-    color: $p;
+    color: var(--p);
     opacity: .6;
     left: 0;
     right: 0;
@@ -196,7 +195,6 @@
 
 .body-post {
   width: 100%;
-  padding: 0 250px;
   word-wrap: break-word;
 
   p {
@@ -205,12 +203,12 @@
     letter-spacing: -0.2px;
     line-height: 2em;
 
-    color: $p;
+    color: var(--p);
     text-decoration: none;
   }
 
   blockquote {
-    border-left: 5px solid $p;
+    border-left: 5px solid var(--p);
     margin-bottom: 10px;
     padding: 10px 20px;
     font-size: 22px;
@@ -231,7 +229,7 @@
 
     border: 1px solid $s;
     border-radius: 0.4rem;
-    background-color: $mt;
+    background-color: var(--bg-2);
   }
 
   code {
@@ -262,7 +260,7 @@
       font-weight: 400;
       letter-spacing: -0.2px;
       line-height: 2em;
-      color: $p;
+      color: var(--p);
       text-decoration: none;
 
     }
@@ -274,7 +272,7 @@
     letter-spacing: -0.2px;
     line-height: 2em;
 
-    color: $p;
+    color: var(--p);
     text-decoration: none;
   }
 
@@ -288,7 +286,7 @@
 
     margin-bottom: 1rem;
     line-height: 1.4;
-    color: $p;
+    color: var(--p);
 
   }
 
@@ -343,7 +341,7 @@
 
   a {
     text-decoration: underline;
-    color: $p;
+    color: var(--p);
 
     &:visited {
       text-decoration: line-through;
@@ -355,7 +353,59 @@
 .body-posts {
   width: 100%;
 
-  color: $p;
+  color: var(--fixed-c);
+
+  word-wrap: break-word;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+
+  img {
+    display: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a,
+  span,
+  em,
+  b,
+  strong,
+  q {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    text-decoration: none !important;
+    color: var(--p-i) !important;
+    max-height: 40px !important;
+    line-height: 20px !important;
+
+    background-color: transparent !important;
+    background: transparent !important;
+
+    opacity: 0.8 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+    display: -webkit-box !important;
+    display: inline !important;
+  }
+}
+
+
+.body-popular {
+  width: 100%;
+
+  color: var(--fixed-c) !important;
 
   word-wrap: break-word;
 
@@ -383,12 +433,14 @@
   strong,
   q {
     font-size: 16px !important;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
     text-decoration: none !important;
-    color: $p !important;
+    color: var(--fixed-c) !important;
+    max-height: 40px !important;
+    line-height: 20px !important;
 
-    background-color: transparent !important;
-    background: transparent !important;
+    background-color: none !important;
+    background: none !important;
 
     opacity: 0.8 !important;
     overflow: hidden !important;
@@ -400,6 +452,7 @@
     display: inline !important;
   }
 
+
 }
 
 
@@ -407,7 +460,7 @@
   .body-posts {
     width: 100%;
 
-    color: $p;
+    color: var(--p);
 
     overflow: hidden;
     text-overflow: ellipsis;

@@ -3,8 +3,10 @@ import { MdOutlineClose } from "react-icons/md";
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { deleteUser } from "firebase/auth";
-import "./ConfigModal.scss";
 import { Blog } from '../../../context/Context';
+
+import "./ConfigModal.scss";
+import ThemeChange from '../../ThemeChange/ThemeChange';
 
 const ConfigModal = ({ onClick }) => {
     const { currentUser } = Blog()
@@ -40,6 +42,7 @@ const ConfigModal = ({ onClick }) => {
                 <div className="border-bottom"></div>
 
                 <form>
+                    <ThemeChange />
                     <Link to={'/get-started/topics'} onClick={onClick}>Selecionar tópicos</Link>
                     <label>Seu e-mail</label>
                     <input
@@ -48,8 +51,7 @@ const ConfigModal = ({ onClick }) => {
                         value={currentUser.email}
                         placeholder="Digite seu email atual"
                     />
-                    <p>Este endereço de e-mail está associado à sua conta publish.
-                        Para atualizar seu e-mail de cobrança, acesse Configurações do Workspace → Planos.</p>
+                    <p className='u-email'>Este endereço de e-mail está associado à sua conta publish.</p>
                     <button type="button" onClick={handleDeleteAccount}>Deletar Conta</button>
                 </form>
             </div>

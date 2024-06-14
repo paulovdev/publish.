@@ -13,7 +13,7 @@ import "./NotificationPage.scss";
 const NotificationsPage = () => {
   const { currentUser } = Blog();
   const [notifications, setNotifications] = useState([]);
-  const queryClient = useQueryClient(); // Usando useQueryClient para invalidar o cache
+  const queryClient = useQueryClient(); 
 
   useEffect(() => {
     let unsubscribe;

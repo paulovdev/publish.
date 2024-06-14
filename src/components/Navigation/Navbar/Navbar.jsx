@@ -11,15 +11,16 @@ const Navbar = () => {
   return (
     <>
       <header>
+        {currentUser &&
+          <SearchInput />
+        }
         {!currentUser &&
           <Link to="/">
             <img src="/logo-publish.png" alt="" />
           </Link>
         }
 
-        {currentUser &&
-          <SearchInput />
-        }
+
 
         <nav>
           {!currentUser && (<>

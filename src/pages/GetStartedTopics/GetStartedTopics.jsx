@@ -34,7 +34,7 @@ const GetStartedTopics = () => {
     await updateDoc(userDoc, {
       selectedTopics,
     });
-    navigate("/")
+    navigate("/feed/all-posts")
   };
 
   if (isLoading) return <p>Carregando...</p>; // Adicione um indicador de carregamento enquanto os dados estão sendo buscados

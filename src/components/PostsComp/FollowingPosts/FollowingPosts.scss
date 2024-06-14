@@ -1,6 +1,6 @@
 @import "../../../index.scss";
 
-#selected-topics-post {
+#following-posts {
     position: relative;
     width: 100%;
     height: 100%;
@@ -35,29 +35,16 @@
         }
 
         .post-left-content {
-            .topic {
-                position: absolute;
-                margin: 1rem;
-                padding: 0.2rem 1rem;
-
-                border-radius: 0.2rem;
-                background-color: var(--bg);
-
-                font-size: 14px;
-                font-weight: 600;
-                color: var(--p);
-                z-index: 998;
-            }
-
             img {
-                width: 300px;
+                width: 350px;
                 height: 200px;
                 border-radius: 0.5rem;
                 border: 1px solid var(--border);
                 background-color: $bg-2;
-                filter: brightness(70%);
 
-                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                mask-image: linear-gradient(#000000ee, transparent);
+
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             }
         }
 
@@ -67,11 +54,62 @@
             flex-direction: column;
             gap: 1rem;
 
-            h1 {
+            .topic {
+                position: absolute;
+                margin: 0.5rem 0.6rem;
+                padding: 0.2rem 1rem;
+
+                border-radius: 0.2rem;
+                background-color: var(--bg-2);
+
+
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--p);
+                z-index: 999;
+            }
+
+
+            .topic-profile-container {
+                position: relative;
                 width: 100%;
-                min-height: 50px;
-                font-size: 24px;
-                font-weight: 900;
+
+
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.5rem;
+
+                .profile-content {
+                    display: flex;
+                    align-items: start;
+                    justify-content: start;
+                    gap: 0.7rem;
+
+                    img {
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 100%;
+                        background-color: $bg-2;
+                    }
+
+                    .profile-text-wrapper {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: var(--p);
+                    }
+                }
+            }
+
+            h1 {
+                font-size: 20px;
+                font-weight: 700;
                 margin: 0;
 
                 color: var(--p);
@@ -83,44 +121,63 @@
                 text-overflow: ellipsis;
             }
 
-            .profile-content {
-                position: relative;
+            .read-topic {
+                width: fit-content;
                 display: flex;
-                align-items: start;
-                justify-content: start;
-
+                align-items: center;
+                justify-content: space-between;
                 gap: 1rem;
 
-                .left-profile-text {
-                    img {
-                        width: 30px;
-                        height: 30px;
-                        border-radius: 100%;
-                        background-color: $bg-2;
-                    }
-                }
-
-                .right-profile-text {
+                span {
+                    width: 100%;
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: var(--p);
 
                     display: flex;
-                    flex-direction: column;
-                    gap: 0.4rem;
-
-                    p {
-                        font-size: 14px;
-                        font-weight: 600;
-                        color: var(--p);
-                        margin: 0;
-                    }
-
-                    span {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: var(--p);
-                        opacity: 0.8;
-                    }
+                    align-items: center;
+                    gap: 0.5rem;
                 }
 
+                .topic-profile-container {
+                    position: relative;
+
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 0.5rem;
+
+                    .profile-content {
+                        display: flex;
+                        align-items: center;
+                        justify-content: start;
+                        gap: 0.7rem;
+
+                        img {
+                            width: 24px;
+                            height: 24px;
+                            border-radius: 100%;
+                            background-color: $bg-2;
+                        }
+
+                        .profile-text-wrapper {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 0.5rem;
+                        }
+
+                        p {
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: var(--p);
+
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        }
+                    }
+                }
             }
         }
     }
@@ -154,7 +211,7 @@
                     width: fit-content;
                     padding: 0.3rem 0.8rem;
                     border-radius: 0.5rem;
-                    background-color: var(--bg-2)(--bg-2)(--bg-2);
+                    background-color: var(--bg-2);
                     margin: 0;
                     font-size: 12px;
                     font-weight: 600;

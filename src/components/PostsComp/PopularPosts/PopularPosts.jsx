@@ -18,7 +18,7 @@ import { motion } from 'framer-motion';
 
 const PopularPosts = () => {
     const { isLoading, data: posts = [] } = useQuery('popularPosts', async () => {
-        const postsQuery = query(collection(db, 'posts'), orderBy('views', 'desc'), limit(3));
+        const postsQuery = query(collection(db, 'posts'), orderBy('views', 'desc'), limit(5));
         const postsSnapshot = await getDocs(postsQuery);
 
         const postsData = [];
@@ -60,37 +60,32 @@ const PopularPosts = () => {
             transition={{ duration: 0.5 }}>
             {isLoading && (
                 <>
-                    <div className="post-container large-post">
+                    <div className="popular-posts__slides">
+                        <Link className="post-container">
 
-                        <div className="post">
-                            <div className="post-content">
-                                <div className="post-right-content">
-                                    <Skeleton width={60} height={15} />
-                                    <Skeleton width={160} height={15} />
-                                    <h1> <Skeleton width={1200} height={10} /></h1>
-                                    <div
-                                    > <Skeleton width={1200} height={10} /></div>
-                                    <div className="read-topic">
-                                        <div className="topic-profile-container">
-                                            <div className="profile-content">
-                                                <Skeleton width={25} height={25} borderRadius={100} />
-                                                <Skeleton width={80} height={10} />
-                                                <div className="profile-text-wrapper">
-                                                    <p> <Skeleton width={3} height={3} borderRadius={100} /></p>
+                            <div className="post-left-content">
 
-                                                    <p>
-                                                        <Skeleton width={20} height={20} borderRadius={100} />
-                                                        <Skeleton width={75} height={10} />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span> <Skeleton width={20} height={20} borderRadius={5} />
-                                            <Skeleton width={75} height={10} /></span>
+                                <Skeleton width={50} height={15} />
+                               
+                            </div>
+                            <div className="post-right-content">
+
+                                <h1><Skeleton width={685} height={10} /></h1>
+                                <div
+                                ><Skeleton width={685} height={10} /></div>
+
+                                <div className="profile-content">
+                                    <div className="left-profile-text">
+                                        <Skeleton width={30} height={30} borderRadius={`100%`} />
+                                    </div>
+                                    <div className="right-profile-text">
+                                        <Skeleton width={75} height={10} />
+                                        <Skeleton width={50} height={8} />
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
+                        </Link>
                     </div>
                 </>
             )}
@@ -107,42 +102,35 @@ const PopularPosts = () => {
                 >
                     {posts.map(post => (
                         <SwiperSlide key={post.id} >
-                            <Link to={`/view-post/${post.id}`} className="post-container large-post">
-                                <div className="post">
-                                    <div className="img-post">
-                                        {post.imageUrl && <img src={post.imageUrl} loading="lazy" width={100} alt="Post" className="post-image" />}
-                                    </div>
-                                    <div className="post-content">
-                                        <div className="post-right-content">
-                                            <span className="topic">{post.topicName}</span>
-                                            <h1>{post.title}</h1>
-                                            <div
-                                                className="body-posts"
-                                                dangerouslySetInnerHTML={{
-                                                    __html: post.desc,
-                                                }}
-                                            ></div>
-                                            <div className="read-topic">
-                                                <div className="topic-profile-container">
-                                                    <div className="profile-content">
-                                                        {post.user && post.user.profilePicture && (
-                                                            <img src={post.user.profilePicture} width={100} loading="lazy" alt="User" className="user-photo" />
-                                                        )}
-                                                        <div className="profile-text-wrapper">
-                                                            <p>{post.user && post.user.name && post.user.name.split(" ")[0]}</p>
-                                                            <span>•</span>
-                                                            <p>
-                                                                <FaClock />
-                                                                {post.created}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span>< SiReadme /> {readTime({ __html: post.desc })} min de leitura</span>
-                                            </div>
+                            <Link to={`/view-post/${post.id}`} className="post-container">
+
+                                <div className="post-left-content">
+                                    <span className="topic">{post.topicName}</span>
+                                    {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" loading="lazy" />}
+                                </div>
+                                <div className="post-right-content">
+
+                                    <h1>{post.title}</h1>
+                                    <div
+                                        className="body-posts body-popular"
+                                        dangerouslySetInnerHTML={{
+                                            __html: post.desc
+                                        }}
+                                    ></div>
+
+                                    <div className="profile-content">
+                                        <div className="left-profile-text">
+                                            {post.user && post.user.profilePicture && (
+                                                <img src={post.user.profilePicture} loading="lazy" alt="User" className="user-photo" />
+                                            )}
+                                        </div>
+                                        <div className="right-profile-text">
+                                            {post.user && post.user.name && <p>{post.user.name}</p>}
+                                            <span>{readTime({ __html: post.desc })} min de leitura</span>
                                         </div>
                                     </div>
                                 </div>
+
                             </Link>
                         </SwiperSlide>
                     ))}

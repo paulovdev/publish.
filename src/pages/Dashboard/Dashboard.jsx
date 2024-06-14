@@ -8,7 +8,7 @@ import './Dashboard.scss';
 import { Link } from 'react-router-dom';
 import { Blog } from '../../context/Context';
 import { useQuery } from 'react-query';
-import { getDocs, collection, query, where, orderBy, deleteDoc, doc } from 'firebase/firestore';
+import { getDocs, collection, query, where, orderBy, deleteDoc, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase/Firebase';
 
 const Dashboard = () => {
@@ -69,9 +69,7 @@ const Dashboard = () => {
                         .fill()
                         .map((_, index) => (
                             <div className="post-dashboard" key={index}>
-                                <div className="background">
-                                    <Skeleton height={350} />
-                                </div>
+                             
                                 <div className="text">
                                     <Skeleton width={250} height={10} />
                                 </div>
