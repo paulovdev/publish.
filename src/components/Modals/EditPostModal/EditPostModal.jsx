@@ -11,7 +11,7 @@ import { useQuery } from 'react-query';
 const EditPostModal = ({ postId, onClick }) => {
     const [title, setTitle] = useState(postId.title);
     const [desc, setDesc] = useState(postId.desc);
-    const [selectedTopics, setSelectedTopics] = useState(postId.topic);
+    const [selectedTopics, setSelectedTopics] = useState(postId.topic); // Inicializa com postId.topic
     const [loading, setLoading] = useState(false);
 
     const { data: topics } = useQuery('topics', async () => {
@@ -29,7 +29,7 @@ const EditPostModal = ({ postId, onClick }) => {
     };
 
     const updatePost = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         setLoading(true);
         try {
             await updateDoc(doc(db, 'posts', postId.id), {
@@ -68,10 +68,10 @@ const EditPostModal = ({ postId, onClick }) => {
                 <form onSubmit={updatePost}>
                     <div className="input-wrapper-container">
                         <div className="input-wrapper">
-                            <label>Titulo:</label>
+                            <label>Título:</label>
                             <input
                                 type="text"
-                                placeholder="Titulo"
+                                placeholder="Título"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                             />
@@ -86,7 +86,6 @@ const EditPostModal = ({ postId, onClick }) => {
                                 ))}
                             </select>
                         </div>
-
                     </div>
 
                     <label>Edite o conteúdo do seu post:</label>

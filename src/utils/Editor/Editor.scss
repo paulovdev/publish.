@@ -9,6 +9,7 @@
   border: 1px solid var(--border);
 
   padding: 1rem;
+  z-index: 999;
 
   .ql-toolbar {
     background-color: var(--bg);
@@ -47,7 +48,7 @@
     font-size: 16px;
     border: 0;
     border-radius: 0 0 0.4rem 0.4rem;
-    z-index: 1;
+
   }
 
   .ql-editor {
@@ -196,6 +197,8 @@
 .body-post {
   width: 100%;
   word-wrap: break-word;
+  word-break: break-all;
+  padding: 0 250px;
 
   p {
     font-size: 16px;
@@ -355,7 +358,8 @@
 
   color: var(--fixed-c);
 
-  word-wrap: break-word;
+  word-break: break-all !important;
+  word-wrap: break-word !important;
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -378,6 +382,8 @@
   span,
   em,
   b,
+  code,
+  pre,
   strong,
   q {
     font-size: 14px !important;
@@ -394,6 +400,9 @@
     overflow: hidden !important;
     text-overflow: ellipsis !important;
 
+    word-break: break-all !important;
+    word-wrap: break-word !important;
+
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 2 !important;
     display: -webkit-box !important;
@@ -407,7 +416,8 @@
 
   color: var(--fixed-c) !important;
 
-  word-wrap: break-word;
+  word-break: break-all !important;
+  word-wrap: break-word !important;
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -435,7 +445,7 @@
     font-size: 16px !important;
     font-weight: 400 !important;
     text-decoration: none !important;
-    color: var(--fixed-c) !important;
+    color: var(--p-i) !important;
     max-height: 40px !important;
     line-height: 20px !important;
 
@@ -445,6 +455,9 @@
     opacity: 0.8 !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+
+    word-break: break-all !important;
+    word-wrap: break-word !important;
 
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 2 !important;

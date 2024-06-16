@@ -2,18 +2,13 @@
 
 #my-profile {
   position: relative;
+  width: 100%;
 
   display: flex;
   align-items: start;
   justify-content: start;
   flex-direction: column;
 
-  .border-bottom {
-    width: 100%;
-    height: 1px;
-    margin: 2rem 0;
-    background-color: var(--border);
-  }
 
   .my-posts-profile {
     width: 100%;
@@ -65,6 +60,7 @@
     position: relative;
     width: 100%;
     height: 100%;
+
     display: flex;
     align-items: start;
     justify-content: start;
@@ -78,8 +74,8 @@
       gap: 3rem;
 
       img {
-        width: 250px;
-        height: 150px;
+        width: 100px;
+        height: 100px;
         border-radius: 100%;
         border: 1px solid var(--border);
       }
@@ -87,28 +83,13 @@
       .wrapper-text {
         position: relative;
         width: 100%;
+
         display: flex;
         align-items: start;
         flex-direction: column;
         gap: 1.5rem;
 
         word-break: break-all;
-
-        h1 {
-          width: 100%;
-          font-size: 38px;
-          font-weight: 900;
-          letter-spacing: -1px;
-        }
-
-        p {
-          max-width: 600px;
-          height: 100%;
-          color: var(--p);
-          opacity: .9;
-          font-weight: 400;
-          font-size: 16px;
-        }
 
         button {
           width: 100%;
@@ -117,11 +98,11 @@
           outline: none;
           border: none;
 
-          background-color: var(--bg-2);
+          background-color: var(--btn);
           color: var(--fixed-c);
 
           padding: 0.6rem 2rem;
-          border-radius: 0.5rem;
+          border-radius: 2rem;
 
           font-size: 14px;
           font-weight: 500;
@@ -134,9 +115,63 @@
             background-color: $bg-2;
           }
         }
+
+        .follow-container {
+          position: relative;
+          width: 100%;
+          height: 100%;
+
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          .follow-content {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            span {
+              font-size: 18px;
+              font-weight: 900;
+            }
+
+            p {
+              font-size: 14px;
+              font-weight: 400;
+              opacity: .8;
+            }
+          }
+        }
+
       }
+
     }
 
+    h1 {
+      width: 100%;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
 
+    p {
+      max-width: 600px;
+      height: 100%;
+      color: var(--p);
+      opacity: .9;
+      font-weight: 400;
+      font-size: 16px;
+    }
+
+  }
+
+
+  .border-bottom {
+    width: 100%;
+    height: 1px;
+    margin: 2rem 0;
+    background-color: var(--border);
   }
 }

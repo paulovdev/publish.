@@ -34,31 +34,31 @@ const AllUsers = () => {
 
     return (
         <div id='all-users'>
-            <div className="user-text">
-                <h2>Quem seguir</h2>
-            </div>
+            <h1>Quem seguir</h1>
 
             {isLoading && (<Skeleton width={160} height={40} />)}
-            <button onClick={loadMoreUsers}><LiaRandomSolid size={24} color='#fff' /></button>
 
             {!isLoading && users.map(user => (
                 <div className='all-user-container' key={user.id}>
+                    <Link to={`/profile/${user.id}`} className="user-info">
+                        {user.profilePicture && (
+                            <img src={user.profilePicture} alt="User" className="user-photo" />
+                        )}
+                        <div className="user-text">
+                            <h2>{user.name}</h2>
+                            <p>{user.bio.slice(0, 25)}</p>
+                        </div>
+                    </Link>
 
-                    <div className="user-info">
-                        <Link to={`/profile/${user.id}`}>
-                            {user.profilePicture && (
-                                <img src={user.profilePicture} width={100} alt="User" className="user-photo" />
-                            )}
-                            <p>{user.name}</p>
-                        </Link>
-                        <FollowButton userId={user.id} />
-                    </div>
-
-
+                    <FollowButton userId={user.id} />
                 </div>
+
             ))}
+            <button onClick={loadMoreUsers}><LiaRandomSolid size={24} color='#fff' /></button>
 
         </div>
+
+
     );
 };
 

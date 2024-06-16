@@ -151,7 +151,7 @@ const TopicsPage = () => {
                                                 <div
                                                     className="body-posts"
                                                     dangerouslySetInnerHTML={{
-                                                        __html: post.desc
+                                                        __html: post.desc.slice(0, 200)
                                                     }}
                                                 ></div>
                                                 <div className="read-topic">

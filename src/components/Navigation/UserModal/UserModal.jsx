@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import { Blog } from '../../../context/Context';
 import { useLogout } from '../../../hooks/useLogout';
@@ -45,10 +45,13 @@ const UserModal = () => {
   }, []);
 
   return (
-    <div className="user-modal">
-      <div className="profile-image" onClick={() => setModal(!modal)}>
-        <img src={getUserData?.profilePicture || '/logo-publish.png'} alt="Profile" />
-      </div>
+    <>
+      <div className="user-modal">
+        <div className="profile-image" onClick={() => setModal(!modal)}>
+          <img src={getUserData?.profilePicture || '/logo-publish.png'}
+            loading="eager"
+            fetchpriority="high" alt="Profile" />
+        </div>
         {modal && (
           <motion.div
             ref={dropdownRef}
@@ -74,10 +77,12 @@ const UserModal = () => {
             <button onClick={handleLogout}>Sair</button>
           </motion.div>
         )}
-      
+
+
+      </div>
 
       {showConfigModal && <ConfigModal onClick={closeConfigModal} closeModal={closeConfigModal} />}
-    </div>
+    </>
   );
 };
 

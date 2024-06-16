@@ -143,7 +143,7 @@
       text-transform: uppercase;
 
       text-align: center;
-      z-index: 1;
+   
       cursor: pointer;
 
       &:hover {
@@ -177,87 +177,6 @@
       }
     }
   }
-
-  .modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: var(--bg);
-    padding: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-
-    .modal-content {
-      border: 1px solid var(--border);
-      border-radius: 1rem;
-      padding: 3rem;
-      width: 100%;
-      text-align: center;
-
-    }
-
-
-
-    .close-edit {
-      position: relative;
-      width: 100%;
-
-      display: flex;
-      justify-content: end;
-
-      svg {
-        color: var(--p);
-        transform: scale(0.9);
-        transition: all 0.3s;
-        cursor: pointer;
-
-        &:hover {
-          transform: scale(1);
-        }
-      }
-    }
-
-    h1 {
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      margin: 0 0 2rem 0;
-    }
-
-    button {
-      width: 100%;
-      height: 50px;
-
-      outline: none;
-      border: none;
-
-      background-color: var(--bg-2);
-      color: var(--p);
-
-      padding: 0.6rem 2rem;
-      border-radius: 0.5rem;
-
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-
-      text-align: center;
-      z-index: 1;
-      cursor: pointer;
-
-      &:hover {
-        opacity: .9;
-      }
-    }
-
-
-  }
-
 
 }
 

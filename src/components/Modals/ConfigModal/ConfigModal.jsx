@@ -41,9 +41,19 @@ const ConfigModal = ({ onClick }) => {
 
                 <div className="border-bottom"></div>
 
-                <form>
+                <div className='config-container'>
+
                     <ThemeChange />
-                    <Link to={'/get-started/topics'} onClick={onClick}>Selecionar tópicos</Link>
+
+                    <div className="border-bottom-config"></div>
+
+                    <div className="topics-selection">
+                        <p>Selecionar tópicos</p>
+                        <Link to={'/get-started/topics'} onClick={onClick}>Selecionar</Link>
+                    </div>
+
+                    <div className="border-bottom-config"></div>
+
                     <label>Seu e-mail</label>
                     <input
                         type="email"
@@ -51,9 +61,13 @@ const ConfigModal = ({ onClick }) => {
                         value={currentUser.email}
                         placeholder="Digite seu email atual"
                     />
-                    <p className='u-email'>Este endereço de e-mail está associado à sua conta publish.</p>
-                    <button type="button" onClick={handleDeleteAccount}>Deletar Conta</button>
-                </form>
+                    <div className="border-bottom-config"></div>
+
+                    <div className="delete-account">
+                        <p>Excluir conta</p>
+                        <button type="button" onClick={handleDeleteAccount}>Excluir</button>
+                    </div>
+                </div>
             </div>
         </motion.div>
 

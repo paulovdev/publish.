@@ -10,8 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@react-query-firebase/analytics": "^0.1.2-alpha.0",
-    "@react-query-firebase/firestore": "^1.0.0-dev.7",
     "date-fns": "^3.6.0",
     "firebase": "^9.0.0",
     "framer-motion": "^11.2.10",
@@ -25,6 +23,7 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.23.1",
     "react-toastify": "^10.0.5",
+    "react-tooltip": "^5.26.4",
     "sass": "^1.77.4",
     "swiper": "^11.1.4"
   },

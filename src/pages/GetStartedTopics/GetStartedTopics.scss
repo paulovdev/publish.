@@ -6,7 +6,7 @@
     align-items: start;
     justify-content: start;
     flex-direction: column;
-
+    z-index: 998;
     h1 {
         font-size: 38px;
         font-weight: 900;
@@ -81,7 +81,7 @@
         letter-spacing: 2px;
         text-transform: uppercase;
         text-align: center;
-        z-index: 1;
+      
         cursor: pointer;
 
         &:hover {

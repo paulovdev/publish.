@@ -5,15 +5,13 @@ import { db } from '../../../firebase/Firebase';
 import { Link } from 'react-router-dom';
 import { readTime } from "../../../utils/ReadTime";
 import { FaPlus } from "react-icons/fa6";
-
+import { FaClock } from "react-icons/fa6";
+import { IoReader } from "react-icons/io5";
+import { MdCategory } from "react-icons/md";
 import Skeleton from 'react-loading-skeleton';
-
-import "./AllPosts.scss"
+import "./AllPosts.scss";
 
 const AllPosts = () => {
-
-
-
     const fetchPosts = async ({ pageParam = null }) => {
         try {
             const postsQuery = query(
@@ -26,35 +24,51 @@ const AllPosts = () => {
             const postsSnapshot = await getDocs(postsQuery);
 
             const postsData = [];
+            const userIds = [];
+            const topicIds = [];
 
-            for (const postDoc of postsSnapshot.docs) {
+            postsSnapshot.forEach(postDoc => {
                 const postData = postDoc.data();
-
-                const userDoc = await getDoc(doc(db, 'users', postData.userId));
-                if (!userDoc.exists()) {
-                    continue;
-                }
-                const userData = userDoc.data();
-
-                const topicDoc = await getDoc(doc(db, 'topics', postData.topics));
-                if (!topicDoc.exists()) {
-                    continue;
-                }
-                const topicData = topicDoc.data();
-
-                const postWithUserAndTopic = {
+                userIds.push(postData.userId);
+                topicIds.push(postData.topics);
+                postsData.push({
                     id: postDoc.id,
-                    ...postData,
-                    user: userData,
-                    topicName: topicData.name
-                };
+                    ...postData
+                });
+            });
 
-                postsData.push(postWithUserAndTopic);
-            }
+            // Fetch all user documents in a batch
+            const uniqueUserIds = [...new Set(userIds)];
+            const userDocsPromises = uniqueUserIds.map(userId => getDoc(doc(db, 'users', userId)));
+            const userDocs = await Promise.all(userDocsPromises);
+            const userMap = {};
+            userDocs.forEach(userDoc => {
+                if (userDoc.exists()) {
+                    userMap[userDoc.id] = userDoc.data();
+                }
+            });
+
+            // Fetch all topic documents in a batch
+            const uniqueTopicIds = [...new Set(topicIds)];
+            const topicDocsPromises = uniqueTopicIds.map(topicId => getDoc(doc(db, 'topics', topicId)));
+            const topicDocs = await Promise.all(topicDocsPromises);
+            const topicMap = {};
+            topicDocs.forEach(topicDoc => {
+                if (topicDoc.exists()) {
+                    topicMap[topicDoc.id] = topicDoc.data();
+                }
+            });
+
+            // Combine post data with user and topic data
+            const combinedData = postsData.map(post => ({
+                ...post,
+                user: userMap[post.userId] || null,
+                topicName: topicMap[post.topics]?.name || null
+            }));
 
             const lastDoc = postsSnapshot.docs[postsSnapshot.docs.length - 1];
 
-            return { postsData, lastDoc };
+            return { postsData: combinedData, lastDoc };
         } catch (error) {
             console.log(error);
         }
@@ -85,60 +99,60 @@ const AllPosts = () => {
         <>
             <div id='all-posts'>
                 {isLoading && (
-                    <Link >
-                        <div className="post-container">
-                            <div className="post-left-content">
-                                <Skeleton width={200} height={125} />
-                            </div>
-                            <div className="post-right-content">
-                                <Skeleton width={50} height={15} borderRadius={50} />
-
-                                <h1> <Skeleton width={460} height={15} /></h1>
-                                <Skeleton width={460} height={10} />
-                                <Skeleton width={460} height={10} />
-
-                                <div className="profile-content">
-                                    <Skeleton width={20} height={30} borderRadius={'100%'} />
-
-                                    <p> <Skeleton width={50} height={10} /></p>
-
-                                    <span> <Skeleton width={50} height={10} /></span>
-
-                                    <span>  <Skeleton width={50} height={10} /></span>
+                    <>
+                        <Link>
+                            <div className="post-container">
+                                <div className="post-left-content">
+                                    <Skeleton width={225} height={150} />
+                                </div>
+                                <div className="post-right-content">
+                                    <div className="profile-content">
+                                        <Skeleton width={24} height={24} borderRadius={100} />
+                                        <Skeleton width={50} height={7} />
+                                    </div>
+                                    <h1>
+                                        <Skeleton width={300} height={15} />
+                                    </h1>
+                                    <div><Skeleton width={500} height={10} /></div>
+                                    <div className="several-content">
+                                        <Skeleton width={25} height={10} />
+                                        <Skeleton width={25} height={10} />
+                                        <Skeleton width={25} height={10} />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </Link>
+                            <div className="border-bottom"></div>
+                        </Link>
+                    </>
                 )}
 
                 {!isLoading && !isError && data.pages.length > 0 ? (
                     data.pages.map((page, i) => (
                         <React.Fragment key={i}>
                             {page.postsData.map((post, j) => (
-                                <Link to={`/view-post/${post.id}`} key={j}>
+                                <Link to={`/view-post/${post.id}`} onClick={() => scrollTo({ top: 0, behavior: 'smooth' })} key={j}>
                                     <div className="post-container">
                                         <div className="post-left-content">
                                             {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" loading="lazy" />}
                                         </div>
                                         <div className="post-right-content">
-                                            <span className="topic">{post.topicName}</span>
-                                            <h1>{post.title}</h1>
-                                            <div
-                                                className="body-posts"
-                                                dangerouslySetInnerHTML={{
-                                                    __html: post.desc
-                                                }}
-                                            ></div>
                                             <div className="profile-content">
-
                                                 {post.user && post.user.profilePicture && (
                                                     <img src={post.user.profilePicture} loading="lazy" alt="User" className="user-photo" />
                                                 )}
                                                 {post.user && post.user.name && <p>{post.user.name}</p>}
-                                                <p>•</p>
-                                                <span>{readTime({ __html: post.desc })} min de leitura</span>
-                                                <p>•</p>
-                                                <span> {post.created}</span>
+                                            </div>
+                                            <h1>{post.title}</h1>
+                                            <div
+                                                className="body-posts"
+                                                dangerouslySetInnerHTML={{
+                                                    __html: post.desc.slice(0, 200)
+                                                }}
+                                            ></div>
+                                            <div className="several-content">
+                                                <span> <MdCategory size={14} />{post.topicName}</span>
+                                                <span> <IoReader size={14} />{readTime({ __html: post.desc })} min de leitura</span>
+                                                <span><FaClock size={12} />  {post.created}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -150,28 +164,21 @@ const AllPosts = () => {
                 ) : (
                     !isLoading && <p>Sem posts disponíveis</p>
                 )}
-            </div>
 
-            {isFetchingNextPage && (
-                <div className="loading-container">
-                    <div className="loading"></div>
-                </div>
-            )}
-            <div ref={lastPostElementRef}></div>
-            {!isFetchingNextPage && hasNextPage && (
-                <div className="loading-container">
-                    <button onClick={() => fetchNextPage()}><FaPlus /></button>
-                </div>
-            )}
+                {isFetchingNextPage && (
+                    <div className="loading-container">
+                        <div className="loading"></div>
+                    </div>
+                )}
+                <div ref={lastPostElementRef}></div>
+                {!isFetchingNextPage && hasNextPage && (
+                    <div className="loading-container">
+                        <button onClick={() => fetchNextPage()}><FaPlus /></button>
+                    </div>
+                )}
+            </div>
         </>
     );
-}
+};
 
 export default AllPosts;
-
-
-
-{/*     <p>
-                                            <FaClock />
-                                            {post.created}
-                                        </p> */}

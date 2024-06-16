@@ -4,7 +4,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { db } from "../../../firebase/Firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useQueryClient } from 'react-query';
 
 import "./EditProfileModal.scss";
@@ -76,71 +76,71 @@ const EditProfileModal = ({ user, setUser, closeModal, onClick }) => {
     };
 
     return (
-        
-            <motion.div id="edit-profile-modal"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-            >
-                <div className="modal-content">
-                    <div className="header-text">
-                        <div className="profile-information-text">
-                            <h1>Informações do Perfil</h1>
-                        </div>
-                        <div className="close-edit">
-                            <MdOutlineClose className="close-svg" onClick={onClick} size={32} />
-                        </div>
+
+        <motion.div id="edit-profile-modal"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
+            <div className="modal-content">
+                <div className="header-text">
+                    <div className="profile-information-text">
+                        <h1>Informações do Perfil</h1>
                     </div>
-                    <div className="border-bottom"></div>
-                    <form onSubmit={handleSubmit} className="edit-profile-form">
-                        <div className="image-profile" role="button" tabIndex={0}>
-                            <label htmlFor="file-upload">
-                                <div className="profile-photo">
-                                    <img
-                                        src={profilePictureURL || "/profile.jpg"} // Usar a URL atual da foto ou uma foto padrão
-                                        alt="profile-img"
-                                    />
-                                    <FaCamera />
-                                </div>
-                            </label>
-                            <input
-                                id="file-upload"
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageChange}
-                                style={{ display: 'none' }}
-                            />
-                        </div>
-                        <label>Nome</label>
-                        <input
-                            name="username"
-                            onChange={(e) => setName(e.target.value)}
-                            value={name}
-                            type="text"
-                            placeholder="Seu nome"
-                            minLength={6}
-                            maxLength={24}
-                            inputMode="text"
-                        />
-                        <label>Biografia</label>
-                        <textarea
-                            name="bio"
-                            onChange={(e) => setBio(e.target.value)}
-                            value={bio}
-                            placeholder="Sua biografia"
-                            rows={5}
-                            maxLength={150}
-                            inputMode="text"
-                        />
-                        {error && <p className="error-message">{error}</p>}
-                        <button id="save-button" type="submit" disabled={loading || !isModified}>
-                            {loading ? "Salvando..." : "Salvar"}
-                        </button>
-                    </form>
+                    <div className="close-edit">
+                        <MdOutlineClose className="close-svg" onClick={onClick} size={32} />
+                    </div>
                 </div>
-            </motion.div>
-        
+                <div className="border-bottom"></div>
+                <form onSubmit={handleSubmit} className="edit-profile-form">
+                    <div className="image-profile" role="button" tabIndex={0}>
+                        <label htmlFor="file-upload">
+                            <div className="profile-photo">
+                                <img
+                                    src={profilePictureURL || "/profile.jpg"} // Usar a URL atual da foto ou uma foto padrão
+                                    alt="profile-img"
+                                />
+                                <FaCamera />
+                            </div>
+                        </label>
+                        <input
+                            id="file-upload"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            style={{ display: 'none' }}
+                        />
+                    </div>
+                    <label>Nome</label>
+                    <input
+                        name="username"
+                        onChange={(e) => setName(e.target.value)}
+                        value={name}
+                        type="text"
+                        placeholder="Seu nome"
+                        minLength={6}
+                        maxLength={24}
+                        inputMode="text"
+                    />
+                    <label>Biografia</label>
+                    <textarea
+                        name="bio"
+                        onChange={(e) => setBio(e.target.value)}
+                        value={bio}
+                        placeholder="Sua biografia"
+                        rows={5}
+                        maxLength={150}
+                        inputMode="text"
+                    />
+                    {error && <p className="error-message">{error}</p>}
+                    <button id="save-button" type="submit" disabled={loading || !isModified}>
+                        {loading ? "Salvando..." : "Salvar"}
+                    </button>
+                </form>
+            </div>
+        </motion.div>
+
     );
 };
 

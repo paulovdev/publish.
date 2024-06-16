@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../../firebase/Firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import EditProfileModal from '../../components/Modals/EditProfileModal/EditProfileModal';
 import FollowButton from '../../components/FollowButton/FollowButton';
 import Skeleton from 'react-loading-skeleton';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query'; // Importe useQueryClient
 import { motion } from 'framer-motion';
 
 import './Profile.scss';
@@ -13,40 +13,43 @@ import { Blog } from '../../context/Context';
 
 const Profile = () => {
     const { id } = useParams();
-    const { currentUser, setCurrentUser } = Blog();
-
-    const [showProfileModal, setShowProfileModal] = useState(false);
+    const { currentUser } = Blog();
+    const queryClient = useQueryClient(); // Obtenha o queryClient do React Query
 
     const { data: user, isLoading: isLoadingUser } = useQuery(['user', id], async () => {
         const userDocRef = doc(db, 'users', id);
         const userDocSnapshot = await getDoc(userDocRef);
-        return userDocSnapshot.exists() ? userDocSnapshot.data() : null;
+        return userDocSnapshot.data();
     });
 
-    const { data: posts, isLoading: isLoadingPosts } = useQuery(['userPosts', id], async () => {
+    const { data: userPosts, isLoading: isLoadingPosts } = useQuery(['userPosts', id], async () => {
         const userDocRef = doc(db, 'users', id);
         const userDocSnapshot = await getDoc(userDocRef);
+        const userData = userDocSnapshot.data();
+        const userPostIds = userData.posts || [];
+        const userPostsPromises = userPostIds.map(async (postId) => {
+            const postDocRef = doc(db, 'posts', postId);
+            const postDocSnapshot = await getDoc(postDocRef);
+            return postDocSnapshot.exists() ? { id: postDocSnapshot.id, ...postDocSnapshot.data() } : null;
+        });
 
-        if (userDocSnapshot.exists()) {
-            const userData = userDocSnapshot.data();
-            const userPostIds = userData.posts || [];
-            const userPostsPromises = userPostIds.map(async (postId) => {
-                const postDocRef = doc(db, 'posts', postId);
-                const postDocSnapshot = await getDoc(postDocRef);
-                return postDocSnapshot.exists() ? { id: postDocSnapshot.id, ...postDocSnapshot.data() } : null;
-            });
-            const userPosts = await Promise.all(userPostsPromises);
-            return userPosts.filter(post => post !== null);
-        } else {
-            console.error('User document not found');
-            return [];
-        }
+        const posts = await Promise.all(userPostsPromises);
+        return posts.filter(post => post !== null);
     });
+
+    const [showProfileModal, setShowProfileModal] = useState(false);
 
     const handleEditClick = () => setShowProfileModal(true);
     const closeEditModal = () => setShowProfileModal(false);
 
-    if (isLoadingUser) {
+    const setUser = (newUserData) => {
+        // Atualiza os dados do usuário no cache do React Query
+        queryClient.setQueryData(['user', id], newUserData);
+        // Fecha o modal de edição
+        closeEditModal();
+    };
+
+    if (isLoadingUser || isLoadingPosts) {
         return (
             <div className='post-profile'>
                 <span><Skeleton width={75} height={15} /></span>
@@ -55,8 +58,6 @@ const Profile = () => {
             </div>
         );
     }
-
-    const { name, profilePicture, bio } = user || {};
 
     return (
         <>
@@ -68,16 +69,30 @@ const Profile = () => {
                     transition={{ duration: 0.5 }}>
                     <div className="container">
                         <div className="profile-photo">
-                            <img src={profilePicture} width={150} height={150} alt="Profile" className="profile-picture" />
+                            <img src={user.profilePicture} alt="Profile" className="profile-picture" />
                             <div className="wrapper-text">
-                                <h1>{name}</h1>
-                                <p>{bio}</p>
+                                <div className="follow-container">
+                                    <div className="follow-content">
+                                        <span>{user.followers.length}</span>
+                                        <p>Seguidores</p>
+                                    </div>
+                                    <div className="follow-content">
+                                        <span>{user.following.length}</span>
+                                        <p>Seguindo</p>
+                                    </div>
+                                    <div className="follow-content">
+                                        <span>{userPosts.length}</span>
+                                        <p>Publicações</p>
+                                    </div>
+                                </div>
                                 {currentUser.uid === id && <button onClick={handleEditClick}>Editar perfil</button>}
                                 {currentUser.uid !== id && <FollowButton userId={id} />}
                             </div>
                         </div>
-                        <div className="border-bottom"></div>
+                        <h1>{user.name}</h1>
+                        <p>{user.bio}</p>
                     </div>
+                    <div className="border-bottom"></div>
                 </motion.div>
 
                 <div className="my-posts-profile">
@@ -90,7 +105,7 @@ const Profile = () => {
                             <div><Skeleton width={'100%'} height={10} /></div>
                         </div>
                     }
-                    {!isLoadingPosts && posts.map((post) => (
+                    {!isLoadingPosts && userPosts.map((post) => (
                         <div className='post-profile' key={post.id}>
                             <span>{post.topics}</span>
                             <h1>{post.title}</h1>
@@ -101,7 +116,7 @@ const Profile = () => {
             </section>
 
             {showProfileModal &&
-                <EditProfileModal user={user} setUser={setCurrentUser} closeModal={closeEditModal} onClick={closeEditModal} />
+                <EditProfileModal user={user} setUser={setUser} onClick={closeEditModal} />
             }
         </>
     );

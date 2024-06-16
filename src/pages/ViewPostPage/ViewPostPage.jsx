@@ -7,11 +7,18 @@ import { Blog } from '../../context/Context';
 import { FaRegComments } from "react-icons/fa6";
 import { FiShare2 } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa6";
+import { FaClock } from "react-icons/fa6";
+import { IoReader } from "react-icons/io5";
+import { MdCategory } from "react-icons/md";
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 
-import "./ViewPostPage.scss";
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Skeleton from 'react-loading-skeleton';
+import { Tooltip } from 'react-tooltip'
+import CommentModal from '../../components/Modals/CommentModal/CommentModal';
+
+import "./ViewPostPage.scss";
 
 const fetchPost = async (id) => {
     const postDoc = await getDoc(doc(db, 'posts', id));
@@ -48,7 +55,7 @@ const fetchPost = async (id) => {
 const ViewPostPage = () => {
     const { id } = useParams();
     const { currentUser } = Blog();
-    const [commentText, setCommentText] = useState('');
+    const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
@@ -70,24 +77,6 @@ const ViewPostPage = () => {
         }
     );
 
-    const addCommentMutation = useMutation(
-        async (newComment) => {
-            if (!currentUser) {
-                console.log('Usuario nao autenticado')
-            };
-            const commentId = `comment_${new Date().getTime()}`;
-            await updateDoc(doc(db, 'posts', id), {
-                [`comments.${commentId}`]: newComment
-            });
-        },
-        {
-            onSuccess: () => {
-                queryClient.invalidateQueries(['post', id]);
-                setCommentText('');
-            },
-        }
-    );
-
     const goToProfile = () => {
         navigate(`/profile/${post.user.uid}`);
     };
@@ -95,17 +84,6 @@ const ViewPostPage = () => {
     const handleLikePost = () => {
         if (currentUser) {
             likePostMutation.mutate();
-        }
-    };
-
-    const handleAddComment = () => {
-        if (currentUser && commentText) {
-            const newComment = {
-                userId: currentUser.uid,
-                text: commentText,
-                timestamp: Date().toLocaleString()
-            };
-            addCommentMutation.mutate(newComment);
         }
     };
 
@@ -175,70 +153,85 @@ const ViewPostPage = () => {
     }
 
     return (
-        <motion.section id="post-solo"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}>
-            <div className="container">
-                <div className="image-background">
-                    {post.imageUrl && <img src={post.imageUrl} loading="lazy" width={100} alt="Post" className="post-image" />}
-                </div>
-                <span className="topic">{post.topicName}</span>
-                <div className="title-text">
-                    <h1>{post.title}</h1>
-                    <p>{readTime({ __html: post.desc })} min de leitura</p>
-                    <div className="profile">
-                        {post.user && post.user.profilePicture && (
-                            <img src={post.user.profilePicture} onClick={goToProfile} width={100} alt="User" className="user-photo" />
-                        )}
-                        <div className="text">
-                            <div className="post-by">
-                                {post.user && post.user.name && <p>Posted by: <span>{post.user.name}</span></p>}
+        <>
+            <motion.section id="post-solo"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}>
+                <div className="container">
+                    <div className="image-background">
+                        {post.imageUrl && <img src={post.imageUrl} loading="lazy" width={100} alt="Post" className="post-image" />}
+                    </div>
+                    <div className="title-text">
+                        <h1>{post.title}</h1>
+
+                        <div className="all-content">
+                            <div className="profile-content">
+                                {post.user && post.user.profilePicture && (
+                                    <img src={post.user.profilePicture} onClick={goToProfile} loading="lazy" alt="User" className="user-photo" />
+                                )}
+                                {post.user && post.user.name && <p>{post.user.name}</p>}
                             </div>
+
+                            <div className="action-icons">
+
+
+                                <div className="action-icon" data-tooltip-id="my-tooltip" data-tooltip-content={`${Object.keys(post.likes || {}).length} Curtida`} onClick={handleLikePost}>
+                                    <button>
+                                        <FaHeart size={16} color="#fff" />
+                                    </button>
+
+                                </div>
+
+                                <div className="action-icon" data-tooltip-id="my-tooltip" data-tooltip-content="Comentar" onClick={() => setIsCommentModalOpen(true)}>
+                                    <FaRegComments size={22} color="#fff" />
+                                </div>
+
+
+                                <div className="action-icon" data-tooltip-id="my-tooltip" data-tooltip-content="Compartilhar" onClick={sharePost}>
+                                    <FiShare2 size={22} color="#fff" />
+                                </div>
+
+
+                            </div>
+
+                            <div className="several-content">
+
+                                <span> <MdCategory size={16} />{post.topicName}</span>
+
+                                <span> <IoReader size={16} />{readTime({ __html: post.desc })} min de leitura</span>
+
+                                <span><FaClock size={16} />  {post.created}</span>
+                            </div>
+
+
                         </div>
-                    </div>
-                    <div className="action-icons">
-                        <div className="action-icon" onClick={handleLikePost}>
-                            <button>
-                                <FaHeart size={16} color="#fff" />
-                            </button>
-                            {Object.keys(post.likes || {}).length}
-                        </div>
-                        <div className="action-icon">
-                            <a href="#user-comments">
-                                <FaRegComments size={22} color="#fff" />
-                            </a>
-                        </div>
-                        <div className="action-icon" onClick={sharePost}>
-                            <FiShare2 size={22} color="#fff" />
-                        </div>
+
                     </div>
                 </div>
-            </div>
-            <div className="post">
-                <div
-                    className="body-post"
-                    dangerouslySetInnerHTML={{
-                        __html: post.desc
-                    }}
-                ></div>
-            </div>
-            <div className="comments-section">
-                <h2>Comments</h2>
-                {Object.values(post.comments || {}).map((comment, index) => (
-                    <div key={index} className="comment">
-                        <p>{comment.text}</p>
-                    </div>
-                ))}
-                <textarea
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    placeholder="Add a comment"
+
+
+                <div className="post">
+                    <div
+                        className="body-post"
+                        dangerouslySetInnerHTML={{
+                            __html: post.desc
+                        }}
+                    ></div>
+                </div>
+            </motion.section>
+
+            {isCommentModalOpen && (
+                <CommentModal
+                    postId={id}
+                    comments={post.comments}
+                    currentUser={currentUser}
+                    onClose={() => setIsCommentModalOpen(false)}
                 />
-                <button onClick={handleAddComment}>Comment</button>
-            </div>
-        </motion.section>
+            )}
+            <Tooltip id="my-tooltip" />
+        </>
     );
 };
 

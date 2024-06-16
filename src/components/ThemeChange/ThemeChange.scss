@@ -2,13 +2,32 @@
     width: 100%;
     height: 100%;
 
-    margin-bottom: 2rem;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    p {
+    label {
+        font-size: 16px;
         margin: 0;
+    }
+
+    select {
+        background-color: transparent;
+        outline: none;
+        padding: 0.3rem 0.6rem;
+        font-size: 16px;
+        border-radius: 2rem;
+        border: none;
+        color: var(--p);
+
+        &:hover {
+            background-color: var(--border);
+        }
+
+        option {
+            background-color: var(--bg);
+            padding: 1rem;
+            color: var(--p);
+        }
     }
 }

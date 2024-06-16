@@ -53,7 +53,7 @@ const CreatePostPage = () => {
 
     const handleClick = () => {
         imageRef.current.click();
-    }; 
+    };
     function formatDateToDayMonth(date) {
         const options = { day: '2-digit', month: 'short' };
         const formattedDate = new Date(date).toLocaleDateString('pt-BR', options);

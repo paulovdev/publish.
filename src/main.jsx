@@ -9,17 +9,21 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Context from "./context/Context.jsx";
-
+import { ThemeProvider } from './context/ThemeContext.jsx';
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Context>
-          <App />
-        </Context>
-      </BrowserRouter>
+        <BrowserRouter>
+          <Context>
+            <ThemeProvider>
+
+              <App />
+
+            </ThemeProvider>
+          </Context>
+        </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>
 );

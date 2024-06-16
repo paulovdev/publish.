@@ -5,11 +5,13 @@ import { db } from '../../../firebase/Firebase';
 import { Blog } from "../../../context/Context";
 import { Link } from 'react-router-dom';
 import { readTime } from "../../../utils/ReadTime";
-import { SiReadme } from "react-icons/si";
-import { FaClock } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa6";
+import { FaClock } from "react-icons/fa6";
+import { IoReader } from "react-icons/io5";
+import { MdCategory } from "react-icons/md";
 import Skeleton from 'react-loading-skeleton';
 
-import "./FollowingPosts.scss"
+import "./FollowingPosts.scss";
 
 const FollowingPosts = () => {
     const { currentUser } = Blog();
@@ -19,57 +21,65 @@ const FollowingPosts = () => {
             const userRef = doc(db, 'users', currentUser.uid);
             const userSnapshot = await getDoc(userRef);
 
-            if (userSnapshot.exists()) {
-                const userData = userSnapshot.data();
-                const following = userData.following || [];
+            if (!userSnapshot.exists()) return { postsData: [], lastDoc: null };
 
-                if (following.length === 0) {
-                    return { postsData: [], lastDoc: null };
+            const userData = userSnapshot.data();
+            const following = userData.following || [];
+
+            if (following.length === 0) return { postsData: [], lastDoc: null };
+
+            const postsQuery = query(
+                collection(db, 'posts'),
+                where("userId", "in", following),
+                orderBy("created", "desc"),
+                limit(5),
+                ...(pageParam ? [startAfter(pageParam)] : [])
+            );
+
+            const postsSnapshot = await getDocs(postsQuery);
+
+            const postsData = [];
+            const userIds = [];
+            const topicIds = [];
+
+            postsSnapshot.forEach(postDoc => {
+                const postData = postDoc.data();
+                userIds.push(postData.userId);
+                topicIds.push(postData.topics);
+                postsData.push({ id: postDoc.id, ...postData });
+            });
+
+            const uniqueUserIds = [...new Set(userIds)];
+            const userDocsPromises = uniqueUserIds.map(userId => getDoc(doc(db, 'users', userId)));
+            const userDocs = await Promise.all(userDocsPromises);
+            const userMap = {};
+            userDocs.forEach(userDoc => {
+                if (userDoc.exists()) {
+                    userMap[userDoc.id] = userDoc.data();
                 }
+            });
 
-                const postsQuery = query(
-                    collection(db, 'posts'),
-                    where("userId", "in", following),
-                    orderBy("created", "desc"),
-                    limit(5),
-                    ...(pageParam ? [startAfter(pageParam)] : [])
-                );
-
-                const postsSnapshot = await getDocs(postsQuery);
-
-                const postsData = [];
-
-                for (const postDoc of postsSnapshot.docs) {
-                    const postData = postDoc.data();
-
-                    const userDoc = await getDoc(doc(db, 'users', postData.userId));
-                    if (!userDoc.exists()) {
-                        continue;
-                    }
-                    const userData = userDoc.data();
-
-                    const topicDoc = await getDoc(doc(db, 'topics', postData.topics));
-                    if (!topicDoc.exists()) {
-                        continue;
-                    }
-                    const topicData = topicDoc.data();
-
-                    const postWithUserAndTopic = {
-                        id: postDoc.id,
-                        ...postData,
-                        user: userData,
-                        topicName: topicData.name
-                    };
-
-                    postsData.push(postWithUserAndTopic);
+            const uniqueTopicIds = [...new Set(topicIds)];
+            const topicDocsPromises = uniqueTopicIds.map(topicId => getDoc(doc(db, 'topics', topicId)));
+            const topicDocs = await Promise.all(topicDocsPromises);
+            const topicMap = {};
+            topicDocs.forEach(topicDoc => {
+                if (topicDoc.exists()) {
+                    topicMap[topicDoc.id] = topicDoc.data();
                 }
+            });
 
-                const lastDoc = postsSnapshot.docs[postsSnapshot.docs.length - 1];
+            const combinedData = postsData.map(post => ({
+                ...post,
+                user: userMap[post.userId] || null,
+                topicName: topicMap[post.topics]?.name || null
+            }));
 
-                return { postsData, lastDoc };
-            }
+            const lastDoc = postsSnapshot.docs[postsSnapshot.docs.length - 1];
+
+            return { postsData: combinedData, lastDoc };
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -81,9 +91,7 @@ const FollowingPosts = () => {
         hasNextPage,
         isFetchingNextPage
     } = useInfiniteQuery(['followingPosts'], fetchPosts, {
-        getNextPageParam: (lastPage, allPages) => {
-            return lastPage.lastDoc;
-        }
+        getNextPageParam: (lastPage) => lastPage?.lastDoc || undefined,
     });
 
     const lastPostElementRef = useRef();
@@ -95,73 +103,73 @@ const FollowingPosts = () => {
     }, [isFetchingNextPage]);
 
     return (
-        <>
-            <div id='following-posts'>
-
-                {isLoading && (
-                    <div className="post-container">
-                        <div className="post-left-content">
-                            <Skeleton width={350} height={200} />
-                        </div>
-                        <div className="post-right-content">
-                            <Skeleton width={60} height={15} />
-                            <Skeleton width={600} height={10} />
-                            <Skeleton width={600} height={10} />
-                            <div className="read-topic">
-                                <div className="topic-profile-container">
-                                    <div className="profile-content">
-                                        <Skeleton width={30} height={30} borderRadius={100} />
-                                        <div className="profile-text-wrapper">
-                                            <Skeleton width={50} height={10} />
-                                            <p><Skeleton width={50} height={10} /></p>
-                                        </div>
-                                    </div>
+        <div id='following-posts'>
+            {isLoading && (
+                <>
+                    <Link>
+                        <div className="post-container">
+                            <div className="post-left-content">
+                                <Skeleton width={225} height={150} />
+                            </div>
+                            <div className="post-right-content">
+                                <div className="profile-content">
+                                    <Skeleton width={24} height={24} borderRadius={100} />
+                                    <Skeleton width={50} height={7} />
                                 </div>
-                                <span><Skeleton width={50} height={10} /></span>
+                                <h1>
+                                    <Skeleton width={300} height={15} />
+                                </h1>
+                                <div><Skeleton width={500} height={10} /></div>
+                                <div className="several-content">
+                                    <Skeleton width={25} height={10} />
+                                    <Skeleton width={25} height={10} />
+                                    <Skeleton width={25} height={10} />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
+                        <div className="border-bottom"></div>
+                    </Link>
+                </>
+            )}
 
-                {!isLoading && !isError && data.pages.length > 0 ? (
-                    data.pages.map((page, i) => (
-                        <React.Fragment key={i}>
-                            {page.postsData.map((post, j) => (
-                                <div key={j} className="post-container">
+            {!isLoading && !isError && data.pages.length > 0 ? (
+                data.pages.map((page, i) => (
+                    <React.Fragment key={i}>
+                        {page.postsData.map((post, j) => (
+                            <Link to={`/view-post/${post.id}`} onClick={() => scrollTo({ top: 0, behavior: 'smooth' })} key={j}>
+                                <div className="post-container">
                                     <div className="post-left-content">
-                                        <span className="topic">{post.topicName}</span>
                                         {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" loading="lazy" />}
                                     </div>
                                     <div className="post-right-content">
-
+                                        <div className="profile-content">
+                                            {post.user && post.user.profilePicture && (
+                                                <img src={post.user.profilePicture} loading="lazy" alt="User" className="user-photo" />
+                                            )}
+                                            {post.user && post.user.name && <p>{post.user.name}</p>}
+                                        </div>
                                         <h1>{post.title}</h1>
                                         <div
                                             className="body-posts"
                                             dangerouslySetInnerHTML={{
-                                                __html: post.desc
+                                                __html: post.desc.slice(0, 200)
                                             }}
                                         ></div>
-
-                                        <div className="profile-content">
-                                            <div className="left-profile-text">
-                                                {post.user && post.user.profilePicture && (
-                                                    <img src={post.user.profilePicture} loading="lazy" alt="User" className="user-photo" />
-                                                )}
-                                            </div>
-                                            <div className="right-profile-text">
-                                                {post.user && post.user.name && <p>{post.user.name}</p>}
-                                                <span>{readTime({ __html: post.desc })} min de leitura</span>
-                                            </div>
+                                        <div className="several-content">
+                                            <span> <MdCategory size={14} />{post.topicName}</span>
+                                            <span> <IoReader size={14} />{readTime({ __html: post.desc })} min de leitura</span>
+                                            <span><FaClock size={12} />  {post.created}</span>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
-                        </React.Fragment>
-                    ))
-                ) : (
-                    !isLoading && <p>Sem posts disponíveis</p>
-                )}
-            </div>
+                                <div className="border-bottom"></div>
+                            </Link>
+                        ))}
+                    </React.Fragment>
+                ))
+            ) : (
+                !isLoading && <p>Sem posts disponíveis</p>
+            )}
 
             {isFetchingNextPage && (
                 <div className="loading-container">
@@ -171,11 +179,11 @@ const FollowingPosts = () => {
             <div ref={lastPostElementRef}></div>
             {!isFetchingNextPage && hasNextPage && (
                 <div className="loading-container">
-                    <button onClick={() => fetchNextPage()}>Carregar mais</button>
+                    <button onClick={() => fetchNextPage()}><FaPlus /></button>
                 </div>
             )}
-        </>
+        </div>
     );
-}
+};
 
 export default FollowingPosts;

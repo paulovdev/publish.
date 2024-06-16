@@ -4,7 +4,7 @@
     position: relative;
     width: 100%;
     height: 100%;
-
+    margin: 3rem 0 0 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -35,7 +35,6 @@
             transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
             &:hover {
-                transform: scale(1.01);
                 cursor: pointer;
 
                 h1 {
@@ -45,56 +44,27 @@
             }
 
             .post-left-content {
-
+                display: flex;
+                align-items: end;
+                justify-content: end;
 
 
                 img {
-                    width: 200px;
-                    aspect-ratio: auto 200 / 125;
-                    height: 125px;
+                    width: 225px;
+                    height: 150px;
                     border-radius: 0.5rem;
-                    background-color: $bg-2;
-                    vertical-align: middle;
+                    background-color: var(--bg);
 
                     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                 }
             }
 
             .post-right-content {
+                width: 100%;
                 display: flex;
                 align-items: start;
                 flex-direction: column;
                 gap: 1rem;
-
-
-                .topic {
-                    padding: 0.3rem 1rem;
-                    border: 1px solid var(--border);
-                    border-radius: 2rem;
-                    font-size: 10px;
-                    font-weight: 600;
-                    letter-spacing: 2px;
-                    text-transform: uppercase;
-                    color: var(--p);
-                }
-
-                h1 {
-                    width: 100%;
-                    max-height: 90px;
-                    font-size: 20px;
-                    font-weight: 800;
-                    line-height: 30px;
-                    letter-spacing: -0.016em;
-                    margin: 0;
-                    overflow: hidden;
-                    color: var(--p);
-                    -webkit-box-orient: vertical;
-                    -webkit-line-clamp: 3;
-                    display: -webkit-box;
-
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
 
                 .profile-content {
                     position: relative;
@@ -103,12 +73,7 @@
                     align-items: start;
                     justify-content: start;
 
-                    gap: 1rem;
-
-                    display: flex;
-
                     gap: 0.5rem;
-
 
                     img {
                         width: 20px;
@@ -118,23 +83,71 @@
                     }
 
                     p {
+                        word-wrap: break-word;
                         word-break: break-all;
+                        
                         max-height: 20px;
                         font-size: 12px;
                         font-weight: 500;
                         line-height: 20px;
                         color: var(--p);
                         margin: 0;
+
                     }
+                }
+
+                h1 {
+                    width: 100%;
+                    max-height: 90px;
+
+                    font-size: 20px;
+
+                    font-weight: 800;
+
+                    line-height: 30px;
+
+                    letter-spacing: -0.016em;
+
+                    word-break: break-all !important;
+                    word-wrap: break-word !important;
+
+                    margin: 0;
+
+                    color: var(--p);
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 3;
+                    display: -webkit-box;
+
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .several-content {
+                    position: relative;
+                    width: 100%;
+
+                    display: flex;
+                    align-items: start;
+                    justify-content: start;
+
+                    gap: 0.5rem;
 
                     span {
                         word-break: break-all;
-                        max-height: 20px;
+
                         font-size: 12px;
                         font-weight: 500;
-                        line-height: 20px;
+
                         color: var(--p);
                         margin: 0;
+
+                        padding: 0.3rem 1rem;
+                        border: 1px solid var(--border);
+                        border-radius: 2rem;
+
+                        display: flex;
+                        align-items: center;
+                        gap: 0.4rem;
                     }
 
 

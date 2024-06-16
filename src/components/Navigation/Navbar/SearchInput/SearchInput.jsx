@@ -24,7 +24,7 @@ const SearchInput = () => {
         <form onSubmit={handleSubmit} className={!showButton ? "active" : ""}>
             <div className="search-input">
 
-                <button onClick={handleShowButton}  className="bt1">
+                <button onClick={handleShowButton} className="bt1">
                     <IoIosSearch size={22} />
                 </button>
 

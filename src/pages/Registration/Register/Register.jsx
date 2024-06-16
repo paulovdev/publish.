@@ -9,15 +9,22 @@ const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [bio, setBio] = useState('');
     const navigate = useNavigate()
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        if (password !== confirmPassword) {
+            console.log("As senhas não coincidem");
+            return;
+        }
+
         await registerUser({
             name,
             email,
             password,
+            confirmPassword,
             bio,
             profilePicture: "public/logo-publish.png",
         });
@@ -63,6 +70,17 @@ const Register = () => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                />
+
+                <label>Confirmar senha</label>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Confirme sua senha"
+                    minLength={6}
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                 <label>Biografia</label>
                 <input

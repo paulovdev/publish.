@@ -1,12 +1,15 @@
 @import '../../../../index.scss';
 
 form {
+    z-index: 998;
+
     .search-input {
-        width: 50px;
+        width: 40px;
+        height: 40px;
 
         background-color: var(--bg);
         border: 1px solid var(--border);
-        border-radius: 0.5rem;
+        border-radius: 2rem;
         display: flex;
         align-items: center;
         justify-content: end;

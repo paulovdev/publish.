@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { db } from '../../firebase/Firebase';
-import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Blog } from '../../context/Context';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from 'react-query'; // Importe o useQuery do React Query
+import { useQuery } from 'react-query';
 
 import "./GetStartedTopics.scss"
 
@@ -12,13 +12,24 @@ const GetStartedTopics = () => {
   const [selectedTopics, setSelectedTopics] = useState([]);
   const navigate = useNavigate();
 
-  const { data: topics, isLoading, isError } = useQuery('topics', async () => {
+  // Fetch topics from Firestore
+  const { data: topics, isLoading: isLoadingTopics, isError: isErrorTopics } = useQuery('topics', async () => {
     const topicsCollection = collection(db, 'topics');
     const topicsSnapshot = await getDocs(topicsCollection);
     return topicsSnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
     }));
+  });
+
+  // Fetch user selected topics from Firestore
+  const { isLoading: isLoadingUser, isError: isErrorUser } = useQuery('userSelectedTopics', async () => {
+    const userDoc = doc(db, 'users', currentUser.uid);
+    const userSnapshot = await getDoc(userDoc);
+    const userData = userSnapshot.data();
+    setSelectedTopics(userData.selectedTopics || []);
+  }, {
+    enabled: !!currentUser,
   });
 
   const handleTopicSelect = (topicId) => {
@@ -37,8 +48,8 @@ const GetStartedTopics = () => {
     navigate("/feed/all-posts")
   };
 
-  if (isLoading) return <p>Carregando...</p>; // Adicione um indicador de carregamento enquanto os dados estão sendo buscados
-  if (isError) return <p>Ocorreu um erro ao buscar os tópicos.</p>; // Adicione uma mensagem de erro se houver algum erro durante a busca
+  if (isLoadingTopics || isLoadingUser) return <p>Carregando...</p>;
+  if (isErrorTopics || isErrorUser) return <p>Ocorreu um erro ao buscar os tópicos.</p>;
 
   return (
     <section id='get-started'>

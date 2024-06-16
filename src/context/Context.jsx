@@ -53,7 +53,7 @@ const Context = ({ children }) => {
         userLoading
       }}
     >
-      {loading ? <div className="loading-container initial">
+      {loading && userLoading ? <div className="loading-container initial">
         <div className="loading initial"></div> </div> : children}
     </BlogContext.Provider>
   );

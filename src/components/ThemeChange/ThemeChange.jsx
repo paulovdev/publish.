@@ -1,35 +1,24 @@
-import React, { useState } from 'react';
-import { BsFillMoonFill, BsFillSunFill } from 'react-icons/bs';
-import "./ThemeChange.scss"
+// ThemeChange.js
+import React from 'react';
+import { useTheme } from '../../context/ThemeContext';
+import "./ThemeChange.scss";
 
 function ThemeChange() {
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const { theme, changeTheme } = useTheme();
 
-    function changeTheme() {
-        setIsDarkMode(!isDarkMode);
-        document.documentElement.classList.toggle('dark');
-        document.documentElement.classList.toggle('light');
-    }
+    const handleChange = (event) => {
+        const selectedTheme = event.target.value;
+        changeTheme(selectedTheme);
+    };
 
     return (
-        <>
-            <div id='change-theme' onClick={changeTheme}>
-                <p>Mudar tema</p>
-                {isDarkMode ? (
-                    <BsFillMoonFill size={20}
-                        title="Alternar para tema claro"
-                        aria-label="Alternar para tema claro"
-                    />
-                ) : (
-                    <BsFillSunFill size={20}
-                        title="Alternar para tema escuro"
-                        aria-label="Alternar para tema escuro"
-                    />
-                )}
-
-            </div>
-
-        </>
+        <div id='change-theme'>
+            <p>Mudar tema</p>
+            <select id="theme-select" value={theme} onChange={handleChange}>
+                <option value="light">Claro</option>
+                <option value="dark">Escuro</option>
+            </select>
+        </div>
     );
 }
 

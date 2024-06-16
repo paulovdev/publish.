@@ -1,10 +1,8 @@
-// FollowButton.js
 import React, { useState, useEffect } from 'react';
 import { doc, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/Firebase';
 import { Blog } from '../../context/Context';
 import Skeleton from 'react-loading-skeleton';
-import { toast } from 'react-toastify';
 
 const FollowButton = ({ userId }) => {
     const { currentUser } = Blog();
@@ -14,6 +12,12 @@ const FollowButton = ({ userId }) => {
     useEffect(() => {
         const checkIfFollowing = async () => {
             try {
+                if (!currentUser) {
+                    setIsFollowing(false);
+                    setLoading(false);
+                    return;
+                }
+
                 const userDocRef = doc(db, 'users', userId);
                 const userDocSnapshot = await getDoc(userDocRef);
                 if (userDocSnapshot.exists()) {
@@ -34,13 +38,16 @@ const FollowButton = ({ userId }) => {
         try {
             const userRef = doc(db, 'users', userId);
             await updateDoc(userRef, {
-                followers: arrayUnion(currentUser.uid), 
+                followers: arrayUnion(currentUser.uid),
             });
 
             if (currentUser) {
-                await updateDoc(userRef, {
-                    notifications: arrayUnion(currentUser.uid),
+                const currentUserRef = doc(db, 'users', currentUser.uid);
+                await updateDoc(currentUserRef, {
+                    following: arrayUnion(userId),
                 });
+
+                await updateDoc(userRef, { notifications: arrayUnion(currentUser.uid) });
             }
 
             setIsFollowing(true);
@@ -57,9 +64,12 @@ const FollowButton = ({ userId }) => {
             });
 
             if (currentUser) {
-                await updateDoc(userRef, {
-                    notifications: arrayRemove(currentUser.uid),
+                const currentUserRef = doc(db, 'users', currentUser.uid);
+                await updateDoc(currentUserRef, {
+                    following: arrayRemove(userId),
                 });
+
+                await updateDoc(userRef, { notifications: arrayRemove(currentUser.uid) });
             }
 
             setIsFollowing(false);
@@ -75,7 +85,7 @@ const FollowButton = ({ userId }) => {
     return (
         <>
             {isFollowing ? (
-                <button onClick={handleUnfollow}>Deixar de seguir</button>
+                <button onClick={handleUnfollow}>Seguindo</button>
             ) : (
                 <button onClick={handleFollow}>Seguir</button>
             )}

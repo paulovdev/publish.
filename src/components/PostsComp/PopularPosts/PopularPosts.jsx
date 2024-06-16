@@ -3,10 +3,11 @@ import { useQuery } from 'react-query';
 import { doc, getDocs, getDoc, collection, query, orderBy, limit } from 'firebase/firestore';
 import { db } from '../../../firebase/Firebase';
 
-import { SiReadme } from "react-icons/si";
+import { IoReader } from "react-icons/io5";
 import { FaClock } from "react-icons/fa";
+import { MdCategory } from "react-icons/md";
 
-import { Swiper, SwiperSlide } from 'swiper/react'
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 import { readTime } from "../../../utils/ReadTime";
@@ -22,34 +23,46 @@ const PopularPosts = () => {
         const postsSnapshot = await getDocs(postsQuery);
 
         const postsData = [];
-        for (const postDoc of postsSnapshot.docs) {
+        const userIds = [];
+        const topicIds = [];
+
+        postsSnapshot.forEach(postDoc => {
             const postData = postDoc.data();
-
-            // Obter usuário
-            const userDoc = await getDoc(doc(db, 'users', postData.userId));
-            if (!userDoc.exists()) {
-                continue;
-            }
-            const userData = userDoc.data();
-
-            // Obter nome do tópico
-            const topicDoc = await getDoc(doc(db, 'topics', postData.topics));
-            if (!topicDoc.exists()) {
-                continue;
-            }
-            const topicData = topicDoc.data();
-
-            const postWithUserAndTopic = {
+            userIds.push(postData.userId);
+            topicIds.push(postData.topics);
+            postsData.push({
                 id: postDoc.id,
-                ...postData,
-                user: userData,
-                topicName: topicData.name
-            };
+                ...postData
+            });
+        });
 
-            postsData.push(postWithUserAndTopic);
-        }
+        const uniqueUserIds = [...new Set(userIds)];
+        const userDocsPromises = uniqueUserIds.map(userId => getDoc(doc(db, 'users', userId)));
+        const userDocs = await Promise.all(userDocsPromises);
+        const userMap = {};
+        userDocs.forEach(userDoc => {
+            if (userDoc.exists()) {
+                userMap[userDoc.id] = userDoc.data();
+            }
+        });
 
-        return postsData;
+        const uniqueTopicIds = [...new Set(topicIds)];
+        const topicDocsPromises = uniqueTopicIds.map(topicId => getDoc(doc(db, 'topics', topicId)));
+        const topicDocs = await Promise.all(topicDocsPromises);
+        const topicMap = {};
+        topicDocs.forEach(topicDoc => {
+            if (topicDoc.exists()) {
+                topicMap[topicDoc.id] = topicDoc.data();
+            }
+        });
+
+        const combinedData = postsData.map(post => ({
+            ...post,
+            user: userMap[post.userId] || null,
+            topicName: topicMap[post.topics]?.name || null
+        }));
+
+        return combinedData;
     });
 
     return (
@@ -59,78 +72,73 @@ const PopularPosts = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}>
             {isLoading && (
-                <>
-                    <div className="popular-posts__slides">
-                        <Link className="post-container">
-
+                Array.from({ length: 2 }).map((_, index) => (
+                    <Link key={index}>
+                        <div className="post-container">
                             <div className="post-left-content">
-
-                                <Skeleton width={50} height={15} />
-                               
+                                <Skeleton width={580} height={250} />
                             </div>
                             <div className="post-right-content">
-
-                                <h1><Skeleton width={685} height={10} /></h1>
-                                <div
-                                ><Skeleton width={685} height={10} /></div>
-
                                 <div className="profile-content">
-                                    <div className="left-profile-text">
-                                        <Skeleton width={30} height={30} borderRadius={`100%`} />
-                                    </div>
-                                    <div className="right-profile-text">
-                                        <Skeleton width={75} height={10} />
-                                        <Skeleton width={50} height={8} />
-                                    </div>
+                                    <Skeleton width={30} height={30} borderRadius={100} />
+                                    <Skeleton width={100} height={10} />
+                                </div>
+                                <Skeleton width={400} height={10} />
+                                <div className="body-popular">
+                                    <Skeleton width={400} height={10} />
+                                </div>
+
+                                <div className="several-content">
+                                    <Skeleton width={100} height={10} />
+                                    <Skeleton width={100} height={10} />
+                                    <Skeleton width={100} height={10} />
                                 </div>
                             </div>
-
-                        </Link>
-                    </div>
-                </>
+                        </div>
+                    </Link>
+                ))
             )}
             {!isLoading && (
                 <Swiper
                     loop={posts.length > 1}
                     autoplay={{
-                        delay: 2500,
+                        delay: 3000,
                         disableOnInteraction: false,
                     }}
                     modules={[Autoplay, Pagination, Navigation]}
-                    spaceBetween={10}
+                    slidesPerView={2}
+                    spaceBetween={50}
                     className='popular-posts__slides'
                 >
                     {posts.map(post => (
-                        <SwiperSlide key={post.id} >
-                            <Link to={`/view-post/${post.id}`} className="post-container">
-
-                                <div className="post-left-content">
-                                    <span className="topic">{post.topicName}</span>
-                                    {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" loading="lazy" />}
-                                </div>
-                                <div className="post-right-content">
-
-                                    <h1>{post.title}</h1>
-                                    <div
-                                        className="body-posts body-popular"
-                                        dangerouslySetInnerHTML={{
-                                            __html: post.desc
-                                        }}
-                                    ></div>
-
-                                    <div className="profile-content">
-                                        <div className="left-profile-text">
+                        <SwiperSlide key={post.id}>
+                            <Link to={`/view-post/${post.id}`}>
+                                <div className="post-container">
+                                    <div className="post-left-content">
+                                        {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" loading="lazy" />}
+                                    </div>
+                                    <div className="post-right-content">
+                                        <div className="profile-content">
                                             {post.user && post.user.profilePicture && (
                                                 <img src={post.user.profilePicture} loading="lazy" alt="User" className="user-photo" />
                                             )}
-                                        </div>
-                                        <div className="right-profile-text">
                                             {post.user && post.user.name && <p>{post.user.name}</p>}
-                                            <span>{readTime({ __html: post.desc })} min de leitura</span>
+                                        </div>
+                                        <h1>{post.title}</h1>
+                                        <div
+                                            className="body-popular"
+                                            dangerouslySetInnerHTML={{
+                                                __html: post.desc.slice(0, 200)
+                                            }}
+                                        ></div>
+
+                                        <div className="several-content">
+                                            <span> <MdCategory size={14} />{post.topicName}</span>
+                                            <span> <IoReader size={14} />{readTime({ __html: post.desc })} min de leitura</span>
+                                            <span><FaClock size={12} />  {post.created}</span>
                                         </div>
                                     </div>
                                 </div>
-
                             </Link>
                         </SwiperSlide>
                     ))}

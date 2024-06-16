@@ -29,7 +29,7 @@ const ScrollTop = () => {
 
     <div className={`scroll-top not ${isVisible ? "show" : ""}`}
       onClick={scrollToTop} >
-      <GoArrowUp size={32} color="#fff" />
+      <GoArrowUp size={32} color="#f3f3ff" />
     </div>
   );
 };
