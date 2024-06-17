@@ -28,33 +28,31 @@ const App = () => {
   const { currentUser } = Blog();
   const location = useLocation();
   return (
-    <div className="querie">
-      <SkeletonTheme baseColor="#3a3a3a" highlightColor="#262626">
-        <Navbar />
-        <ScrollTop />
-        {currentUser && <SideBar />}
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={!currentUser ? <FirstHome /> : <Navigate to="/feed/all-posts" />} />
+    <SkeletonTheme>
+      <Navbar />
+      <ScrollTop />
+      {currentUser && <SideBar />}
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={!currentUser ? <FirstHome /> : <Navigate to="/feed/all-posts" />} />
 
-          <Route path="feed" element={!currentUser ? <Navigate to="/login" /> : <Home />}>
-            <Route path="all-posts" element={<AllPosts />} />
-            <Route path="following" element={<FollowingPosts />} />
-            <Route path="topic/:id" element={<SelectedTopicsPosts />} />
-          </Route>
+        <Route path="feed" element={!currentUser ? <Navigate to="/login" /> : <Home />}>
+          <Route path="all-posts" element={<AllPosts />} />
+          <Route path="following" element={<FollowingPosts />} />
+          <Route path="topic/:id" element={<SelectedTopicsPosts />} />
+        </Route>
 
-          <Route path="/dashboard" element={!currentUser ? <Navigate to="/login" /> : <Dashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/get-started/topics" element={!currentUser ? <Navigate to="/login" /> : <GetStartedTopics />} />
-          <Route path="/create-post" element={!currentUser ? <Navigate to="/login" /> : <CreatePostPage />} />
-          <Route path="/profile/:id" element={!currentUser ? <Navigate to="/login" /> : <Profile />} />
-          <Route path="/view-post/:id" element={!currentUser ? <Navigate to="/login" /> : <ViewPostPage />} />
-          {/* <Route path="/feed/topics/:id" element={!currentUser ? <Navigate to="/login" /> : <TopicsPage />} /> */}
-          <Route path="/search" element={!currentUser ? <Navigate to="/login" /> : <SearchPage />} />
-          <Route path="/U2FsdGVkX18W14So8Z+jlcy7OTyMZ5a1PzX76+R+VnYpiroca" element={<AddTopics />} />
-        </Routes>
-      </SkeletonTheme>
-    </div>
+        <Route path="/dashboard" element={!currentUser ? <Navigate to="/login" /> : <Dashboard />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/get-started/topics" element={!currentUser ? <Navigate to="/login" /> : <GetStartedTopics />} />
+        <Route path="/create-post" element={!currentUser ? <Navigate to="/login" /> : <CreatePostPage />} />
+        <Route path="/profile/:id" element={!currentUser ? <Navigate to="/login" /> : <Profile />} />
+        <Route path="/view-post/:id" element={!currentUser ? <Navigate to="/login" /> : <ViewPostPage />} />
+        {/* <Route path="/feed/topics/:id" element={!currentUser ? <Navigate to="/login" /> : <TopicsPage />} /> */}
+        <Route path="/search" element={!currentUser ? <Navigate to="/login" /> : <SearchPage />} />
+        <Route path="/U2FsdGVkX18W14So8Z+jlcy7OTyMZ5a1PzX76+R+VnYpiroca" element={<AddTopics />} />
+      </Routes>
+    </SkeletonTheme>
   );
 };
 

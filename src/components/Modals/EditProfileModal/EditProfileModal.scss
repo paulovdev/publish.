@@ -144,7 +144,7 @@
                 outline: none;
                 border: none;
 
-                background-color: var(--border-2);
+                background-color: var(--btn);
                 color: var(--fixed-c);
 
                 padding: 0.6rem 2rem;
@@ -158,7 +158,7 @@
                 transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
                 &:hover {
-                    background-color: $bg-2;
+                    background-color: var(--btn-2);
                 }
 
                 &:disabled {

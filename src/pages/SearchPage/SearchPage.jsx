@@ -29,16 +29,17 @@ const SearchPage = () => {
 
             const postsData = [];
             const userIds = [];
-            const topicIds = [];
 
             postsSnapshot.forEach(postDoc => {
                 const postData = postDoc.data();
                 userIds.push(postData.userId);
-                topicIds.push(postData.topics);
-                postsData.push({
-                    id: postDoc.id,
-                    ...postData
-                });
+
+                if (!search || postData.title.toLowerCase().includes(search.toLowerCase())) {
+                    postsData.push({
+                        id: postDoc.id,
+                        ...postData
+                    });
+                }
             });
 
             // Fetch all user documents in a batch
@@ -52,22 +53,9 @@ const SearchPage = () => {
                 }
             });
 
-            // Fetch all topic documents in a batch
-            const uniqueTopicIds = [...new Set(topicIds)];
-            const topicDocsPromises = uniqueTopicIds.map(topicId => getDoc(doc(db, 'topics', topicId)));
-            const topicDocs = await Promise.all(topicDocsPromises);
-            const topicMap = {};
-            topicDocs.forEach(topicDoc => {
-                if (topicDoc.exists()) {
-                    topicMap[topicDoc.id] = topicDoc.data();
-                }
-            });
-
-            // Combine post data with user and topic data
             const combinedData = postsData.map(post => ({
                 ...post,
-                user: userMap[post.userId] || null,
-                topicName: topicMap[post.topics]?.name || null
+                user: userMap[post.userId] || null
             }));
 
             const lastDoc = postsSnapshot.docs[postsSnapshot.docs.length - 1];
@@ -102,8 +90,7 @@ const SearchPage = () => {
     return (
         <section id="search">
             <Link to="/" className="back">
-
-                <p>Voltar</p>
+                Voltar
             </Link>
             <h1>
                 Resultados da pesquisa para "{search}":
@@ -111,7 +98,7 @@ const SearchPage = () => {
             <div className="border-bottom"></div>
 
             <div id='search-posts'>
-                {isLoading && (
+            {isLoading && (
                     <>
                         <Link>
                             <div className="post-container">
@@ -143,7 +130,7 @@ const SearchPage = () => {
                     data.pages.map((page, i) => (
                         <React.Fragment key={i}>
                             {page.postsData.map((post, j) => (
-                                <Link to={`/view-post/${post.id}`} onClick={() => scrollTo({ top: 0, behavior: 'smooth' })} key={j}>
+                                <Link to={`/post/${post.id}`} key={j}>
                                     <div className="post-container">
                                         <div className="post-left-content">
                                             {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" loading="lazy" />}

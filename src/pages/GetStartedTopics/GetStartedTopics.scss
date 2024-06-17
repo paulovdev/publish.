@@ -7,6 +7,7 @@
     justify-content: start;
     flex-direction: column;
     z-index: 998;
+
     h1 {
         font-size: 38px;
         font-weight: 900;
@@ -25,7 +26,7 @@
         list-style: none;
         padding: 0;
         display: flex;
-        justify-content:start;
+        justify-content: start;
         flex-wrap: wrap;
         gap: 1rem;
 
@@ -44,9 +45,10 @@
         width: 100%;
         height: 40px;
 
-        padding: 1rem;
-        border-radius: 0.5rem;
-        background-color: var(--bg-2);
+        padding: 0.3rem 1rem;
+        border-radius: 2rem;
+        background-color: var(--bg);
+        border: 1px solid var(--border);
         color: var(--p);
         text-align: center;
 
@@ -60,8 +62,8 @@
     }
 
     input[type="checkbox"]:checked+label {
-        background-color: white;
-        color: $bg-2;
+        background-color: var(--fixed-c);
+        color: var(--btn);
         font-weight: bold;
     }
 
@@ -70,18 +72,16 @@
         height: 40px;
         outline: none;
         border: none;
-        background-color: var(--bg-2);
-        color: var(--p);
+        background-color: var(--btn);
+        color: var(--fixed-c);
         padding: 0.6rem 2rem;
 
-        border-radius: 0.5rem;
+        border-radius: 2rem;
         margin: 2rem 0;
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: 2px;
-        text-transform: uppercase;
+        font-size: 16px;
+        font-weight: 400;
         text-align: center;
-      
+
         cursor: pointer;
 
         &:hover {
@@ -94,19 +94,25 @@
     }
 
     .selected-topics {
-        h1 {
-            font-size: 26px;
-            font-weight: 600;
-            color: var(--p);
-            letter-spacing: -1px;
-        }
 
         span {
             font-size: 18px;
-            font-weight: 900;
+            font-weight: 600;
             color: var(--p);
             opacity: 1;
             letter-spacing: -1px;
         }
+    }
+}
+
+@media (max-width: 1200px) {
+    #get-started {
+        position: relative;
+        display: flex;
+        align-items: start;
+        justify-content: start;
+        flex-direction: column;
+        z-index: 996;
+
     }
 }

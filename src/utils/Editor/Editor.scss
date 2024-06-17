@@ -410,7 +410,6 @@
   }
 }
 
-
 .body-popular {
   width: 100%;
 
@@ -453,6 +452,64 @@
     background: none !important;
 
     opacity: 0.8 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    word-break: break-all !important;
+    word-wrap: break-word !important;
+
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+    display: -webkit-box !important;
+    display: inline !important;
+  }
+
+
+}
+
+.body-dashboard {
+  width: 100%;
+
+  color: var(--fixed-c) !important;
+
+  word-break: break-all !important;
+  word-wrap: break-word !important;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+
+  img {
+    display: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a,
+  span,
+  em,
+  b,
+  strong,
+  q {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    letter-spacing: -1px !important;
+    text-decoration: none !important;
+    color: var(--fixed-c) !important;
+    max-height: 40px !important;
+    line-height: 20px !important;
+
+    background-color: none !important;
+    background: none !important;
+
+    opacity: .9 !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
 

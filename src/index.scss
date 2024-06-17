@@ -15,6 +15,7 @@ $bg-2: #343434;
   --bg: #1c1d1f;
 
   --border: #262626;
+  --border-2: #3a3a3a;
 
   --accent: #0099ff;
 
@@ -22,6 +23,7 @@ $bg-2: #343434;
   --p-i: #ffffff;
 
   --btn: #303030;
+  --btn-2: #404040;
 }
 
 .light {
@@ -31,10 +33,12 @@ $bg-2: #343434;
   --bg: #ffffff;
   --bg-2: #2c2c2c;
 
-  --border: #cfcfcf;
-  --border-2: #b4b4b4;
-  --p-i: #424242;
+  --border: #e9e9e9;
+  --border-2: #d4d4d4;
+  --p-i: #000000;
+
   --btn: #303030;
+  --btn-2: #404040;
 }
 
 * {
@@ -60,9 +64,7 @@ body {
   margin: 0 auto;
   max-width: 1500px;
 
-  @media (max-width:1200px) {
-   
-  }
+  @media (max-width:1200px) {}
 }
 
 
@@ -79,6 +81,10 @@ section {
 
   @media (max-width:1200px) {
     padding: 100px 50px !important;
+  }
+
+  @media (max-width:809px) {
+    padding: 100px 10px !important;
   }
 }
 
@@ -98,8 +104,8 @@ section {
 
     border: 4px solid;
 
-    border-color: var(--p);
-    border-right-color: var(--bg-2);
+    border-color: var(--fixed-c);
+    border-right-color: var(--btn);
     animation: spinner-d3wgkg 1s infinite linear;
   }
 
@@ -110,10 +116,10 @@ section {
     outline: none;
     border: none;
 
-    background-color: var(--bg);
+    background-color: var(--btn);
     border: 1px solid var(--border);
     border-radius: 100%;
-    color: var(--p);
+    color: var(--fixed-c);
 
     font-size: 14px;
     font-weight: 500;
@@ -123,7 +129,7 @@ section {
     transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
     &:hover {
-      background-color: var(--bg-2);
+      background-color: var(--btn-2);
     }
   }
 }
@@ -142,8 +148,8 @@ section {
 
     border: 6px solid;
 
-    border-color: var(--p);
-    border-right-color: var(--border);
+    border-color: var(--fixed-c);
+    border-right-color: var(--btn);
     animation: spinner-d3wgkg 1s infinite linear;
   }
 }
@@ -223,25 +229,10 @@ img {
   display: none;
 }
 
-@media (max-width:1000px) {
-  #root {
-    background-color: #0099ff !important;
-    display: none;
-  }
+.react-loading-skeleton {
+  background-color: var(--border);
 
-  .prevent-text {
-    position: fixed;
-    display: block;
-
-    width: 100vw;
-    height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    h1 {
-      font-size: clamp(1rem, -1.5rem + 8vw, 3rem);
-    }
+  &.react-loading-skeleton::after {
+    background-image: linear-gradient(90deg, var(--border-2), var(--border-2), var(--border-2));
   }
 }

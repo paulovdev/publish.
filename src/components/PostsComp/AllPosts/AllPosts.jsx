@@ -134,6 +134,7 @@ const AllPosts = () => {
                                     <div className="post-container">
                                         <div className="post-left-content">
                                             {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" loading="lazy" />}
+
                                         </div>
                                         <div className="post-right-content">
                                             <div className="profile-content">

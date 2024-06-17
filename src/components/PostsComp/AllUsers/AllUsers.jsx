@@ -54,7 +54,7 @@ const AllUsers = () => {
                 </div>
 
             ))}
-            <button onClick={loadMoreUsers}><LiaRandomSolid size={24} color='#fff' /></button>
+            <button onClick={loadMoreUsers} className='more-users-button' ><LiaRandomSolid size={24} color='#fff' /></button>
 
         </div>
 

@@ -38,7 +38,11 @@
       height: 100vh;
 
       background-color: var(--border);
-      display: none;
+
+      @media (max-width:1200px) {
+        display: none;
+      }
+
     }
 
     .all-wrapper {
@@ -46,7 +50,10 @@
       top: 50px;
       width: 40%;
       height: auto;
-      display: none;
+
+      @media (max-width:1200px) {
+        display: none;
+      }
     }
   }
 }

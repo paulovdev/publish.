@@ -127,8 +127,8 @@
         color: var(--p);
 
         option {
-          color: var(--p);
-          background-color: var(--bg-2);
+          color: var(--fixed-c);
+          background-color: var(--btn);
         }
       }
     }
@@ -247,12 +247,12 @@
       gap: 2rem;
 
       .next {
-        background-color: var(--bg-2);
+        background-color: var(--btn);
         border: 1px solid var(--border);
       }
 
       .prev {
-        background-color: var(--bg-2);
+        background-color: var(--btn);
         border: 1px solid var(--border);
       }
 
@@ -263,12 +263,12 @@
 
         border-radius: 0.5rem;
 
-        color: var(--p);
+        color: var(--fixed-c);
+        transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
         &:hover {
-          background-color: var(--border);
+          background-color: var(--btn-2);
         }
-
       }
     }
 
@@ -279,7 +279,7 @@
       width: 150px;
       height: 50px;
       padding: 1rem;
-      background-color: var(--bg-2);
+      background-color: var(--btn);
       border: 1px solid var(--border);
       border-radius: 1rem 0 0 1rem;
 
@@ -291,15 +291,15 @@
       transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
       &:hover {
-        background-color: var(--border);
+        background-color: var(--btn-2);
       }
 
       svg {
-        color: var(--p);
+        color: var(--fixed-c);
       }
 
       p {
-        color: var(--p);
+        color: var(--fixed-c);
         font-size: 16px;
         font-weight: 500;
         margin: 0;

@@ -11,6 +11,7 @@
     justify-content: center;
     z-index: 999;
     backdrop-filter: blur(10px) brightness(75%);
+
     .modal-content {
         background: var(--bg);
         border: 1px solid var(--border);
@@ -124,13 +125,13 @@
                 background-color: transparent;
                 border-radius: 0.4rem;
                 border: 1px solid var(--border);
-                font-weight: 300;
+                font-weight: 500;
                 font-size: 16px;
                 color: var(--p);
 
                 option {
-                    color: var(--p);
-                    background-color: var(--bg-2);
+                    color: var(--fixed-c);
+                    background-color: var(--btn);
                 }
             }
 

@@ -50,13 +50,46 @@ const Profile = () => {
     };
 
     if (isLoadingUser || isLoadingPosts) {
-        return (
-            <div className='post-profile'>
-                <span><Skeleton width={75} height={15} /></span>
-                <h1><Skeleton width={'100%'} height={10} /></h1>
-                <div><Skeleton width={'100%'} height={10} /></div>
+        return <section id="my-profile"> <div className='post-profile'>
+            <div>
+                <div className="container">
+                    <div className="profile-photo">
+                        <Skeleton width={150} height={150} borderRadius={100} />
+                        <div className="wrapper-text">
+                            <div className="follow-container">
+                                <div className="follow-content">
+                                    <Skeleton width={10} height={25} />
+                                    <Skeleton width={75} height={10} />
+                                </div>
+                                <div className="follow-content">
+                                    <Skeleton width={10} height={25} />
+                                    <Skeleton width={75} height={10} />
+                                </div>
+                                <div className="follow-content">
+                                    <Skeleton width={10} height={25} />
+                                    <Skeleton width={75} height={10} />
+                                </div>
+                            </div>
+                            <Skeleton width={300} height={40} borderRadius={20} />
+                        </div>
+                    </div>
+
+                    <div className="profile-text">
+                        <Skeleton width={150} height={15} />
+                        <Skeleton width={300} height={10} />
+                    </div>
+                    <div className="border-bottom"></div>
+                </div>
             </div>
-        );
+        </div>
+            <div className="my-posts-profile">
+                <div className='post-profile'>
+                    <span><Skeleton width={75} height={15} /></span>
+                    <h1><Skeleton width={`100%`} height={10} /></h1>
+                    <div><Skeleton width={`100%`} height={10} /></div>
+                </div>
+            </div>
+        </section>;
     }
 
     return (
@@ -89,22 +122,17 @@ const Profile = () => {
                                 {currentUser.uid !== id && <FollowButton userId={id} />}
                             </div>
                         </div>
-                        <h1>{user.name}</h1>
-                        <p>{user.bio}</p>
+
+                        <div className="profile-text">
+                            <h1>{user.name}</h1>
+                            <p>{user.bio}</p>
+                        </div>
+
                     </div>
                     <div className="border-bottom"></div>
                 </motion.div>
 
                 <div className="my-posts-profile">
-                    {!currentUser && <h2>Meus Posts</h2>}
-                    {currentUser && <h2>Posts de {user.name}</h2>}
-                    {isLoadingPosts &&
-                        <div className='post-profile'>
-                            <span><Skeleton width={75} height={15} /></span>
-                            <h1><Skeleton width={'100%'} height={10} /></h1>
-                            <div><Skeleton width={'100%'} height={10} /></div>
-                        </div>
-                    }
                     {!isLoadingPosts && userPosts.map((post) => (
                         <div className='post-profile' key={post.id}>
                             <span>{post.topics}</span>

@@ -54,7 +54,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-   
+
     .text {
       width: 100%;
       padding: 1rem;
@@ -100,9 +100,16 @@
       justify-content: start;
       gap: 1rem;
 
+      transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+      user-select: none;
 
       &.active {
-        background-color: var(--bg-2);
+        background-color: var(--btn);
+        color: var(--fixed-c);
+      }
+
+      &:hover {
+        background-color: var(--btn-2);
         color: var(--fixed-c);
       }
     }

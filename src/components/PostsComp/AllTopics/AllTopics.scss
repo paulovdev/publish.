@@ -59,8 +59,8 @@
         outline: none;
         border: none;
 
-        background-color: var(--border);
-        color: var(--p);
+        background-color: var(--btn);
+        color: var(--fixed-c);
 
         border-radius: 2rem;
 
@@ -72,5 +72,9 @@
         justify-content: center;
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+        &:hover {
+            background-color: var(--btn-2);
+        }
     }
 }

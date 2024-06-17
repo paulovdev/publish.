@@ -62,7 +62,7 @@ const Dashboard = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5 }}>
-                    {Array(5).fill().map((_, index) => (
+                    {Array(3).fill().map((_, index) => (
                         <div className="post-dashboard" key={index}>
                             <div className="text">
                                 <Skeleton width={250} height={10} />
@@ -84,23 +84,26 @@ const Dashboard = () => {
                 transition={{ duration: 0.5 }}>
                 {!isLoading && posts.map(post => (
                     <div key={post.id} className="post-dashboard">
-                        <h2>{post.title}</h2>
+                        <div className="text">
+                            <h2>{post.title}</h2>
+                            <div
+                                className="body-dashboard"
+                                dangerouslySetInnerHTML={{
+                                    __html: post.desc.slice(0, 200)
+                                }}
+                            ></div>
+                        </div>
                         <div className="background">
                             {post.imageUrl && <img src={post.imageUrl} width={100} alt="Post" />}
                         </div>
-                        <p>{post.text}</p>
                         <div className="actions">
-                            <li>
-                                <Link to={`/view-post/${post.id}`}>
-                                    <MdOutlineVisibility size={18} />
-                                </Link>
-                            </li>
-                            <li>
-                                <button onClick={() => handleEditClick(post)}> <MdEdit size={18} /></button>
-                            </li>
-                            <li>
-                                <button onClick={() => handleDeleteClick(post.id)}> <MdDeleteOutline size={18} /></button>
-                            </li>
+
+                            <Link to={`/view-post/${post.id}`}>
+                                <MdOutlineVisibility size={18} />
+                            </Link>
+                            <button onClick={() => handleEditClick(post)}> <MdEdit size={18} /></button>
+                            <button onClick={() => handleDeleteClick(post.id)}> <MdDeleteOutline size={18} /></button>
+
                         </div>
                     </div>
                 ))}

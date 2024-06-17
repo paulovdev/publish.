@@ -48,7 +48,7 @@ const GetStartedTopics = () => {
     navigate("/feed/all-posts")
   };
 
-  if (isLoadingTopics || isLoadingUser) return <p>Carregando...</p>;
+  if (isLoadingTopics || isLoadingUser) return;
   if (isErrorTopics || isErrorUser) return <p>Ocorreu um erro ao buscar os tópicos.</p>;
 
   return (
@@ -56,7 +56,7 @@ const GetStartedTopics = () => {
       <h1>Selecione seus tópicos de interesse</h1>
       <div className="border-bottom"></div>
       <div className="selected-topics">
-        <h1>Tópicos escolhidos: <span>{selectedTopics.map(id => topics.find(topic => topic.id === id)?.name).join(', ')}</span></h1>
+        <h1> <span>{selectedTopics.map(id => topics.find(topic => topic.id === id)?.name).join(', ')}</span></h1>
       </div>
 
       <ul>
@@ -73,7 +73,7 @@ const GetStartedTopics = () => {
         ))}
       </ul>
 
-      <button onClick={handleSaveTopics}>SALVAR TÓPICOS</button>
+      <button onClick={handleSaveTopics}>Salvar tópicos</button>
 
       <span>Você pode escolher novamente em "Configurações"</span>
     </section>

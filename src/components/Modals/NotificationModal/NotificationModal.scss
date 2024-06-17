@@ -21,7 +21,7 @@
     align-items: start;
     justify-content: start;
     flex-direction: column;
-    
+
     user-select: none;
 
     h1 {
@@ -63,7 +63,7 @@
             gap: 0.5rem;
 
             p {
-                font-size: 12px;
+                font-size: 14px;
                 color: var(--p);
 
                 span {
@@ -83,8 +83,8 @@
 
         padding: 0.6rem 2rem;
 
-        background-color: var(--border);
-        color: var(--p);
+        background-color: var(--btn);
+        color: var(--fixed-c);
         border-radius: 0.5rem;
 
         font-size: 12px;
@@ -93,9 +93,10 @@
         display: flex;
         align-items: center;
         cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
         &:hover {
-            opacity: .8;
+            background-color: var(--btn-2);
         }
     }
 }

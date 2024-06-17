@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { doc, getDocs, getDoc, collection, query, orderBy, limit } from 'firebase/firestore';
 import { db } from '../../../firebase/Firebase';
@@ -18,6 +18,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const PopularPosts = () => {
+    const [slidesPerView, setSlidesPerView] = useState(window.innerWidth < 1000 ? 1 : 2);
+
     const { isLoading, data: posts = [] } = useQuery('popularPosts', async () => {
         const postsQuery = query(collection(db, 'posts'), orderBy('views', 'desc'), limit(5));
         const postsSnapshot = await getDocs(postsQuery);
@@ -65,6 +67,18 @@ const PopularPosts = () => {
         return combinedData;
     });
 
+    useEffect(() => {
+        const handleResize = () => {
+            setSlidesPerView(window.innerWidth < 1000 ? 1 : 2);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
         <motion.div id="popular-posts"
             initial={{ opacity: 0 }}
@@ -106,8 +120,9 @@ const PopularPosts = () => {
                         disableOnInteraction: false,
                     }}
                     modules={[Autoplay, Pagination, Navigation]}
-                    slidesPerView={2}
+                    slidesPerView={slidesPerView}
                     spaceBetween={50}
+
                     className='popular-posts__slides'
                 >
                     {posts.map(post => (
