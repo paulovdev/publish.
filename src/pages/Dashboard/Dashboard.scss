@@ -80,7 +80,7 @@
 
       &:hover {
         border: 1px solid var(--p);
-        transform: scale(1.03);
+        transform: scale(1.01);
       }
 
       .text {
@@ -126,7 +126,7 @@
         top: 0;
 
         border-radius: 0.5rem;
-        background-color: $bg-2;
+        background-color: var(--bg);
         filter: brightness(50%);
 
         display: flex;
@@ -157,8 +157,11 @@
           position: relative;
           width: 50px;
           height: 35px;
+
           border-radius: 0.5rem;
           background: var(--btn);
+          color: var(--fixed-c);
+
           display: flex;
           align-items: center;
           justify-content: center;
@@ -167,10 +170,11 @@
 
           &:hover {
             background-color: var(--btn-2);
+
           }
 
           svg {
-            color: var(--p);
+            color: var(--fixed-c);
           }
         }
 
@@ -180,182 +184,5 @@
       }
     }
 
-  }
-}
-
-@media (max-width: 809px) {
-  #dashboard {
-    position: relative;
-
-    display: flex;
-    align-items: start;
-    justify-content: start;
-    flex-direction: column;
-
-    z-index: 995;
-
-    h1 {
-      font-size: 32px;
-      font-weight: 900;
-      letter-spacing: -1px;
-
-    }
-
-
-    .border-bottom {
-      width: 100%;
-      height: 1px;
-      margin: 2rem 0;
-      background-color: var(--border);
-    }
-
-    .posts {
-      position: relative;
-      width: 100%;
-
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-
-      .no-result {
-        position: relative;
-        width: 100%;
-
-        display: flex;
-        align-items: start;
-        justify-content: start;
-        flex-direction: column;
-        gap: 3rem;
-
-        span {
-          position: relative;
-
-          display: flex;
-          flex-direction: column;
-          gap: 0.3rem;
-        }
-
-        a {
-          color: var(--p);
-          padding: 0.5rem;
-          background-color: $bg;
-          border-radius: 0.5rem;
-          font-size: 14px;
-          font-weight: 500;
-          transition: all 0.3s ease;
-          cursor: pointer;
-        }
-      }
-
-      .post-dashboard {
-        position: relative;
-        width: 100%;
-        height: 250px;
-        padding: 1rem;
-        border: 1px solid var(--border);
-        border-radius: 0.5rem;
-        background-color: var(--bg-2);
-
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-
-        transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-
-        &:hover {
-          border: 1px solid var(--p);
-          transform: scale(1.03);
-        }
-
-        .text {
-          position: absolute;
-          width: 100%;
-          padding: 1rem;
-          display: flex;
-          align-items: start;
-          flex-direction: column;
-          height: fit-content;
-          gap: 1rem;
-          word-break: break-all;
-          z-index: 999;
-
-          h2 {
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: -1px;
-            margin: 0;
-            color: var(--fixed-c);
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            display: -webkit-box;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-        }
-
-        .background {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-
-          left: 0;
-          top: 0;
-
-          border-radius: 0.5rem;
-          background-color: $bg-2;
-          filter: brightness(50%);
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          img {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 0.5rem;
-          }
-        }
-
-
-
-        .actions {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: end;
-          justify-content: space-between;
-          gap: 1rem;
-
-          a,
-          button {
-            position: relative;
-            width: 50px;
-            height: 35px;
-            border-radius: 0.5rem;
-            background: var(--btn);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-
-            &:hover {
-              background-color: var(--btn-2);
-            }
-
-            svg {
-              color: var(--p);
-            }
-          }
-
-          button:last-child {
-            background-color: rgb(250, 62, 62);
-          }
-        }
-      }
-
-    }
   }
 }

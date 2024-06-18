@@ -41,9 +41,10 @@ const App = () => {
           <Route path="topic/:id" element={<SelectedTopicsPosts />} />
         </Route>
 
+        <Route path="/login" element={currentUser ? <Navigate to="/" /> : <Login />} />
+        <Route path="/register" element={currentUser ? <Navigate to="/" /> : <Register />} />
+        
         <Route path="/dashboard" element={!currentUser ? <Navigate to="/login" /> : <Dashboard />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/get-started/topics" element={!currentUser ? <Navigate to="/login" /> : <GetStartedTopics />} />
         <Route path="/create-post" element={!currentUser ? <Navigate to="/login" /> : <CreatePostPage />} />
         <Route path="/profile/:id" element={!currentUser ? <Navigate to="/login" /> : <Profile />} />

@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-    const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+    const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
 
     useEffect(() => {
         document.documentElement.classList.add(theme);
@@ -17,7 +17,7 @@ export const ThemeProvider = ({ children }) => {
         setTheme(selectedTheme);
         localStorage.setItem('theme', selectedTheme);
 
-        document.documentElement.classList.remove('light', 'dark');
+        document.documentElement.classList.remove('dark', 'light');
         document.documentElement.classList.add(selectedTheme);
     };
 

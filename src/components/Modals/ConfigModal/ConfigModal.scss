@@ -124,6 +124,7 @@
             p {
                 font-size: 16px;
                 margin: 0;
+
             }
 
             a {
@@ -145,7 +146,7 @@
                 text-align: center;
                 cursor: pointer;
                 transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-                
+
                 &:hover {
                     background-color: var(--btn-2);
                 }
@@ -186,6 +187,21 @@
                 cursor: pointer;
                 transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
             }
+        }
+    }
+}
+
+@media (max-width:809px) {
+    #config-modal {
+        .modal-content {
+            position: fixed;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            bottom: 0;
+            width: 100%;
+            height: 95vh;
         }
     }
 }

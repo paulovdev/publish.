@@ -61,23 +61,23 @@
 
     input {
       width: 100%;
-      height: 60px;
+      height: 40px;
       padding: 0 1rem;
 
       outline: none;
-      border: none;
-      background-color: transparent;
+
       border-radius: 0.5rem;
+      background-color: var(--border);
       border: 1px solid var(--border);
 
-      font-weight: 500;
-      font-size: 18px;
+      font-weight: 400;
+      font-size: 16px;
 
       color: var(--p);
 
       &::placeholder {
-        font-weight: 500;
-        font-size: 18px;
+        font-weight: 400;
+        font-size: 16px;
         opacity: .6;
       }
     }
@@ -87,8 +87,8 @@
 
       outline: none;
       border: none;
-      background-color: transparent;
-      border-bottom: 1px solid var(--border);
+      background-color: var(--border);
+      border: 1px solid var(--border);
 
       display: flex;
       align-items: center;
@@ -97,15 +97,15 @@
       input {
         padding: 0 1rem;
 
-        font-weight: 500;
-        font-size: 18px;
+        font-weight: 400;
+        font-size: 16px;
         border: none;
 
         color: var(--p);
 
         &::placeholder {
-          font-weight: 500;
-          font-size: 18px;
+          font-weight: 400;
+          font-size: 16px;
           opacity: .6;
         }
       }
@@ -126,13 +126,13 @@
 
     button {
       width: 100%;
-      height: 50px;
+      height: 40px;
 
       outline: none;
       border: none;
 
       background-color: var(--btn);
-      color: var(--p);
+      color: var(--fixed-c);
 
       padding: 0.6rem 2rem;
       border-radius: 0.5rem;
@@ -142,11 +142,12 @@
       text-align: center;
 
       text-align: center;
-   
+
       cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
       &:hover {
-        opacity: .9;
+        background-color: var(--btn-2);
       }
     }
 

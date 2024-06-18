@@ -5,10 +5,9 @@ import { db } from '../../firebase/Firebase';
 import { Blog } from '../../context/Context';
 import StepIndicators from "../../components/StepIndicators/StepIndicators"
 import { Link, useNavigate } from "react-router-dom";
-import { IoImageOutline } from "react-icons/io5";
+import { IoImageOutline, IoChevronForwardOutline } from "react-icons/io5";
 import { FaSave } from "react-icons/fa";
-import { IoIosArrowRoundBack } from "react-icons/io";
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Editor from "../../utils/Editor/Editor";
 
 
@@ -141,11 +140,12 @@ const CreatePostPage = () => {
 
     return (
         <section id="create-post">
-            <Link to="/feed/all-posts" className="back">
-                <IoIosArrowRoundBack size={32} />
-                <p>Inicio</p>
+            <Link to="/" className="back">
+                Inicio
+                <IoChevronForwardOutline size={18} />
+                Escrever
             </Link>
-            <h1>Criar postagem</h1>
+            <h1>Escrever</h1>
             <div className="border-bottom"></div>
 
 

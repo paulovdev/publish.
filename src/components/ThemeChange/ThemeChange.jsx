@@ -15,8 +15,8 @@ function ThemeChange() {
         <div id='change-theme'>
             <p>Mudar tema</p>
             <select id="theme-select" value={theme} onChange={handleChange}>
-                <option value="light">Claro</option>
                 <option value="dark">Escuro</option>
+                <option value="light">Claro</option>
             </select>
         </div>
     );

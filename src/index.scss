@@ -10,6 +10,25 @@ $bg: #868686;
 $bg-2: #343434;
 
 :root {
+  --p: #242424;
+  --p-2: #e9e9e9;
+
+  --bg: #ffffff;
+  --bg-2: #2c2c2c;
+
+  --border: #e6e6e6;
+  --border-2: #dadada;
+  
+  --p-i: #000000;
+
+  --btn: #303030;
+  --btn-2: #404040;
+
+  --accent: #0099ff;
+  --fixed-c: #f3f3f3;
+}
+
+.dark {
   --p: #fefefe;
 
   --bg: #1c1d1f;
@@ -17,25 +36,7 @@ $bg-2: #343434;
   --border: #262626;
   --border-2: #3a3a3a;
 
-  --accent: #0099ff;
-
-  --fixed-c: #f3f3f3;
   --p-i: #ffffff;
-
-  --btn: #303030;
-  --btn-2: #404040;
-}
-
-.light {
-  --p: #242424;
-  --p-2: #e9e9e9;
-
-  --bg: #ffffff;
-  --bg-2: #2c2c2c;
-
-  --border: #e9e9e9;
-  --border-2: #d4d4d4;
-  --p-i: #000000;
 
   --btn: #303030;
   --btn-2: #404040;
@@ -182,7 +183,7 @@ img {
 
   &:hover {
     svg {
-      transform: translateX(-5px);
+      transform: translateX(1px);
     }
   }
 }
@@ -223,10 +224,6 @@ img {
 .swiper {
   width: 100%;
   height: 100%;
-}
-
-.prevent-text {
-  display: none;
 }
 
 .react-loading-skeleton {

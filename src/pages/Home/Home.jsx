@@ -13,6 +13,7 @@ const Home = () => {
     <section id='home'>
      {/*  <h1 className='logo'>Publish</h1> */}
       <HomeBar />
+      
       <PopularPosts />
       <div className="border-bottom"></div>
 

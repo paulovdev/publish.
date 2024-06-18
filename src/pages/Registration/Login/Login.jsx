@@ -51,7 +51,7 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <span onClick={() => setShowPassword(!showPassword)}>
-                        {showPassword ? <MdVisibility size={28} /> : <MdVisibilityOff size={28} />}
+                        {showPassword ? <MdVisibility size={24} /> : <MdVisibilityOff size={24} />}
                     </span>
                 </div>
 

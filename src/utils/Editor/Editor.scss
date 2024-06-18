@@ -5,7 +5,8 @@
   height: max-content;
   margin-bottom: 1rem;
 
-  border-radius: 0.4rem;
+  border-radius: 0.5rem;
+  background-color: var(--border);
   border: 1px solid var(--border);
 
   padding: 1rem;
@@ -380,6 +381,7 @@
   p,
   a,
   span,
+  blockquote,
   em,
   b,
   code,
@@ -439,6 +441,7 @@
   span,
   em,
   b,
+  blockquote,
   strong,
   q {
     font-size: 16px !important;
@@ -497,6 +500,7 @@
   em,
   b,
   strong,
+  blockquote,
   q {
     font-size: 16px !important;
     font-weight: 600 !important;

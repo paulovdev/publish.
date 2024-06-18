@@ -130,12 +130,12 @@ const PopularPosts = () => {
                             <Link to={`/view-post/${post.id}`}>
                                 <div className="post-container">
                                     <div className="post-left-content">
-                                        {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" loading="lazy" />}
+                                        {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" />}
                                     </div>
                                     <div className="post-right-content">
                                         <div className="profile-content">
                                             {post.user && post.user.profilePicture && (
-                                                <img src={post.user.profilePicture} loading="lazy" alt="User" className="user-photo" />
+                                                <img src={post.user.profilePicture} alt="User" className="user-photo" />
                                             )}
                                             {post.user && post.user.name && <p>{post.user.name}</p>}
                                         </div>

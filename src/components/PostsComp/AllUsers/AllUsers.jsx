@@ -36,7 +36,20 @@ const AllUsers = () => {
         <div id='all-users'>
             <h1>Quem seguir</h1>
 
-            {isLoading && (<Skeleton width={160} height={40} />)}
+            {isLoading && (
+                <div className='all-user-container'>
+                    <Link className="user-info">
+                        <Skeleton width={40} height={40} borderRadius={100} />
+                        <div className="user-text">
+                            <h2> <Skeleton width={160} height={10} /></h2>
+                            <p> <Skeleton width={160} height={10} /></p>
+                        </div>
+                    </Link>
+
+
+                </div>
+
+            )}
 
             {!isLoading && users.map(user => (
                 <div className='all-user-container' key={user.id}>

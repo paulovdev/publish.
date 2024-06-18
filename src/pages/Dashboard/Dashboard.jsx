@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MdOutlineVisibility, MdDeleteOutline, MdEdit } from "react-icons/md";
-import { IoChevronBack } from "react-icons/io5";
+import { IoChevronForwardOutline } from "react-icons/io5";
 
 import Skeleton from "react-loading-skeleton";
 import { motion } from "framer-motion";
@@ -53,7 +53,9 @@ const Dashboard = () => {
     return (
         <section id="dashboard">
             <Link to="/" className="back">
-                <IoChevronBack size={24} />
+                Inicio
+                <IoChevronForwardOutline size={18} />
+                Dashboard
             </Link>
             <h1>Dashboard</h1>
             <div className="border-bottom"></div>
@@ -65,7 +67,10 @@ const Dashboard = () => {
                     {Array(3).fill().map((_, index) => (
                         <div className="post-dashboard" key={index}>
                             <div className="text">
-                                <Skeleton width={250} height={10} />
+                                <Skeleton width={350} height={15} />
+                                <br />
+                                <Skeleton width={350} height={10} />
+                                <Skeleton width={350} height={10} />
                             </div>
                             <div className="actions">
                                 <Skeleton width={40} height={30} />

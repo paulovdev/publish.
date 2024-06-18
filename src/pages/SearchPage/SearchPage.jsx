@@ -90,7 +90,7 @@ const SearchPage = () => {
     return (
         <section id="search">
             <Link to="/" className="back">
-                Voltar
+                Inicio / {search}
             </Link>
             <h1>
                 Resultados da pesquisa para "{search}":
@@ -98,7 +98,7 @@ const SearchPage = () => {
             <div className="border-bottom"></div>
 
             <div id='search-posts'>
-            {isLoading && (
+                {isLoading && (
                     <>
                         <Link>
                             <div className="post-container">

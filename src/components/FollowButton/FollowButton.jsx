@@ -79,7 +79,7 @@ const FollowButton = ({ userId }) => {
     };
 
     if (loading) {
-        return <Skeleton width={100} height={40} />;
+        return <Skeleton width={50} height={20} borderRadius={30} />;
     }
 
     return (
