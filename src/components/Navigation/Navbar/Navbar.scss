@@ -2,17 +2,22 @@
 
 header {
   position: absolute;
+
   width: 100%;
   height: fit-content;
+
   top: 0;
   right: 10px;
+
   padding: 15px 100px;
+
   border-bottom: 1px solid var(--border);
 
   display: flex;
   align-items: center;
   justify-content: end;
   gap: 1rem;
+
 
 
   nav {
@@ -99,7 +104,7 @@ header {
       bottom: 20px;
       right: 10px;
       border-radius: 100%;
-      background-color: var(--accent);
+      background-color: var(--border);
 
       display: flex;
       align-items: center;

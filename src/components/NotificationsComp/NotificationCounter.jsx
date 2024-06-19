@@ -1,11 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const NotificationCounter = ({ count }) => {
-    return (
-        <>
-            {count > 0 && <span>{count}</span>}
-        </>
-    );
+  return <>{count > 0 && <span>{count}</span>}</>;
 };
 
 export default NotificationCounter;

@@ -84,16 +84,17 @@
                     }
                 }
 
-                &.active {
+                &:hover {
+                    background-color: var(--btn);
+                }
 
-                    .side-text {
-                        span {
-                            color: var(--fixed-c);
-                        }
-                    }
+                &.active {
+                    background-color: transparent;
 
                     .side-icon {
                         opacity: 1;
+                        color: var(--p);
+
                     }
                 }
             }
@@ -123,12 +124,11 @@
             height: 50px;
             border-radius: 2rem;
             padding: 0 1rem;
-            border: 1px solid var(--border);
+
             flex-direction: row;
             align-items: center;
             justify-content: center;
             gap: 2rem;
-            background-color: var(--bg);
 
             li {
                 .side-container {

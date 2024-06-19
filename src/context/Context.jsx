@@ -26,7 +26,6 @@ const Context = ({ children }) => {
     return () => unsubscribe();
   }, [currentUser]);
 
-
   useEffect(() => {
     const getUsers = () => {
       const postRef = query(collection(db, "users"));
@@ -43,18 +42,22 @@ const Context = ({ children }) => {
     getUsers();
   }, []);
 
-
   return (
     <BlogContext.Provider
       value={{
         currentUser,
         setCurrentUser,
         allUsers,
-        userLoading
+        userLoading,
       }}
     >
-      {loading && userLoading ? <div className="loading-container initial">
-        <div className="loading initial"></div> </div> : children}
+      {loading && userLoading ? (
+        <div className="loading-container initial">
+          <div className="loading initial"></div>{" "}
+        </div>
+      ) : (
+        children
+      )}
     </BlogContext.Provider>
   );
 };

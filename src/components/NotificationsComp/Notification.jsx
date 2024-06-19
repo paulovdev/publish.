@@ -1,33 +1,37 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase/Firebase';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { motion } from "framer-motion";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase/Firebase";
+import { Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
-import { useQuery } from 'react-query';
-
+import { useQuery } from "react-query";
+import { MdDeleteOutline } from "react-icons/md";
 const fetchUserData = async (userId) => {
     if (!userId) {
-        throw new Error('User ID is null or undefined');
+        throw new Error("User ID is null or undefined");
     }
 
     try {
-        const userDocRef = doc(db, 'users', userId);
+        const userDocRef = doc(db, "users", userId);
         const userDoc = await getDoc(userDocRef);
 
         if (!userDoc.exists()) {
-            throw new Error('User does not exist');
+            throw new Error("User does not exist");
         }
 
         return userDoc.data();
     } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
         throw error;
     }
 };
 
 const Notification = ({ userId, onDelete }) => {
-    const { data: user, error, isLoading } = useQuery(['userData', userId], () => fetchUserData(userId), {
+    const {
+        data: user,
+        error,
+        isLoading,
+    } = useQuery(["userData", userId], () => fetchUserData(userId), {
         enabled: !!userId, // Only enable the query if userId is defined
     });
 
@@ -40,7 +44,9 @@ const Notification = ({ userId, onDelete }) => {
                     </Link>
                 </div>
                 <div className="user-text">
-                    <p><Skeleton width={300} height={10} /></p>
+                    <p>
+                        <Skeleton width={300} height={10} />
+                    </p>
                     <Skeleton width={100} height={10} />
                 </div>
             </div>
@@ -56,16 +62,14 @@ const Notification = ({ userId, onDelete }) => {
                     </Link>
                 </div>
                 <div className="user-text">
-                    <p>Error loading notification: {error.message}</p>
-                    <button onClick={onDelete}>Delete notification</button>
+                    <p>Erro ao carregar as notificações: {error.message}</p>
+                    <button onClick={onDelete}>
+                        <MdDeleteOutline />
+                    </button>
                 </div>
             </div>
         );
     }
-
-/*     if (!user) {
-        return <div>No user data available</div>;
-    } */
 
     return (
         <motion.div
@@ -82,8 +86,12 @@ const Notification = ({ userId, onDelete }) => {
                 </Link>
             </div>
             <div className="user-text">
-                <p><span>{user.name}</span> começou a seguir você</p>
-                <button onClick={onDelete}>Deletar notificação</button>
+                <p>
+                    <span>{user.name}</span> começou a seguir você
+                </p>
+                <button onClick={onDelete}>
+                    <MdDeleteOutline />
+                </button>
             </div>
         </motion.div>
     );

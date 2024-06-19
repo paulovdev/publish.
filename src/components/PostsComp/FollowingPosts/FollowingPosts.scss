@@ -179,7 +179,7 @@
                 background-color: var(--border);
 
             }
-
+            
             .post-container {
                 position: relative;
                 width: 100%;
@@ -187,7 +187,7 @@
 
                 display: flex;
                 align-items: center;
-                justify-content: start;
+                justify-content: space-between;
                 gap: 1rem;
 
                 overflow: hidden;
@@ -203,14 +203,18 @@
                 }
 
                 .post-left-content {
+                    position: relative;
+                    width: fit-content;
+                    height: 100%;
+
                     display: flex;
                     align-items: end;
                     justify-content: end;
 
 
                     img {
-                        width: 150px;
-                        height: 100px;
+                        width: 100px;
+                        height: 75px;
                         border-radius: 0.5rem;
                         background-color: var(--bg);
 

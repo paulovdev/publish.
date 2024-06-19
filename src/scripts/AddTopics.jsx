@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { db } from '../firebase/Firebase';
-import { collection, addDoc } from 'firebase/firestore';
-import './AddTopics.scss';
+import React, { useState } from "react";
+import { db } from "../firebase/Firebase";
+import { collection, addDoc } from "firebase/firestore";
+import "./AddTopics.scss";
 
 const AddTopics = () => {
-  const [topicInput, setTopicInput] = useState('');
+  const [topicInput, setTopicInput] = useState("");
 
   const handleAddTopic = async (e) => {
     e.preventDefault();
-    const topics = topicInput.split(',').map((topic) => topic.trim());
+    const topics = topicInput.split(",").map((topic) => topic.trim());
     const topicPromises = [];
     topics.forEach((topic) => {
-      if (topic !== '') {
-        const topicPromise = addDoc(collection(db, 'topics'), {
+      if (topic !== "") {
+        const topicPromise = addDoc(collection(db, "topics"), {
           name: topic,
         });
         topicPromises.push(topicPromise);
@@ -21,11 +21,11 @@ const AddTopics = () => {
 
     try {
       await Promise.all(topicPromises);
-      setTopicInput('');
-      alert('Topics added successfully!');
+      setTopicInput("");
+      alert("Topics added successfully!");
     } catch (error) {
-      console.error('Error adding topics: ', error);
-      alert('Failed to add topics.');
+      console.error("Error adding topics: ", error);
+      alert("Failed to add topics.");
     }
   };
 

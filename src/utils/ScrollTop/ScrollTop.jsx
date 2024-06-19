@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { GoArrowUp } from 'react-icons/go'
+import { GoArrowUp } from "react-icons/go";
 import "./ScrollTop.scss";
 
 const ScrollTop = () => {
@@ -26,9 +25,10 @@ const ScrollTop = () => {
   };
 
   return (
-
-    <div className={`scroll-top not ${isVisible ? "show" : ""}`}
-      onClick={scrollToTop} >
+    <div
+      className={`scroll-top not ${isVisible ? "show" : ""}`}
+      onClick={scrollToTop}
+    >
       <GoArrowUp size={32} color="#f3f3ff" />
     </div>
   );

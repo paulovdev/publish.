@@ -80,28 +80,28 @@
                 margin-bottom: 1rem;
             }
 
+
             input {
                 width: 100%;
-                height: 40px;
+                height: auto;
+                padding: 0.5rem 1rem;
 
                 outline: none;
-                border: none;
 
-                background-color: var(--btn);
-                color: var(--fixed-c);
-
-                padding: 0.6rem 2rem;
                 border-radius: 0.5rem;
+                background-color: transparent;
+                border: 1px solid var(--border);
+                font-weight: 400;
+                font-size: 16px;
+                color: var(--p);
 
-                font-size: 14px;
-                font-weight: 500;
+                margin-bottom: 1rem;
 
-                text-align: center;
-                cursor: pointer;
-                transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-
-                &:hover {
-                    background-color: var(--btn-2);
+                &::placeholder {
+                    font-weight: 400;
+                    font-size: 16px;
+                    color: var(--p);
+                    opacity: .7;
                 }
 
                 &:disabled {
@@ -198,10 +198,9 @@
             background: var(--bg);
             border: 1px solid var(--border);
             padding: 1.5rem;
-            border-radius: 1.5rem 1.5rem 0 0;
             bottom: 0;
             width: 100%;
-            height: 95vh;
+            height: 100vh;
         }
     }
 }

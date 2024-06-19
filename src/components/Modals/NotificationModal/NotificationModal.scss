@@ -76,12 +76,10 @@
     }
 
     button {
-        width: fit-content;
+        width: 30px;
         height: 30px;
         outline: none;
         border: none;
-
-        padding: 0.6rem 2rem;
 
         background-color: var(--btn);
         color: var(--fixed-c);
@@ -92,6 +90,7 @@
 
         display: flex;
         align-items: center;
+        justify-content: center;
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 

@@ -1,19 +1,23 @@
-import { useState } from 'react';
-import { auth, db } from '../firebase/Firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { useState } from "react";
+import { auth, db } from "../firebase/Firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 export const useRegister = () => {
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const registerUser = async (userData) => {
     try {
-      setLoading(true)
+      setLoading(true);
       const { email, password, ...profileData } = userData;
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
 
-      await setDoc(doc(db, 'users', user.uid), {
+      await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         email: user.email,
         ...profileData,
@@ -23,7 +27,7 @@ export const useRegister = () => {
         posts: [],
         selectedTopics: [],
       });
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       setError(error.message);
     }

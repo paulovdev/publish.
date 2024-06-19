@@ -1,96 +1,105 @@
-import React, { useState, useEffect } from 'react';
-import { doc, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase/Firebase';
-import { Blog } from '../../context/Context';
-import Skeleton from 'react-loading-skeleton';
+import React, { useState, useEffect } from "react";
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  getDoc,
+} from "firebase/firestore";
+import { db } from "../../firebase/Firebase";
+import { Blog } from "../../context/Context";
+import Skeleton from "react-loading-skeleton";
 
 const FollowButton = ({ userId }) => {
-    const { currentUser } = Blog();
-    const [isFollowing, setIsFollowing] = useState(false);
-    const [loading, setLoading] = useState(true);
+  const { currentUser } = Blog();
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const checkIfFollowing = async () => {
-            try {
-                if (!currentUser) {
-                    setIsFollowing(false);
-                    setLoading(false);
-                    return;
-                }
+  useEffect(() => {
+    const checkIfFollowing = async () => {
+      if (!currentUser) {
+        setLoading(false);
+        return;
+      }
 
-                const userDocRef = doc(db, 'users', userId);
-                const userDocSnapshot = await getDoc(userDocRef);
-                if (userDocSnapshot.exists()) {
-                    const userData = userDocSnapshot.data();
-                    setIsFollowing(userData.followers.includes(currentUser.uid));
-                }
-            } catch (error) {
-                console.error('Error checking follow status:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+      try {
+        const userDocRef = doc(db, "users", userId);
+        const userDocSnapshot = await getDoc(userDocRef);
 
-        checkIfFollowing();
-    }, [currentUser, userId]);
-
-    const handleFollow = async () => {
-        try {
-            const userRef = doc(db, 'users', userId);
-            await updateDoc(userRef, {
-                followers: arrayUnion(currentUser.uid),
-            });
-
-            if (currentUser) {
-                const currentUserRef = doc(db, 'users', currentUser.uid);
-                await updateDoc(currentUserRef, {
-                    following: arrayUnion(userId),
-                });
-
-                await updateDoc(userRef, { notifications: arrayUnion(currentUser.uid) });
-            }
-
-            setIsFollowing(true);
-        } catch (error) {
-            console.error('Error following user:', error);
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          setIsFollowing(userData.followers.includes(currentUser.uid));
         }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error checking follow status:", error);
+        setLoading(false);
+      }
     };
 
-    const handleUnfollow = async () => {
-        try {
-            const userRef = doc(db, 'users', userId);
-            await updateDoc(userRef, {
-                followers: arrayRemove(currentUser.uid),
-            });
+    checkIfFollowing();
+  }, [currentUser, userId]);
 
-            if (currentUser) {
-                const currentUserRef = doc(db, 'users', currentUser.uid);
-                await updateDoc(currentUserRef, {
-                    following: arrayRemove(userId),
-                });
+  const handleFollow = async () => {
+    if (!currentUser) return;
 
-                await updateDoc(userRef, { notifications: arrayRemove(currentUser.uid) });
-            }
+    try {
+      const userRef = doc(db, "users", userId);
+      const currentUserRef = doc(db, "users", currentUser.uid);
 
-            setIsFollowing(false);
-        } catch (error) {
-            console.error('Error unfollowing user:', error);
-        }
-    };
+      await Promise.all([
+        updateDoc(userRef, {
+          followers: arrayUnion(currentUser.uid),
+          notifications: arrayUnion(currentUser.uid),
+        }),
+        updateDoc(currentUserRef, {
+          following: arrayUnion(userId),
+        }),
+      ]);
 
-    if (loading) {
-        return <Skeleton width={50} height={20} borderRadius={30} />;
+      setIsFollowing(true);
+    } catch (error) {
+      console.error("Error following user:", error);
     }
+  };
 
-    return (
-        <>
-            {isFollowing ? (
-                <button onClick={handleUnfollow}>Seguindo</button>
-            ) : (
-                <button onClick={handleFollow}>Seguir</button>
-            )}
-        </>
-    );
+  const handleUnfollow = async () => {
+    if (!currentUser) return;
+
+    try {
+      const userRef = doc(db, "users", userId);
+      const currentUserRef = doc(db, "users", currentUser.uid);
+
+      await Promise.all([
+        updateDoc(userRef, {
+          followers: arrayRemove(currentUser.uid),
+          notifications: arrayRemove(currentUser.uid),
+        }),
+        updateDoc(currentUserRef, {
+          following: arrayRemove(userId),
+        }),
+      ]);
+
+      setIsFollowing(false);
+    } catch (error) {
+      console.error("Error unfollowing user:", error);
+    }
+  };
+
+  if (loading) {
+    return <Skeleton width={50} height={20} borderRadius={30} />;
+  }
+
+  return (
+    <>
+      {isFollowing && (
+        <button onClick={handleUnfollow}>Seguindo</button>
+      )}
+      {!isFollowing && (
+        <button onClick={handleFollow}>Seguir</button>
+      )}
+    </>
+  );
 };
 
 export default FollowButton;

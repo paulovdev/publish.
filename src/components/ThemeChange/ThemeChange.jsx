@@ -1,6 +1,6 @@
 // ThemeChange.js
-import React from 'react';
-import { useTheme } from '../../context/ThemeContext';
+import React from "react";
+import { useTheme } from "../../context/ThemeContext";
 import "./ThemeChange.scss";
 
 function ThemeChange() {
@@ -12,7 +12,7 @@ function ThemeChange() {
     };
 
     return (
-        <div id='change-theme'>
+        <div id="change-theme">
             <p>Mudar tema</p>
             <select id="theme-select" value={theme} onChange={handleChange}>
                 <option value="dark">Escuro</option>
