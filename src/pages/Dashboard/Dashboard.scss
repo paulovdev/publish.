@@ -2,187 +2,158 @@
 
 #dashboard {
   position: relative;
+  width: 100%;
+  height: 100%;
+
+  margin: 5rem 0;
 
   display: flex;
   align-items: start;
   justify-content: start;
   flex-direction: column;
+  z-index: 997;
 
-  z-index: 998;
-
-  h1 {
-    font-size: 32px;
-    font-weight: 900;
-    letter-spacing: -1px;
-
-  }
-
-
-  .border-bottom {
+  .head-text {
+    position: relative;
     width: 100%;
-    height: 1px;
-    margin: 2rem 0;
-    background-color: var(--border);
+
+    h1 {
+      font-size: 64px;
+      font-weight: 500;
+      line-height: 1.125;
+
+      letter-spacing: -3px;
+
+      color: var(--p);
+      text-align: start;
+      text-wrap: balance;
+      word-wrap: break-word;
+      margin-bottom: 3rem;
+    }
   }
 
   .posts {
     position: relative;
     width: 100%;
+    overflow-x: auto;
 
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-
-    .no-result {
-      position: relative;
+    .post-table {
       width: 100%;
-
-      display: flex;
-      align-items: start;
-      justify-content: start;
-      flex-direction: column;
-      gap: 3rem;
-
-      span {
-        position: relative;
-
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-      }
-
-      a {
-        color: var(--p);
-        padding: 0.5rem;
-        background-color: $bg;
-        border-radius: 0.5rem;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        cursor: pointer;
-      }
-    }
-
-    .post-dashboard {
-      position: relative;
-      width: 100%;
-      height: 250px;
-      padding: 1rem;
-      border: 1px solid var(--border);
+      border-collapse: collapse;
       border-radius: 0.5rem;
-      background-color: var(--bg-2);
 
-      display: flex;
-      align-items: center;
-      flex-direction: column;
+      td:nth-child(2) {
+        font-size: 18px;
+        font-weight: 900;
 
-      transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-
-      &:hover {
-        border: 1px solid var(--p);
-        transform: scale(1.01);
-      }
-
-      .text {
-        position: absolute;
-        width: 100%;
-        padding: 1rem;
-        display: flex;
-        align-items: start;
-        flex-direction: column;
-        height: fit-content;
-        gap: 1rem;
-        word-break: break-all;
-        z-index: 999;
-
-        h2 {
-          font-size: 24px;
-          font-weight: 900;
-          letter-spacing: -1px;
-          margin: 0;
-          color: var(--fixed-c);
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
-          display: -webkit-box;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        p {
-          font-size: 18px;
-          font-weight: 900;
-          letter-spacing: -1px;
-          color: var(--fixed-c);
-          margin: 0;
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
         }
       }
 
-      .background {
-        position: absolute;
-        width: 100%;
-        height: 100%;
+      td:nth-child(3),
+      td:nth-child(4),
+      td:nth-child(5) {
+        font-size: 14px;
+        font-weight: 600;
+      }
 
-        left: 0;
-        top: 0;
+      th {
+        color: var(--p);
+        font-size: 12px;
+        font-weight: 900;
+        line-height: 48px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
 
-        border-radius: 0.5rem;
+      th,
+      td {
+        border-bottom: 1px solid var(--border);
+        padding: 2rem 1rem;
+        text-align: left;
+        color: var(--p);
+
+        img {
+          width: 50px;
+          height: 40px;
+          border-radius: 0.5rem;
+        }
+      }
+
+      th {
         background-color: var(--bg);
-        filter: brightness(50%);
+        font-weight: bold;
+      }
 
+      tbody tr {
+        transition: 0.1s all cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+        &:hover {
+
+          th,
+          td,
+          svg {
+            color: var(--p);
+          }
+        }
+      }
+
+      svg {
+        transition: 0.3s all cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+
+      .action-icon {
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background-color: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 2rem;
+        padding: 0.5rem;
+        width: 65px;
+        height: 40px;
 
-        img {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          border-radius: 0.5rem;
-        }
-      }
-
-
-
-      .actions {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: end;
-        justify-content: space-between;
-        gap: 1rem;
-
-        a,
-        button {
-          position: relative;
-          width: 50px;
-          height: 35px;
-
-          border-radius: 0.5rem;
-          background: var(--btn);
-          color: var(--fixed-c);
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-
-          &:hover {
-            background-color: var(--btn-2);
-
-          }
+        &:hover {
+          background-color: var(--btn);
 
           svg {
             color: var(--fixed-c);
           }
         }
 
-        button:last-child {
-          background-color: rgb(250, 62, 62);
+        svg {
+          color: var(--p);
+        }
+      }
+
+      button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: var(--p);
+
+        &:hover {
+          color: var(--fixed-c);
+        }
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+
+        &:hover {
+          color: var(--fixed-c);
         }
       }
     }
-
   }
 }

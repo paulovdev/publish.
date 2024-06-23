@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaCamera } from "react-icons/fa";
 import { MdOutlineClose } from "react-icons/md";
+import { IoCloseOutline } from "react-icons/io5";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { db } from "../../../firebase/Firebase";
 import { doc, updateDoc } from "firebase/firestore";
@@ -9,13 +10,13 @@ import { useQueryClient } from "react-query";
 
 import "./EditProfileModal.scss";
 
-const EditProfileModal = ({ user, setUser, closeModal, onClick }) => {
+const EditProfileModal = ({ user, setUser, onClick }) => {
   const [name, setName] = useState(user?.name || "");
   const [bio, setBio] = useState(user?.bio || "");
   const [profilePicture, setProfilePicture] = useState(null);
   const [profilePictureURL, setProfilePictureURL] = useState(
     user?.profilePicture || ""
-  ); // Definir a URL inicial da foto
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isModified, setIsModified] = useState(false);
@@ -32,7 +33,7 @@ const EditProfileModal = ({ user, setUser, closeModal, onClick }) => {
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setProfilePicture(e.target.files[0]);
-      setProfilePictureURL(URL.createObjectURL(e.target.files[0])); // Atualizar a URL da foto apenas quando uma nova foto for selecionada
+      setProfilePictureURL(URL.createObjectURL(e.target.files[0]));
     }
   };
 
@@ -48,7 +49,7 @@ const EditProfileModal = ({ user, setUser, closeModal, onClick }) => {
     }
     setLoading(true);
     try {
-      let imageUrl = profilePictureURL; // Use a URL atual se nenhuma nova foto for selecionada
+      let imageUrl = profilePictureURL;
       if (profilePicture) {
         const storage = getStorage();
         const storageRef = ref(
@@ -72,12 +73,16 @@ const EditProfileModal = ({ user, setUser, closeModal, onClick }) => {
         profilePicture: imageUrl,
       }));
       setLoading(false);
-      closeModal();
+      onClick();
     } catch (error) {
       setLoading(false);
       setError("Erro ao salvar as alterações. Tente novamente mais tarde.");
       console.log(error);
     }
+  };
+
+  const clearInput = () => {
+    setBio("");
   };
 
   return (
@@ -88,22 +93,22 @@ const EditProfileModal = ({ user, setUser, closeModal, onClick }) => {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
-      <div className="modal-content">
-        <div className="header-text">
-          <div className="profile-information-text">
-            <h1>Informações do Perfil</h1>
-          </div>
-          <div className="close-edit">
-            <MdOutlineClose className="close-svg" onClick={onClick} size={32} />
-          </div>
+      <div className="close-edit" onClick={onClick}>
+        <MdOutlineClose size={32} />
+      </div>
+
+      
+      <div className="edit-profile-modal-content">
+        <div className="head-text">
+          <h1>Edite as informações do seu Perfil</h1>
         </div>
-        <div className="border-bottom"></div>
+
         <form onSubmit={handleSubmit} className="edit-profile-form">
           <div className="image-profile" role="button" tabIndex={0}>
             <label htmlFor="file-upload">
               <div className="profile-photo">
                 <img
-                  src={profilePictureURL || "/profile.jpg"} // Usar a URL atual da foto ou uma foto padrão
+                  src={profilePictureURL || "/profile.jpg"}
                   alt="profile-img"
                 />
                 <FaCamera />
@@ -117,28 +122,41 @@ const EditProfileModal = ({ user, setUser, closeModal, onClick }) => {
               style={{ display: "none" }}
             />
           </div>
-          <label>Nome <span>*</span></label>
-          <input
-            name="username"
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-            type="text"
-            placeholder="Seu nome"
-            minLength={6}
-            maxLength={24}
-            inputMode="text"
-          />
-          <label>Biografia <span>*</span></label>
-          <textarea
-            name="bio"
-            onChange={(e) => setBio(e.target.value)}
-            value={bio}
-            placeholder="Sua biografia"
-            rows={5}
-            maxLength={150}
-            inputMode="text"
-          />
+
+          <div className="input-container">
+            <input
+              name="username"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              type="text"
+              placeholder=" "
+              minLength={6}
+              maxLength={32}
+              inputMode="text"
+              required
+            />
+            <label>Nome</label>
+          </div>
+
+          <div className="input-container text-input">
+            <textarea
+              name="bio"
+              required
+              value={bio}
+              maxLength={250}
+              onChange={(e) => setBio(e.target.value)}
+              placeholder=" "
+            />
+            <label>Biografia</label>
+            {bio && (
+              <span onClick={clearInput}>
+                <IoCloseOutline size={24} />
+              </span>
+            )}
+          </div>
+
           {error && <p className="error-message">{error}</p>}
+
           <button
             id="save-button"
             type="submit"

@@ -66,33 +66,24 @@
                 flex-direction: column;
                 gap: 1rem;
 
-                .profile-content {
-                    position: relative;
+                .topic {
+                    span {
 
-                    display: flex;
-                    align-items: start;
-                    justify-content: start;
 
-                    gap: 0.5rem;
-
-                    img {
-                        width: 20px;
-                        height: 20px;
-                        border-radius: 100%;
-                        background-attachment: fixed;
-                    }
-
-                    p {
-                        word-wrap: break-word;
-                        word-break: break-all;
-
-                        max-height: 20px;
                         font-size: 12px;
                         font-weight: 500;
-                        line-height: 20px;
-                        color: var(--p);
+
+                        color: var(--fixed-c);
                         margin: 0;
 
+                        padding: 0.2rem 0.8rem;
+                        border: 1px solid var(--border);
+                        background-color: var(--btn);
+                        border-radius: 2rem;
+
+                        display: flex;
+                        align-items: center;
+                        gap: 0.4rem;
                     }
                 }
 
@@ -100,7 +91,7 @@
                     width: 100%;
                     max-height: 90px;
 
-                    font-size: 20px;
+                    font-size: 22px;
 
                     font-weight: 800;
 
@@ -108,7 +99,6 @@
 
                     letter-spacing: -0.016em;
 
-                    word-break: break-all !important;
                     word-wrap: break-word !important;
 
                     margin: 0;
@@ -122,6 +112,19 @@
                     text-overflow: ellipsis;
                 }
 
+                p {
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: var(--p);
+                    word-wrap: break-word !important;
+
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
+                    display: -webkit-box;
+                }
+
                 .several-content {
                     position: relative;
                     width: 100%;
@@ -130,20 +133,46 @@
                     align-items: start;
                     justify-content: start;
 
-                    gap: 0.5rem;
+                    gap: 1rem;
+
+                    .profile-content {
+                        position: relative;
+
+                        display: flex;
+                        align-items: start;
+                        justify-content: start;
+
+                        gap: 0.5rem;
+
+                        img {
+                            width: 20px;
+                            height: 20px;
+                            border-radius: 100%;
+                            background-attachment: fixed;
+                        }
+
+                        p {
+                            word-wrap: break-word;
+
+
+                            max-height: 20px;
+                            font-size: 14px;
+                            font-weight: 500;
+                            line-height: 20px;
+                            color: var(--p);
+                            margin: 0;
+
+                        }
+                    }
 
                     span {
-                        word-break: break-all;
 
-                        font-size: 12px;
+
+                        font-size: 14px;
                         font-weight: 500;
 
                         color: var(--p);
                         margin: 0;
-
-                        padding: 0.3rem 1rem;
-                        border: 1px solid var(--border);
-                        border-radius: 2rem;
 
                         display: flex;
                         align-items: center;
@@ -247,7 +276,7 @@
 
                         p {
                             word-wrap: break-word;
-                            word-break: break-all;
+
 
                             max-height: 20px;
                             font-size: 12px;
@@ -283,37 +312,6 @@
 
                         overflow: hidden;
                         text-overflow: ellipsis;
-                    }
-
-                    .several-content {
-                        position: relative;
-                        width: 100%;
-
-                        display: flex;
-                        align-items: start;
-                        justify-content: start;
-
-                        gap: 0.5rem;
-
-                        span {
-                            word-break: break-all;
-
-                            font-size: 10px;
-                            font-weight: 500;
-
-                            color: var(--p);
-                            margin: 0;
-
-                            padding: 0.3rem 0.4rem;
-                            border: 1px solid var(--border);
-                            border-radius: 2rem;
-
-                            display: flex;
-                            align-items: center;
-                            gap: 0.4rem;
-                        }
-
-
                     }
                 }
             }

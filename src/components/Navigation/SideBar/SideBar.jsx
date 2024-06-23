@@ -28,7 +28,7 @@ const SideBar = () => {
             </div>
           </NavLink>
         </li>
-        <li data-tooltip-id="my-tooltip" data-tooltip-content="Escrever">
+        <li data-tooltip-id="my-tooltip" data-tooltip-content="Publicar">
           <NavLink
             to="/create-post"
             className={({ isActive }) =>

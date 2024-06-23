@@ -4,165 +4,236 @@
     position: fixed;
     top: 0;
     left: 0;
+
     width: 100%;
     height: 100%;
+
+    background-color: var(--p-2);
+
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
+    flex-direction: column;
     z-index: 999;
-    backdrop-filter: blur(10px) brightness(75%);
 
-    .modal-content {
-        background: var(--bg);
-        border: 1px solid var(--border);
-        padding: 20px;
-        border-radius: 5px;
-        width: 600px;
+    .close-edit {
+        position: absolute;
+        top: 50px;
+        right: 50px;
+        width: 100%;
 
-        .header-text {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        display: flex;
+        justify-content: end;
 
-            .close-edit {
-                position: relative;
-                width: 100%;
+        svg {
+            color: var(--p);
+            transform: scale(0.9);
+            border-radius: 100%;
+            transition: all 0.3s;
+            cursor: pointer;
 
-                display: flex;
-                justify-content: end;
-
-
-                svg {
-                    color: var(--p);
-                    transform: scale(0.9);
-                    transition: all 0.3s;
-                    cursor: pointer;
-
-                    &:hover {
-                        transform: scale(1);
-                    }
-                }
-            }
-
-            .profile-information-text {
-                position: relative;
-                width: 100%;
-
-                h1 {
-                    font-size: 24px;
-                    font-weight: 800;
-                    letter-spacing: -1px;
-                    color: var(--p);
-
-                }
+            &:hover {
+                transform: scale(1);
             }
         }
+    }
 
-        .border-bottom {
+    .edit-profile-modal-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        margin: 5rem 0;
+        max-width: 1600px;
+        padding: 75px 150px !important;
+
+        display: flex;
+        align-items: start;
+        justify-content: start;
+        flex-direction: column;
+
+        .head-text {
+            position: relative;
             width: 100%;
-            height: 1px;
-            margin: 2rem 0;
-            background-color: var(--border);
+
+            h1 {
+                font-size: 64px;
+                font-weight: 500;
+                line-height: 1.125;
+
+                letter-spacing: -3px;
+
+                color: var(--p);
+                text-align: start;
+                text-wrap: balance;
+                word-wrap: break-word;
+                margin-bottom: 3rem;
+            }
         }
 
         form {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.5rem;
+
             display: flex;
+            align-items: start;
+            justify-content: start;
             flex-direction: column;
+            gap: 3rem;
 
-            label {
-                font-size: 16px;
-                font-weight: 900;
-                letter-spacing: -1px;
-                margin-bottom: 1rem;
-
-                span {
-                    color: rgb(193, 11, 68);
-                    font-size: 16px;
-                    font-weight: 900;
-                }
-            }
-
-            .profile-photo {
-                width: 100%;
-                align-self: center;
+            .image-profile {
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
+                .profile-photo {
+                    position: relative;
 
-                img {
-                    width: 100px;
-                    height: 100px;
-                    background-color: var(--bg-2);
-                    border-radius: 100%;
+                    img {
+                        width: 125px;
+                        height: 125px;
+                        background-color: var(--bg-2);
+                        border-radius: 50%;
+                        transition: 0.3s all cubic-bezier(0.455, 0.03, 0.515, 0.955);
+                        cursor: pointer;
 
-                    transition: 0.3s all cubic-bezier(0.455, 0.03, 0.515, 0.955);
-                    cursor: pointer;
+                        &:hover {
+                            transform: scale(1.02);
+                        }
+                    }
 
-                    &:hover {
-                        transform: scale(1.02);
+                    svg {
+                        position: absolute;
+                        cursor: pointer;
+                        color: var(--p);
+                    }
+                }
+            }
+
+            .input-container {
+                position: relative;
+                width: 100%;
+                margin-bottom: 1rem;
+
+                input {
+                    width: 100%;
+                    padding: 0.5rem 0;
+                    outline: none;
+
+                    border: none;
+                    border-bottom: 1px solid var(--border);
+                    background-color: transparent;
+
+                    font-weight: 500;
+                    font-size: 20px;
+                    line-height: 1.4;
+                    letter-spacing: -0.02px;
+
+                    color: var(--p);
+
+                    &::placeholder {
+                        color: transparent;
+                    }
+
+                    &:focus {
+                        border-bottom: 1px solid var(--p);
+                    }
+
+                    &:focus~label,
+                    &:not(:placeholder-shown)~label {
+                        transform: translateY(-2.5rem);
+                        font-weight: 500;
+                        font-size: 14px;
+                        line-height: 1.3;
+                        letter-spacing: -0.01px;
+                        color: var(--p);
                     }
                 }
 
-                svg {
+                label {
                     position: absolute;
-                    cursor: pointer;
+                    left: 0;
+                    top: 30%;
+                    padding: 0.5rem 0;
+                    color: var(--p);
+                    pointer-events: none;
+                    transform: translateY(-50%);
+                    transition: all 0.3s ease;
                 }
             }
 
             textarea {
-                height: 150px !important;
-                resize: none;
-            }
-
-
-            textarea,
-            input {
                 width: 100%;
-                height: auto;
-                padding: 0.5rem 1rem;
-
-                outline: none;
-
-                border-radius: 0.5rem;
-                background-color: transparent;
-                border: 1px solid var(--border);
-                font-weight: 400;
-                font-size: 16px;
-                color: var(--p);
-
-                margin-bottom: 1rem;
-
-                &::placeholder {
-                    font-weight: 400;
-                    font-size: 16px;
-                    color: var(--p);
-                    opacity: .7;
-                }
-
-                &:focus-within {
-                    border: 1px solid var(--p);
-                }
-            }
-
-            button {
-                width: 100%;
-                height: 40px;
+                height: 110px;
+                padding: 0.5rem 0;
 
                 outline: none;
                 border: none;
 
-                background-color: var(--btn);
-                color: var(--fixed-c);
+                border-bottom: 1px solid var(--border);
+                background-color: transparent;
 
-                padding: 0.6rem 2rem;
-                border-radius: 0.5rem;
-
-                font-size: 14px;
                 font-weight: 500;
+                font-size: 20px;
+                line-height: 1.4;
 
-                text-align: center;
+                letter-spacing: -0.02px;
+                color: var(--p);
+
+                resize: none;
+
+                &::placeholder {
+                    color: transparent;
+                }
+
+                &:focus {
+                    border-bottom: 1px solid var(--p) !important;
+                }
+
+                &:focus~label,
+                &:not(:placeholder-shown)~label {
+                    transform: translateY(-3.5rem);
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 1.3;
+                    letter-spacing: -0.01px;
+                    color: var(--p);
+                }
+            }
+
+            .text-input {
+                display: flex;
+                align-items: center;
+
+                span {
+                    position: absolute;
+                    right: 10px;
+                    bottom: 5px;
+                    cursor: pointer;
+
+                    svg {
+                        opacity: .8;
+                    }
+                }
+            }
+
+            .error-message {
+                color: red;
+                margin-bottom: 1rem;
+            }
+
+            button {
+                width: 100%;
+                height: 50px;
+                outline: none;
+                border: none;
+                background-color: var(--p);
+                border-radius: 2rem;
+                color: var(--p-2);
+                font-size: 16px;
+                font-weight: 700;
                 cursor: pointer;
                 transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
@@ -170,26 +241,31 @@
                     background-color: var(--btn-2);
                 }
 
-                &:disabled {
-                    cursor: not-allowed;
-                    opacity: 0.5;
+                .loading-container {
+                    height: fit-content !important;
+
+                    .loading {
+                        width: 20px;
+                        height: 20px;
+                    }
                 }
             }
         }
     }
+
 }
 
-@media (max-width:809px) {
+
+@media (max-width: 809px) {
     #edit-profile-modal {
         .modal-content {
             position: fixed;
             background: var(--bg);
             border: 1px solid var(--border);
             padding: 1.5rem;
-
             bottom: 0;
             width: 100%;
-            height: 100vh;
+            height: 80vh;
         }
     }
 }

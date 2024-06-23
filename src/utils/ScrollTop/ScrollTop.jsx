@@ -4,7 +4,7 @@ import "./ScrollTop.scss";
 
 const ScrollTop = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const threshold = 150;
+  const threshold = 1000;
 
   useEffect(() => {
     const toggleVisibility = () => {

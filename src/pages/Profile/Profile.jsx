@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebase/Firebase";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
-import EditProfileModal from "../../components/Modals/EditProfileModal/EditProfileModal";
+import { doc, getDoc, onSnapshot, collection, getDocs, query, where } from "firebase/firestore";
 import FollowButton from "../../components/FollowButton/FollowButton";
 import Skeleton from "react-loading-skeleton";
 import { useQuery, useQueryClient } from "react-query";
-import { motion } from "framer-motion";
 
 import "./Profile.scss";
 import { Blog } from "../../context/Context";
+import EditProfileModal from "../../components/Modals/EditProfileModal/EditProfileModal";
 
 const Profile = () => {
   const { id } = useParams();
@@ -26,16 +25,61 @@ const Profile = () => {
     const userDocSnapshot = await getDoc(userDocRef);
     const userData = userDocSnapshot.data();
     const userPostIds = userData.posts || [];
-    const userPostsPromises = userPostIds.map(async (postId) => {
-      const postDocRef = doc(db, "posts", postId);
-      const postDocSnapshot = await getDoc(postDocRef);
-      return postDocSnapshot.exists()
-        ? { id: postDocSnapshot.id, ...postDocSnapshot.data() }
-        : null;
+
+    const userPostsQuery = query(
+      collection(db, "posts"),
+      where("__name__", "in", userPostIds)
+    );
+    const userPostsSnapshot = await getDocs(userPostsQuery);
+
+    const postsData = [];
+    const userIds = [];
+    const topicIds = [];
+
+    userPostsSnapshot.forEach((postDoc) => {
+      const postData = postDoc.data();
+      userIds.push(postData.userId);
+      topicIds.push(postData.topics);
+      postsData.push({
+        id: postDoc.id,
+        ...postData,
+      });
     });
 
-    const posts = await Promise.all(userPostsPromises);
-    return posts.filter((post) => post !== null);
+    // Fetch all user documents in a batch
+    const uniqueUserIds = [...new Set(userIds)];
+    const userDocsPromises = uniqueUserIds.map((userId) =>
+      getDoc(doc(db, "users", userId))
+    );
+    const userDocs = await Promise.all(userDocsPromises);
+    const userMap = {};
+    userDocs.forEach((userDoc) => {
+      if (userDoc.exists()) {
+        userMap[userDoc.id] = userDoc.data();
+      }
+    });
+
+    // Fetch all topic documents in a batch
+    const uniqueTopicIds = [...new Set(topicIds)];
+    const topicDocsPromises = uniqueTopicIds.map((topicId) =>
+      getDoc(doc(db, "topics", topicId))
+    );
+    const topicDocs = await Promise.all(topicDocsPromises);
+    const topicMap = {};
+    topicDocs.forEach((topicDoc) => {
+      if (topicDoc.exists()) {
+        topicMap[topicDoc.id] = topicDoc.data();
+      }
+    });
+
+    // Combine post data with user and topic data
+    const combinedData = postsData.map((post) => ({
+      ...post,
+      user: userMap[post.userId] || null,
+      topicName: topicMap[post.topics]?.name || null,
+    }));
+
+    return combinedData;
   }, [id]);
 
   const { data: userPosts, isLoading: isLoadingPosts } = useQuery(
@@ -144,12 +188,7 @@ const Profile = () => {
   return (
     <>
       <section id="my-profile">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div>
           <div className="container">
             <div className="profile-photo">
               <img
@@ -157,47 +196,71 @@ const Profile = () => {
                 alt="Profile"
                 className="profile-picture"
               />
-              <div className="wrapper-text">
-                <div className="follow-container">
-                  <div className="follow-content">
-                    <span>{followers.length}</span>
-                    <p>Seguidores</p>
-                  </div>
-                  <div className="follow-content">
-                    <span>{following.length}</span>
-                    <p>Seguindo</p>
-                  </div>
-                  <div className="follow-content">
-                    <span>{userPosts.length}</span>
-                    <p>Publicações</p>
-                  </div>
-                </div>
-                {currentUser.uid === id && (
-                  <button onClick={handleEditClick}>Editar perfil</button>
-                )}
-                {currentUser.uid !== id && <FollowButton userId={id} />}
-              </div>
             </div>
 
             <div className="profile-text">
               <h1>{userData.name}</h1>
               <p>{userData.bio}</p>
             </div>
+
+            <div className="wrapper-text">
+              <div className="follow-container">
+                <div className="follow-content">
+                  <span>{followers.length}</span>
+                  <p>Seguidores</p>
+                </div>
+                <div className="follow-content">
+                  <span>{following.length}</span>
+                  <p>Seguindo</p>
+                </div>
+                <div className="follow-content">
+                  <span>{userPosts.length}</span>
+                  <p>Publicações</p>
+                </div>
+              </div>
+              {currentUser.uid === id && (
+                <button onClick={handleEditClick}>Editar perfil</button>
+              )}
+              {currentUser.uid !== id && <FollowButton userId={id} />}
+            </div>
           </div>
+
           <div className="border-bottom"></div>
-        </motion.div>
+        </div>
 
         <div className="my-posts-profile">
           {!isLoadingPosts &&
             userPosts.map((post) => (
-              <div className="post-profile" key={post.id}>
-                <span>{post.topics}</span>
-                <h1>{post.title}</h1>
-                <div
-                  className="body-posts"
-                  dangerouslySetInnerHTML={{ __html: post.desc }}
-                ></div>
-              </div>
+              <Link
+                to={`/view-post/${post.id}`}
+                onClick={() => scrollTo({ top: 0, behavior: "smooth" })}
+                key={post.id}
+              >
+                <div className="post-container">
+
+                  <div className="post-right-content">
+                    <div className="topic">
+                      <span>
+                        {post.topicName}
+                      </span>
+                    </div>
+
+                    <h1>{post.title}</h1>
+                    <p>{post.subTitle}</p>
+                  </div>
+
+                  <div className="post-left-content">
+                    {post.imageUrl && (
+                      <img
+                        src={post.imageUrl}
+                        alt="Post"
+                        className="post-image"
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
+                </div>
+              </Link>
             ))}
         </div>
       </section>

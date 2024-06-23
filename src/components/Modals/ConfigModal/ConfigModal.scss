@@ -15,9 +15,9 @@
     .modal-content {
         background: var(--bg);
 
-        border: 1px solid var(--border);
         padding: 20px;
-        border-radius: 5px;
+        border-radius: 0.5rem;
+        
         width: 600px;
 
         .header-text {
@@ -80,28 +80,28 @@
                 margin-bottom: 1rem;
             }
 
-
             input {
                 width: 100%;
-                height: auto;
-                padding: 0.5rem 1rem;
+                height: 40px;
 
                 outline: none;
+                border: none;
 
+                background-color: var(--btn);
+                color: var(--fixed-c);
+
+                padding: 0.6rem 2rem;
                 border-radius: 0.5rem;
-                background-color: transparent;
-                border: 1px solid var(--border);
-                font-weight: 400;
-                font-size: 16px;
-                color: var(--p);
 
-                margin-bottom: 1rem;
+                font-size: 14px;
+                font-weight: 500;
 
-                &::placeholder {
-                    font-weight: 400;
-                    font-size: 16px;
-                    color: var(--p);
-                    opacity: .7;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+                &:hover {
+                    background-color: var(--btn-2);
                 }
 
                 &:disabled {

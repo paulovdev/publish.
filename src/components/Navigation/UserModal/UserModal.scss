@@ -39,11 +39,10 @@
     position: absolute;
     width: 260px;
     height: fit-content;
-    top: 100px;
-    right: 100px;
+    top: 56px;
+    right: 0;
     border-radius: 0.5rem;
 
-    border: 1px solid var(--border);
     background-color: var(--bg);
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 
@@ -81,7 +80,7 @@
     .profile-button,
     button {
       width: 250px;
-      height: 50px;
+      height: 40px;
       padding: 1rem;
       margin-bottom: 0.5rem;
       color: var(--p);
@@ -100,7 +99,7 @@
       justify-content: start;
       gap: 1rem;
 
-      transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+      transition: all 0.1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
       user-select: none;
 
       &.active {

@@ -12,6 +12,7 @@ import { db } from "../../firebase/Firebase";
 import { Blog } from "../../context/Context";
 import { Link, useNavigate } from "react-router-dom";
 import { IoImageOutline } from "react-icons/io5";
+import { IoCloseOutline } from "react-icons/io5";
 import { FaSave } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Editor from "../../utils/Editor/Editor";
@@ -21,6 +22,7 @@ import "./CreatePostPage.scss";
 const CreatePostPage = () => {
     const { currentUser } = Blog();
     const [title, setTitle] = useState("");
+    const [subTitle, setSubTitle] = useState("");
     const [desc, setDesc] = useState("");
     const [topics, setTopics] = useState([]);
     const [image, setImage] = useState(null);
@@ -58,6 +60,7 @@ const CreatePostPage = () => {
     const handleClick = () => {
         imageRef.current.click();
     };
+
     function formatDateToDayMonth(date) {
         const options = { day: "2-digit", month: "short" };
         const formattedDate = new Date(date).toLocaleDateString("pt-BR", options);
@@ -95,6 +98,7 @@ const CreatePostPage = () => {
             await setDoc(newPostRef, {
                 userId: currentUser.uid,
                 title: title,
+                subTitle: subTitle,
                 desc: desc,
                 imageUrl: imageUrl,
                 views: 0,
@@ -148,10 +152,24 @@ const CreatePostPage = () => {
         setIsDescValid(desc.trim().length > 0);
     }, [desc]);
 
+    const clearInput = (input) => {
+        switch (input) {
+            case "title":
+                setTitle("");
+                break;
+            case "subTitle":
+                setSubTitle("");
+                break;
+            default:
+                break;
+        }
+    };
+
     return (
         <section id="create-post">
-            <h1>Informações sobre a postagem</h1>
-            <div className="border-bottom"></div>
+            <div className="head-text">
+                <h1>Informações sobre a postagem</h1>
+            </div>
 
             <form onSubmit={handleCreatePost}>
                 {currentStep === 1 && (
@@ -164,49 +182,61 @@ const CreatePostPage = () => {
 
                         className="create-post-container"
                     >
-                        <div className="left-content">
-                            <div className="step-title">
-                                <label>Informações Iniciais <span>*</span></label>
+                        <div className="grid-1">
 
+
+                            <div className="input-container text-input">
                                 <input
                                     type="text"
+                                    required
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    placeholder="Insira o título da postagem"
+                                    placeholder=" "
                                 />
-                                {!isTitleValid && (
-                                    <motion.p
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 1 }}
-                                        transition={{ duration: 1 }}
-                                    >
-                                        O título deve ter pelo menos{' '}
-                                        {6 - title.length} letras
-                                    </motion.p>
+                                <label>Título</label>
+                                {title && (
+                                    <span onClick={() => clearInput("title")}>
+                                        <IoCloseOutline size={24} />
+                                    </span>
                                 )}
+                            </div>
 
-                                <div className="step-topic">
-                                    <label>Seleção de Tópico <span>*</span></label>
 
-                                    <select
-                                        value={selectedTopics.map((topic) => topic.id)}
-                                        onChange={handleSelectChange}
-                                    >
-                                        {topics.map((topic) => (
-                                            <option key={topic.id} value={topic.id}>
-                                                {topic.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
 
+                            <div className="step-topic">
+                                <label>Tópico</label>
+
+                                <select
+                                    value={selectedTopics.map((topic) => topic.id)}
+                                    onChange={handleSelectChange}
+                                >
+                                    {topics.map((topic) => (
+                                        <option key={topic.id} value={topic.id}>
+                                            {topic.name}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
 
-                        <div className="right-content">
+                        <div className="grid-1">
+                            <div className="input-container text-input">
+                                <input
+                                    type="text"
+                                    required
+                                    value={subTitle}
+                                    onChange={(e) => setSubTitle(e.target.value)}
+                                    placeholder=" "
+                                />
+                                <label>Sub título</label>
+                                {subTitle && (
+                                    <span onClick={() => clearInput("subTitle")}>
+                                        <IoCloseOutline size={24} />
+                                    </span>
+                                )}
+                            </div>
                             <div className="step-image">
-                                <label>Selecione uma Imagem <span>*</span></label>
+                                <label>Selecione uma Imagem</label>
                                 <div className="image-select">
                                     <button
                                         type="button"
@@ -268,8 +298,8 @@ const CreatePostPage = () => {
                         className="create-post-container"
                     >
                         <div className="step-text">
-                            <h1>Edição de Texto</h1>
-                            <p>Escreva o conteúdo do seu post.</p>
+                            <label>Edição de Texto</label>
+
                             <Editor
                                 placeholder="Escreva sobre o que quiser e compartilhe o seu conhecimento..."
                                 value={desc}
@@ -305,7 +335,7 @@ const CreatePostPage = () => {
                                     <FaSave size={26} />
                                 </div>
                                 <p>Publicar</p>
-                            </button>
+                            </button> 
                         </div>
                     </motion.div>
                 )}

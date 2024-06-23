@@ -21,62 +21,64 @@ const Login = () => {
     }
   };
 
+  const goToRegister = () => {
+    navigate("/register")
+  }
+
   return (
     <section id="login">
       <ToastContainer />
-      <div className="container">
-        <h1>Entrar</h1>
-        <p>Digite seu e-mail e senha para continuar</p>
-        <div className="border-bottom"></div>
+      <div className="head-text">
+        <h1>Complete os campos abaixo para acessar sua conta</h1>
       </div>
-      <div className="login-container">
-        <div className="left-container">
-          <form onSubmit={handleLogin}>
-            <label>E-mail</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Seu e-mail"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label>Senha</label>
-            <div className="password-input">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="Senha"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <span onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? (
-                  <MdVisibility size={24} />
-                ) : (
-                  <MdVisibilityOff size={24} />
-                )}
-              </span>
-            </div>
+      <form onSubmit={handleLogin}>
 
-            <div className="no-have-account">
-              <p>Ainda não possui uma conta?</p>
-              <Link to="/register">Crie uma agora!</Link>
-            </div>
+        <div className="input-container">
+          <input
+            type="email"
+            name="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder=" "
+          />
+          <label>E-mail</label>
+        </div>
+        <div className="input-container password-input">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder=" "
+          />
+          <label>Senha</label>
+          <span onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? (
+              <MdVisibility size={24} />
+            ) : (
+              <MdVisibilityOff size={24} />
+            )}
+          </span>
 
+        </div>
+
+        <div className="buttons-login-wrapper">
+          <div className="button-login-wrapper" onClick={goToRegister}>
+            <button type="button" className="btn">Não tenho conta</button>
+          </div>
+          <div className="button-login-wrapper">
             {!loading && <button className="btn">Entrar</button>}
             {loading && (
               <button className="btn" disabled>
-                Entrando...
+                <div className="loading-container">
+                  <div className="loading"></div>
+                </div>
               </button>
-            )}
-          </form>
+            )}</div>
         </div>
-        <div className="right-container">
-          <img src="/login-svg.png" alt="" />
-        </div>
-      </div>
+      </form>
     </section>
   );
 };

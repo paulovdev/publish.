@@ -1,11 +1,18 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRegister } from "../../../hooks/useRegister";
-import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { MdVisibilityOff, MdVisibility } from "react-icons/md";
+import { IoCloseOutline } from "react-icons/io5";
 
+import "react-toastify/dist/ReactToastify.css";
 import "./Register.scss";
 
 const Register = () => {
   const { registerUser, error, loading } = useRegister();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,94 +38,142 @@ const Register = () => {
     navigate("/get-started/topics");
   };
 
+  const clearInput = (input) => {
+    switch (input) {
+      case "name":
+        setName("");
+        break;
+      case "bio":
+        setBio("");
+        break;
+      default:
+        break;
+    }
+  };
+
+  const goToLogin = () => {
+    navigate("/login")
+  }
+
   return (
     <section id="register">
-      <div className="container">
-        <h1>Cadastre-se</h1>
-        <p>Preencha os campos abaixo para criar uma nova conta</p>
-        <div className="border-bottom"></div>
-      </div>
-      <div className="register-container">
-        <div className="left-container">
-          <form onSubmit={handleRegister}>
-
-            <label>Nome <span>*</span></label>
+      <ToastContainer />
+      <h1>Complete os campos abaixo para criar sua conta</h1>
+      <form onSubmit={handleRegister}>
+        <div className="grid-1">
+          
+          <div className="input-container text-input">
             <input
               type="text"
               required
-              placeholder="Nome"
-              minLength={6}
-              maxLength={24}
-              inputMode="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              placeholder=" "
             />
-            <label>E-mail <span>*</span></label>
+            <label>Nome</label>
+            {name && (
+              <span onClick={() => clearInput("name")}>
+                <IoCloseOutline size={24} />
+              </span>
+            )}
+          </div>
+
+          <div className="input-container">
             <input
               type="email"
-              name="email"
-              minLength={1}
-              placeholder="Example@email.com"
               required
-              inputMode="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder=" "
             />
-            <label>Senha <span>*</span></label>
+            <label>E-mail</label>
+          </div>
+        </div>
+
+        <div className="grid-1">
+          <div className="input-container password-input">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
-              placeholder="Senha"
-              minLength={6}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder=" "
             />
+            <label>Senha</label>
+            <span onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? (
+                <MdVisibility size={24} />
+              ) : (
+                <MdVisibilityOff size={24} />
+              )}
+            </span>
+          </div>
 
-            <label>Confirmar senha <span>*</span></label>
+          <div className="input-container password-input">
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               name="password"
-              placeholder="Confirme sua senha"
-              minLength={6}
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder=" "
             />
-            <label>Biografia <span>*</span></label>
-            <input
-              type="text"
-              placeholder="Bio"
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-            />
+            <label>Confirmar senha</label>
+            <span onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+              {showConfirmPassword ? (
+                <MdVisibility size={24} />
+              ) : (
+                <MdVisibilityOff size={24} />
+              )}
+            </span>
+          </div>
+        </div>
 
-            <div className="no-have-account">
-              <p>Já tem uma conta?</p>
-              <Link to="/login">Faça login</Link>
-            </div>
-            {!loading && (
-              <button type="submit" className="btn">
-                Continuar
-              </button>
-            )}
+
+        <div className="input-container text-input">
+          <textarea
+            name="bio"
+            required
+            value={bio}
+            maxLength={250}
+            onChange={(e) => setBio(e.target.value)}
+            placeholder=" "
+          />
+          <label>Biografia</label>
+          {bio && (
+            <span onClick={() => clearInput("bio")}>
+              <IoCloseOutline size={24} />
+            </span>
+          )}
+        </div>
+
+
+        <div className="cient-text">
+          <p >Eu li, estou ciente das condições de tratamento dos meus dados pessoais e dou meu consentimento, quando aplicável, conforme descrito nesta <a>Politica de Privacidade</a></p>
+
+        </div>
+        <div className="buttons-register-wrapper">
+          <div className="button-register-wrapper" onClick={goToLogin}>
+            <button type="button" className="btn">Já tenho uma conta</button>
+          </div>
+          <div className="button-register-wrapper">
+            {!loading && <button className="btn">Continuar</button>}
             {loading && (
               <button className="btn" disabled>
-                Cadastrando...
+                <div className="loading-container">
+                  <div className="loading"></div>
+                </div>
               </button>
-            )}
-            {error && (
-              <span className="error">
-                Ocorreu um erro. Tente novamente mais tarde.
-              </span>
-            )}
-          </form>
+            )}</div>
         </div>
-        <div className="right-container">
-          <img src="/sign-up-svg.png" alt="" />
-        </div>
-      </div>
-    </section>
+        {error && (
+          <span className="error">
+            Ocorreu um erro. Tente novamente mais tarde.
+          </span>
+        )}
+      </form>
+    </section >
   );
 };
 

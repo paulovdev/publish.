@@ -4,13 +4,15 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { readTime } from "../../utils/ReadTime";
 import { db } from "../../firebase/Firebase";
 import { Blog } from "../../context/Context";
-import { FaRegComments } from "react-icons/fa6";
+
+import { FaRegComment } from "react-icons/fa";
 import { FiShare2 } from "react-icons/fi";
-import { FaHeart } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
-import { FaClock } from "react-icons/fa6";
-import { IoReader } from "react-icons/io5";
+import { FaRegHeart } from "react-icons/fa";
+
+import { MdDateRange } from "react-icons/md";
+import { CiClock2 } from "react-icons/ci";
 import { MdCategory } from "react-icons/md";
+
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
 import { motion } from "framer-motion";
@@ -26,8 +28,8 @@ const fetchPost = async (id) => {
     const postData = postDoc.data();
 
     // Increment view count
-    const currentViews = parseInt(postData.views); // Ensure the current value is interpreted as a number
-    const updatedViews = isNaN(currentViews) ? 1 : currentViews + 1; // If the current value is not a valid number, set to 1
+    const currentViews = parseInt(postData.views);
+    const updatedViews = isNaN(currentViews) ? 1 : currentViews + 1;
 
     await updateDoc(postDoc.ref, {
       views: updatedViews,
@@ -64,14 +66,41 @@ const ViewPostPage = () => {
   const likePostMutation = useMutation(
     async () => {
       if (!currentUser) {
-        console.log("Usuario nao autenticado");
+        throw new Error("User not authenticated");
       }
-      await updateDoc(doc(db, "posts", id), {
-        [`likes.${currentUser.uid}`]: true,
-      });
+
+      const postRef = doc(db, "posts", id);
+      const postSnapshot = await getDoc(postRef);
+      if (!postSnapshot.exists()) {
+        throw new Error("Post not found");
+      }
+
+      const currentLikes = postSnapshot.data().likes || {};
+      const updatedLikes = { ...currentLikes, [currentUser.uid]: true };
+
+      await updateDoc(postRef, { likes: updatedLikes });
+
+      return updatedLikes;
     },
     {
+      onMutate: async () => {
+        // Optimistically update UI
+        const optimisticLikes = { ...post.likes, [currentUser.uid]: true };
+
+        queryClient.setQueryData(["post", id], (oldData) => ({
+          ...oldData,
+          likes: optimisticLikes,
+        }));
+
+        return () => queryClient.setQueryData(["post", id], post);
+      },
+      onError: (err, rollback) => {
+        // Rollback on error
+        rollback();
+        console.error("Like mutation error:", err);
+      },
       onSuccess: () => {
+        // Invalidate post query on success
         queryClient.invalidateQueries(["post", id]);
       },
     }
@@ -165,6 +194,80 @@ const ViewPostPage = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="container">
+          <div className="title-text">
+            <div className="topic">
+              <span>
+                {" "}
+                <MdCategory size={14} />
+                {post.topicName}
+              </span>
+            </div>
+            <h1>{post.title}</h1>
+            <p>{post.subTitle}</p>
+
+            <div className="all-content">
+              <div className="several-content">
+                <div className="profile-content" onClick={goToProfile}>
+                  {post.user && post.user.profilePicture && (
+                    <img
+                      src={post.user.profilePicture}
+                      loading="lazy"
+                      alt="User"
+                      className="user-photo"
+                    />
+                  )}
+                  {post.user && post.user.name && (
+                    <p>{post.user.name}</p>
+                  )}
+                </div>
+                <span>
+                  {" "}
+                  <CiClock2 size={16} />
+                  {readTime({ __html: post.desc })} min de leitura
+                </span>
+                <span>
+                  <MdDateRange size={14} />{post.created}
+                </span>
+              </div>
+
+              <div className="action-icons">
+
+                <div className="action-icon-wrapper">
+                  <div
+                    className="action-icon"
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-content={`${Object.keys(post.likes || {}).length
+                      } Curtida`}
+                    onClick={handleLikePost}
+                  >
+                    <button>
+                      <FaRegHeart size={16} />
+                    </button>
+                  </div>
+
+                  <div
+                    className="action-icon"
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-content="Comentar"
+                    onClick={() => setIsCommentModalOpen(true)}
+                  >
+                    <FaRegComment size={16} />
+                  </div>
+                </div>
+
+                <div
+                  className="action-icon"
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-content="Compartilhar"
+                  onClick={sharePost}
+                >
+                  <FiShare2 size={16} />
+                </div>
+              </div>
+
+            </div>
+          </div>
+
           <div className="image-background">
             {post.imageUrl && (
               <img
@@ -175,74 +278,6 @@ const ViewPostPage = () => {
                 className="post-image"
               />
             )}
-          </div>
-          <div className="title-text">
-            <div className="several-content">
-              <span>
-                {" "}
-                <MdCategory size={16} />
-                {post.topicName}
-              </span>
-
-              <span>
-                {" "}
-                <IoReader size={16} />
-                {readTime({ __html: post.desc })} min de leitura
-              </span>
-
-              <span>
-                <FaClock size={16} /> {post.created}
-              </span>
-            </div>
-            <h1>{post.title}</h1>
-
-            <div className="all-content">
-              <div className="profile-content">
-                {post.user && post.user.profilePicture && (
-                  <img
-                    src={post.user.profilePicture}
-                    onClick={goToProfile}
-                    loading="lazy"
-                    alt="User"
-                    className="user-photo"
-                  />
-                )}
-                {post.user && post.user.name && <p>{post.user.name}</p>}
-              </div>
-
-              <div className="action-icons">
-                <div
-                  className="action-icon"
-                  data-tooltip-id="my-tooltip"
-                  data-tooltip-content={`${
-                    Object.keys(post.likes || {}).length
-                  } Curtida`}
-                  onClick={handleLikePost}
-                >
-                  <button>
-                    <FaHeart size={16} color="#fff" />
-                  </button>
-                </div>
-
-                <div
-                  className="action-icon"
-                  data-tooltip-id="my-tooltip"
-                  data-tooltip-content="Comentar"
-                  onClick={() => setIsCommentModalOpen(true)}
-                >
-                  <FaRegComments size={22} color="#fff" />
-                </div>
-
-                <div
-                  className="action-icon"
-                  data-tooltip-id="my-tooltip"
-                  data-tooltip-content="Compartilhar"
-                  onClick={sharePost}
-                >
-                  <FiShare2 size={22} color="#fff" />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 

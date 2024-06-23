@@ -11,9 +11,7 @@ import "./Home.scss";
 const Home = () => {
   return (
     <section id="home">
-      {/*  <h1 className='logo'>Publish</h1> */}
       <HomeBar />
-
       <PopularPosts />
       <div className="border-bottom"></div>
 

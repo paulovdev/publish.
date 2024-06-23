@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { db } from "../../firebase/Firebase";
 import {
   collection,
@@ -18,7 +18,6 @@ const GetStartedTopics = () => {
   const [selectedTopics, setSelectedTopics] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch topics from Firestore
   const {
     data: topics,
     isLoading: isLoadingTopics,
@@ -32,7 +31,6 @@ const GetStartedTopics = () => {
     }));
   });
 
-  // Fetch user selected topics from Firestore
   const { isLoading: isLoadingUser, isError: isErrorUser } = useQuery(
     "userSelectedTopics",
     async () => {
@@ -70,37 +68,34 @@ const GetStartedTopics = () => {
 
   return (
     <section id="get-started">
-      <h1>Selecione seus tópicos de interesse</h1>
-      <div className="border-bottom"></div>
-      <div className="selected-topics">
-        <h1>
-          {" "}
-          <span>
-            {selectedTopics
-              .map((id) => topics.find((topic) => topic.id === id)?.name)
-              .join(", ")}
-          </span>
-        </h1>
+
+      <div className="edit-started-modal-content">
+
+        <div className="head-text">
+          <h1>Selecione seus tópicos de interesse</h1>
+        </div>
+        <div className="select-topics-container">
+          <ul>
+            {topics.map((topic) => (
+              <li key={topic.id}>
+                <input
+                  type="checkbox"
+                  id={topic.id}
+                  checked={selectedTopics.includes(topic.id)}
+                  onChange={() => handleTopicSelect(topic.id)}
+                />
+                <label htmlFor={topic.id}>{topic.name}</label>
+              </li>
+            ))}
+          </ul>
+          <span>Você pode escolher novamente em Configurações {">"} Selecionar Topicos</span>
+
+          <button onClick={handleSaveTopics}>Salvar e fechar</button>
+
+        </div>
       </div>
 
-      <ul>
-        {topics.map((topic) => (
-          <li key={topic.id}>
-            <input
-              type="checkbox"
-              id={topic.id}
-              checked={selectedTopics.includes(topic.id)}
-              onChange={() => handleTopicSelect(topic.id)}
-            />
-            <label htmlFor={topic.id}>{topic.name}</label>
-          </li>
-        ))}
-      </ul>
-
-      <button onClick={handleSaveTopics}>Salvar tópicos</button>
-
-      <span>Você pode escolher novamente em "Configurações"</span>
-    </section>
+    </section >
   );
 };
 

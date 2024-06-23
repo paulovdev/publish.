@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useQuery } from "react-query";
 import {
   doc,
@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../firebase/Firebase";
 
-import { IoReader } from "react-icons/io5";
+import { MdDateRange } from "react-icons/md";
 import { FaClock } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
 
@@ -26,9 +26,6 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const PopularPosts = () => {
-  const [slidesPerView, setSlidesPerView] = useState(
-    window.innerWidth < 1000 ? 1 : 2
-  );
 
   const { isLoading, data: posts = [] } = useQuery("popularPosts", async () => {
     const postsQuery = query(
@@ -85,18 +82,6 @@ const PopularPosts = () => {
     return combinedData;
   });
 
-  useEffect(() => {
-    const handleResize = () => {
-      setSlidesPerView(window.innerWidth < 1000 ? 1 : 2);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   return (
     <motion.div
       id="popular-posts"
@@ -106,31 +91,30 @@ const PopularPosts = () => {
       transition={{ duration: 0.5 }}
     >
       {isLoading &&
-        Array.from({ length: 2 }).map((_, index) => (
-          <Link key={index}>
-            <div className="post-container">
-              <div className="post-left-content">
-                <Skeleton width={580} height={250} />
+        <Link>
+          <div className="post-container">
+            <div className="post-left-content">
+              <Skeleton width={750} height={400} />
+            </div>
+            <div className="post-right-content">
+              <div className="profile-content">
+                <Skeleton width={30} height={30} borderRadius={100} />
+                <Skeleton width={100} height={10} />
               </div>
-              <div className="post-right-content">
-                <div className="profile-content">
-                  <Skeleton width={30} height={30} borderRadius={100} />
-                  <Skeleton width={100} height={10} />
-                </div>
+              <Skeleton width={400} height={10} />
+              <div className="body-popular">
                 <Skeleton width={400} height={10} />
-                <div className="body-popular">
-                  <Skeleton width={400} height={10} />
-                </div>
+              </div>
 
-                <div className="several-content">
-                  <Skeleton width={100} height={10} />
-                  <Skeleton width={100} height={10} />
-                  <Skeleton width={100} height={10} />
-                </div>
+              <div className="several-content">
+                <Skeleton width={100} height={10} />
+                <Skeleton width={100} height={10} />
+                <Skeleton width={100} height={10} />
               </div>
             </div>
-          </Link>
-        ))}
+          </div>
+        </Link>
+      }
       {!isLoading && (
         <Swiper
           loop={posts.length > 1}
@@ -139,7 +123,7 @@ const PopularPosts = () => {
             disableOnInteraction: false,
           }}
           modules={[Autoplay, Pagination, Navigation]}
-          slidesPerView={slidesPerView}
+          slidesPerView={1}
           spaceBetween={50}
           className="popular-posts__slides"
         >
@@ -157,37 +141,37 @@ const PopularPosts = () => {
                     )}
                   </div>
                   <div className="post-right-content">
-                    <div className="profile-content">
-                      {post.user && post.user.profilePicture && (
-                        <img
-                          src={post.user.profilePicture}
-                          alt="User"
-                          className="user-photo"
-                        />
-                      )}
-                      {post.user && post.user.name && <p>{post.user.name}</p>}
-                    </div>
-                    <h1>{post.title}</h1>
-                    <div
-                      className="body-popular"
-                      dangerouslySetInnerHTML={{
-                        __html: post.desc.slice(0, 200),
-                      }}
-                    ></div>
-
-                    <div className="several-content">
+                    <div className="topic">
                       <span>
                         {" "}
                         <MdCategory size={14} />
                         {post.topicName}
-                      </span>
+                      </span></div>
+
+
+                    <h1>{post.title}</h1>
+                    <p>{post.subTitle}</p>
+                    <div className="several-content">
+                      <div className="profile-content">
+                        {post.user && post.user.profilePicture && (
+                          <img
+                            src={post.user.profilePicture}
+                            loading="lazy"
+                            alt="User"
+                            className="user-photo"
+                          />
+                        )}
+                        {post.user && post.user.name && (
+                          <p>{post.user.name}</p>
+                        )}
+                      </div>
                       <span>
                         {" "}
-                        <IoReader size={14} />
+                        <FaClock size={12} />
                         {readTime({ __html: post.desc })} min de leitura
                       </span>
                       <span>
-                        <FaClock size={12} /> {post.created}
+                        <MdDateRange size={14} />{post.created}
                       </span>
                     </div>
                   </div>

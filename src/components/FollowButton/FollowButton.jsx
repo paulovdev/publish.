@@ -43,6 +43,9 @@ const FollowButton = ({ userId }) => {
   const handleFollow = async () => {
     if (!currentUser) return;
 
+    // Atualização otimista
+    setIsFollowing(true);
+
     try {
       const userRef = doc(db, "users", userId);
       const currentUserRef = doc(db, "users", currentUser.uid);
@@ -56,15 +59,18 @@ const FollowButton = ({ userId }) => {
           following: arrayUnion(userId),
         }),
       ]);
-
-      setIsFollowing(true);
     } catch (error) {
+      // Reversão em caso de erro
+      setIsFollowing(false);
       console.error("Error following user:", error);
     }
   };
 
   const handleUnfollow = async () => {
     if (!currentUser) return;
+
+    // Atualização otimista
+    setIsFollowing(false);
 
     try {
       const userRef = doc(db, "users", userId);
@@ -79,9 +85,9 @@ const FollowButton = ({ userId }) => {
           following: arrayRemove(userId),
         }),
       ]);
-
-      setIsFollowing(false);
     } catch (error) {
+      // Reversão em caso de erro
+      setIsFollowing(true);
       console.error("Error unfollowing user:", error);
     }
   };
@@ -92,10 +98,9 @@ const FollowButton = ({ userId }) => {
 
   return (
     <>
-      {isFollowing && (
+      {isFollowing ? (
         <button onClick={handleUnfollow}>Seguindo</button>
-      )}
-      {!isFollowing && (
+      ) : (
         <button onClick={handleFollow}>Seguir</button>
       )}
     </>

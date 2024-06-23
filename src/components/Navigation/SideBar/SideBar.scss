@@ -7,38 +7,41 @@
     top: 0;
     left: 0;
 
-    border-right: 1px solid var(--border);
-    background-color: var(--bg);
-
     display: flex;
     align-items: center;
     justify-content: space-around;
     flex-direction: column;
-    gap: 2rem;
     z-index: 998;
 
-    transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    transition: all 0.1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
     ul {
-        list-style: none;
         margin: 0;
         padding: 0;
+
+        list-style: none;
+        border-radius: 2rem;
+        background-color: var(--p);
+
         display: flex;
         align-items: center;
-        gap: 0.5rem;
         flex-direction: column;
+        gap: 0.5rem;
 
         li {
             .side-container {
                 width: 50px;
+
                 margin-bottom: 0.5rem;
-                border-radius: 0.5rem;
+                border-radius: 2rem;
+
                 overflow: hidden;
+
                 display: flex;
                 align-items: center;
                 justify-content: start;
 
-                transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+                transition: all 0.1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
                 .side-icon {
                     width: 50px;
@@ -46,55 +49,30 @@
                     outline: none;
                     border: none;
                     background-color: transparent;
-                    color: var(--p);
+                    color: var(--p-2);
                     opacity: .5;
 
                     display: flex;
                     align-items: center;
                     justify-content: center;
 
+                    transition: all 0.1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
                     cursor: pointer;
                 }
 
-                .side-text {
-                    width: 0;
-                    height: 50px;
-
-                    outline: none;
-                    border: none;
-
-                    background-color: transparent;
-                    border-radius: 0.5rem;
-
-                    span {
-                        font-size: 14px;
-                        font-weight: 500;
-                        color: var(--p);
-                        margin-left: 1rem;
-                    }
-
-
-                    display: flex;
-                    align-items: center;
-
-                    transition: width 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-
-                    &::placeholder {
-                        color: $s;
-                    }
-                }
 
                 &:hover {
-                    background-color: var(--btn);
+                    .side-icon {
+                        color: var(--p-2);
+                        transform: scale(1.2);
+                    }
                 }
 
                 &.active {
-                    background-color: transparent;
-
                     .side-icon {
                         opacity: 1;
-                        color: var(--p);
-
+                        color: var(--p-2);
+                        transform: scale(1.2);
                     }
                 }
             }

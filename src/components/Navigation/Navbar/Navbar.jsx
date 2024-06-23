@@ -7,13 +7,16 @@ import "./Navbar.scss";
 
 import UserModal from "../UserModal/UserModal";
 import SearchInput from "./SearchInput/SearchInput";
-import { IoNotifications } from "react-icons/io5";
 import NotificationModal from "../../Modals/NotificationModal/NotificationModal";
+
+import { IoNotifications } from "react-icons/io5";
+import { IoBookSharp } from "react-icons/io5";
 
 const Navbar = () => {
   const { currentUser } = Blog();
-  const [notifications, setNotifications] = useState(0);
+  const [notifications, setNotifications] = useState([]);
   const [notificationModal, setNotificationModal] = useState(false);
+
   useEffect(() => {
     let unsubscribe;
 
@@ -46,43 +49,50 @@ const Navbar = () => {
   const openNotificationModal = () => {
     setNotificationModal(!notificationModal);
   };
+
   return (
     <>
-      <header>
-        {currentUser && <SearchInput />}
-
-        {!currentUser && (
-          <Link to="/">
-            <img src="/logo-publish.png" width={40} alt="" />
-          </Link>
-        )}
+      <header className={currentUser ? "logged-in" : "logged-out"}>
         {currentUser && (
-          <div className="notify-container" onClick={openNotificationModal}>
-            <div className="side-icon">
-              <IoNotifications size={22} />
-              {notifications.length > 0 && (
-                <div className="notification-container"></div>
-              )}
+          <div className="user-content-modal">
+            <SearchInput />
+            <div className="notify-container" onClick={openNotificationModal}>
+              <div className="side-icon">
+                <IoNotifications size={22} />
+                {notifications.length > 0 && (
+                  <div className="notification-container"></div>
+                )}
+              </div>
             </div>
+            <UserModal />
           </div>
         )}
-        <nav>
-          {!currentUser && (
+
+        {!currentUser && (
+          <div className="logo">
+            <IoBookSharp />publique
+          </div>
+        )}
+
+
+        {!currentUser ? (
+          <nav>
+
             <>
+              <li>
+                <NavLink to="/">Inicio</NavLink>
+              </li>
               <li>
                 <NavLink to="/login">Entrar</NavLink>
               </li>
               <li>
                 <NavLink to="/register">Cadastrar</NavLink>
               </li>
-              <li>
-                <NavLink to="/about">Sobre</NavLink>
-              </li>
             </>
-          )}
-        </nav>
 
-        {currentUser && <UserModal />}
+          </nav>
+        ) : null}
+
       </header>
       {notificationModal && <NotificationModal />}
     </>

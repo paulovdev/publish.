@@ -1,44 +1,73 @@
-import React, { useState } from "react";
-import { MdOutlineVisibility, MdDeleteOutline, MdEdit } from "react-icons/md";
-import { IoChevronForwardOutline } from "react-icons/io5";
-
-import Skeleton from "react-loading-skeleton";
-import { motion } from "framer-motion";
-import EditPostModal from "../../components/Modals/EditPostModal/EditPostModal";
-import "./Dashboard.scss";
-import { Link } from "react-router-dom";
-import { Blog } from "../../context/Context";
-import { useQuery } from "react-query";
+import React, { useState, useEffect } from "react";
 import {
-  getDocs,
   collection,
   query,
   where,
   orderBy,
   deleteDoc,
   updateDoc,
+  getDocs,
   doc,
   arrayRemove,
+  onSnapshot,
 } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { Blog } from "../../context/Context";
+import { useQuery, useQueryClient } from "react-query";
 import { db } from "../../firebase/Firebase";
+
+import { MdOutlineModeEditOutline } from "react-icons/md";
+import { FaRegTrashAlt } from "react-icons/fa";
+
+import Skeleton from "react-loading-skeleton";
+import { motion } from "framer-motion";
+import EditPostModal from "../../components/Modals/EditPostModal/EditPostModal";
+import "./Dashboard.scss";
 
 const Dashboard = () => {
   const { currentUser } = Blog();
   const [selectedPost, setSelectedPost] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const { data: posts, isLoading } = useQuery("posts", async () => {
-    const q = query(
-      collection(db, "posts"),
-      where("userId", "==", currentUser.uid),
-      orderBy("created", "desc")
-    );
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-  });
+  const { data: posts, isLoading, refetch } = useQuery(
+    "posts",
+    async () => {
+      const q = query(
+        collection(db, "posts"),
+        where("userId", "==", currentUser.uid),
+        orderBy("created", "desc")
+      );
+      const querySnapshot = await getDocs(q);
+      return querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  useEffect(() => {
+    if (currentUser) {
+      const q = query(
+        collection(db, "posts"),
+        where("userId", "==", currentUser.uid),
+        orderBy("created", "desc")
+      );
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const postsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        queryClient.setQueryData("posts", postsData);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [currentUser, queryClient]);
 
   const handleEditClick = (post) => {
     setSelectedPost(post);
@@ -47,6 +76,7 @@ const Dashboard = () => {
 
   const closeEditModal = () => {
     setShowEditModal(false);
+    refetch();
   };
 
   const handleDeleteClick = async (postId) => {
@@ -55,6 +85,7 @@ const Dashboard = () => {
       await updateDoc(doc(db, "users", currentUser.uid), {
         posts: arrayRemove(postId),
       });
+      refetch();
     } catch (error) {
       console.error("Error deleting post:", error);
     }
@@ -62,13 +93,9 @@ const Dashboard = () => {
 
   return (
     <section id="dashboard">
-      <Link to="/" className="back">
-        Inicio
-        <IoChevronForwardOutline size={18} />
-        Dashboard
-      </Link>
-      <h1>Dashboard</h1>
-      <div className="border-bottom"></div>
+      <div className="head-text">
+        <h1>Dashboard</h1>
+      </div>
       {isLoading && (
         <motion.div
           className="posts"
@@ -77,23 +104,47 @@ const Dashboard = () => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {Array(3)
-            .fill()
-            .map((_, index) => (
-              <div className="post-dashboard" key={index}>
-                <div className="text">
-                  <Skeleton width={350} height={15} />
-                  <br />
-                  <Skeleton width={350} height={10} />
-                  <Skeleton width={350} height={10} />
-                </div>
-                <div className="actions">
-                  <Skeleton width={40} height={30} />
-                  <Skeleton width={40} height={30} />
-                  <Skeleton width={40} height={30} />
-                </div>
-              </div>
-            ))}
+          <table className="post-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Título</th>
+                <th>Data</th>
+                <th>Visualizações</th>
+                <th>Curtidas</th>
+                <th>Editar</th>
+                <th>Excluir</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array(3)
+                .fill()
+                .map((_, index) => (
+                  <tr key={index}>
+                    <td></td>
+
+                    <td>
+                      <Skeleton width={100} height={15} />
+                    </td>
+                    <td>
+                      <Skeleton width={40} height={15} />
+                    </td>
+                    <td>
+                      <Skeleton width={40} height={15} />
+                    </td>
+                    <td>
+                      <Skeleton width={40} height={30} />
+                    </td>
+                    <td>
+                      <Skeleton width={40} height={30} />
+                    </td>
+                    <td>
+                      <Skeleton width={40} height={30} />
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </motion.div>
       )}
 
@@ -104,38 +155,42 @@ const Dashboard = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {!isLoading &&
-          posts.map((post) => (
-            <div key={post.id} className="post-dashboard">
-              <div className="text">
-                <h2>{post.title}</h2>
-                <div
-                  className="body-dashboard"
-                  dangerouslySetInnerHTML={{
-                    __html: post.desc.slice(0, 200),
-                  }}
-                ></div>
-              </div>
-              <div className="background">
-                {post.imageUrl && (
-                  <img src={post.imageUrl} width={100} alt="Post" />
-                )}
-              </div>
-              <div className="actions">
-                <Link to={`/view-post/${post.id}`}>
-                  <MdOutlineVisibility size={18} />
-                </Link>
-                <button onClick={() => handleEditClick(post)}>
-                  {" "}
-                  <MdEdit size={18} />
-                </button>
-                <button onClick={() => handleDeleteClick(post.id)}>
-                  {" "}
-                  <MdDeleteOutline size={18} />
-                </button>
-              </div>
-            </div>
-          ))}
+        {!isLoading && (
+          <table className="post-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Título</th>
+                <th>publicado</th>
+                <th>Visualizações</th>
+                <th>Curtidas</th>
+                <th>Editar</th>
+                <th>Excluir</th>
+              </tr>
+            </thead>
+            <tbody>
+              {posts.map((post) => (
+                <tr key={post.id}>
+                  <td><img src={post.imageUrl} alt="" /> </td>
+                  <td onClick={() => navigate(`/view-post/${post.id}`)}>{post.title}</td>
+                  <td>{post.created}</td>
+                  <td>{post.views}</td>
+                  <td>{Object.keys(post.likes || {}).length}</td>
+                  <td>
+                    <button onClick={() => handleEditClick(post)}>
+                      <MdOutlineModeEditOutline size={24} />
+                    </button>
+                  </td>
+                  <td>
+                    <button onClick={() => handleDeleteClick(post.id)}>
+                      <FaRegTrashAlt size={18} color="#f00" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </motion.div>
       {showEditModal && (
         <EditPostModal

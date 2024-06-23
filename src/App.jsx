@@ -76,10 +76,12 @@ const App = () => {
           path="/profile/:id"
           element={!currentUser ? <Navigate to="/login" /> : <Profile />}
         />
+
         <Route
           path="/view-post/:id"
           element={!currentUser ? <Navigate to="/login" /> : <ViewPostPage />}
         />
+        
         <Route
           path="/search"
           element={!currentUser ? <Navigate to="/login" /> : <SearchPage />}

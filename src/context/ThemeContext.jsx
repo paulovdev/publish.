@@ -1,26 +1,19 @@
-// ThemeContext.js
 import React, { createContext, useContext, useEffect, useState } from "react";
+import Cookies from 'js-cookie';
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "dark"
-  );
+  const [theme, setTheme] = useState(() => Cookies.get("theme") || "dark");
 
   useEffect(() => {
-    document.documentElement.classList.add(theme);
-    return () => {
-      document.documentElement.classList.remove(theme);
-    };
+    // Remove todas as classes de tema antes de adicionar a classe do tema atual
+    document.documentElement.className = theme;
+    Cookies.set("theme", theme, { expires: 30 });
   }, [theme]);
 
   const changeTheme = (selectedTheme) => {
     setTheme(selectedTheme);
-    localStorage.setItem("theme", selectedTheme);
-
-    document.documentElement.classList.remove("dark", "light");
-    document.documentElement.classList.add(selectedTheme);
   };
 
   return (

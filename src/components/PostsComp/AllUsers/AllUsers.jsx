@@ -27,7 +27,7 @@ const AllUsers = () => {
         ...doc.data(),
       }))
     );
-    return shuffledUsers.slice(0, 10);
+    return shuffledUsers.slice(0, 5);
   });
 
   const loadMoreUsers = () => {

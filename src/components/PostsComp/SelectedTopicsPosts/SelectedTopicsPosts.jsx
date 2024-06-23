@@ -15,10 +15,12 @@ import { db } from "../../../firebase/Firebase";
 import { Blog } from "../../../context/Context";
 import { Link, useParams } from "react-router-dom";
 import { readTime } from "../../../utils/ReadTime";
+
 import { FaPlus } from "react-icons/fa6";
-import { FaClock } from "react-icons/fa6";
-import { IoReader } from "react-icons/io5";
+import { MdDateRange } from "react-icons/md";
+import { FaClock } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
+
 import Skeleton from "react-loading-skeleton";
 
 import "./SelectedTopicsPosts.scss";
@@ -155,25 +157,28 @@ const SelectedTopicsPosts = () => {
 
       {!isLoading && !isError && data.pages.length > 0
         ? data.pages.map((page, i) => (
-            <React.Fragment key={i}>
-              {page.postsData.map((post, j) => (
-                <Link
-                  to={`/view-post/${post.id}`}
-                  onClick={() => scrollTo({ top: 0, behavior: "smooth" })}
-                  key={j}
-                >
-                  <div className="post-container">
-                    <div className="post-left-content">
-                      {post.imageUrl && (
-                        <img
-                          src={post.imageUrl}
-                          alt="Post"
-                          className="post-image"
-                          loading="lazy"
-                        />
-                      )}
+          <React.Fragment key={i}>
+            {page.postsData.map((post, j) => (
+              <Link
+                to={`/view-post/${post.id}`}
+                onClick={() => scrollTo({ top: 0, behavior: "smooth" })}
+                key={j}
+              >
+                <div className="post-container">
+
+                  <div className="post-right-content">
+                    <div className="topic">
+                      <span>
+                        {" "}
+                        <MdCategory size={14} />
+                        {post.topicName}
+                      </span>
                     </div>
-                    <div className="post-right-content">
+
+
+                    <h1>{post.title}</h1>
+                    <p>{post.subTitle}</p>
+                    <div className="several-content">
                       <div className="profile-content">
                         {post.user && post.user.profilePicture && (
                           <img
@@ -183,37 +188,39 @@ const SelectedTopicsPosts = () => {
                             className="user-photo"
                           />
                         )}
-                        {post.user && post.user.name && <p>{post.user.name}</p>}
+                        {post.user && post.user.name && (
+                          <p>{post.user.name}</p>
+                        )}
                       </div>
-                      <h1>{post.title}</h1>
-                      <div
-                        className="body-posts"
-                        dangerouslySetInnerHTML={{
-                          __html: post.desc.slice(0, 200),
-                        }}
-                      ></div>
-                      <div className="several-content">
-                        <span>
-                          {" "}
-                          <MdCategory size={14} />
-                          {post.topicName}
-                        </span>
-                        <span>
-                          {" "}
-                          <IoReader size={14} />
-                          {readTime({ __html: post.desc })} min de leitura
-                        </span>
-                        <span>
-                          <FaClock size={12} /> {post.created}
-                        </span>
-                      </div>
+                      <span>
+                        {" "}
+                        <FaClock size={12} />
+                        {readTime({ __html: post.desc })} min de leitura
+                      </span>
+                      <span>
+                        <MdDateRange size={14} />{post.created}
+                      </span>
                     </div>
                   </div>
-                  <div className="border-bottom"></div>
-                </Link>
-              ))}
-            </React.Fragment>
-          ))
+
+                  <div className="post-left-content">
+                    {post.imageUrl && (
+                      <img
+                        src={post.imageUrl}
+                        alt="Post"
+                        className="post-image"
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
+
+
+                </div>
+                <div className="border-bottom"></div>
+              </Link>
+            ))}
+          </React.Fragment>
+        ))
         : !isLoading && <p>Sem posts disponíveis</p>}
 
       {isFetchingNextPage && (
