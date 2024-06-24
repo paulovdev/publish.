@@ -15,7 +15,7 @@ $bg-2: #343434;
 
   --bg: #fefefe;
   --bg-2: #2c2c2c;
-  --bg-3:#f3f3f3;
+  --bg-3: #f3f3f3;
 
   --border: #e0e0e0;
   --border-2: #dadada;
@@ -34,8 +34,8 @@ $bg-2: #343434;
   --p-2: #111111;
 
   --bg: #121212;
-  --bg-3:#141414;
-  
+  --bg-3: #141414;
+
   --border: #262626;
   --border-2: #3a3a3a;
 
@@ -94,10 +94,12 @@ section {
 .loading-container {
   position: relative;
   width: 100%;
-  height: 75px;
-  top: 0;
+  height: 100%;
+
+  bottom: 0;
+
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: center;
 
   .loading {
@@ -139,7 +141,7 @@ section {
 
 .loading-container.initial {
   width: 100%;
-  height: 80vh;
+  height: 100vh;
 
   display: flex;
   align-items: center;

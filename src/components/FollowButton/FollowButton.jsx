@@ -9,6 +9,7 @@ import {
 import { db } from "../../firebase/Firebase";
 import { Blog } from "../../context/Context";
 import Skeleton from "react-loading-skeleton";
+import { FaUserPlus, FaUserCheck } from "react-icons/fa"; // Importando ícones do FontAwesome
 
 const FollowButton = ({ userId }) => {
   const { currentUser } = Blog();
@@ -40,70 +41,61 @@ const FollowButton = ({ userId }) => {
     checkIfFollowing();
   }, [currentUser, userId]);
 
-  const handleFollow = async () => {
+  const handleFollowToggle = async () => {
     if (!currentUser) return;
 
-    // Atualização otimista
-    setIsFollowing(true);
+    // Ação otimista: atualiza o estado local imediatamente
+    setIsFollowing(!isFollowing);
 
     try {
       const userRef = doc(db, "users", userId);
       const currentUserRef = doc(db, "users", currentUser.uid);
 
-      await Promise.all([
-        updateDoc(userRef, {
-          followers: arrayUnion(currentUser.uid),
-          notifications: arrayUnion(currentUser.uid),
-        }),
-        updateDoc(currentUserRef, {
-          following: arrayUnion(userId),
-        }),
-      ]);
-    } catch (error) {
-      // Reversão em caso de erro
-      setIsFollowing(false);
-      console.error("Error following user:", error);
-    }
-  };
-
-  const handleUnfollow = async () => {
-    if (!currentUser) return;
-
-    // Atualização otimista
-    setIsFollowing(false);
-
-    try {
-      const userRef = doc(db, "users", userId);
-      const currentUserRef = doc(db, "users", currentUser.uid);
-
-      await Promise.all([
-        updateDoc(userRef, {
+      if (isFollowing) {
+        await updateDoc(userRef, {
           followers: arrayRemove(currentUser.uid),
           notifications: arrayRemove(currentUser.uid),
-        }),
-        updateDoc(currentUserRef, {
+        });
+        await updateDoc(currentUserRef, {
           following: arrayRemove(userId),
-        }),
-      ]);
+        });
+      } else {
+        await updateDoc(userRef, {
+          followers: arrayUnion(currentUser.uid),
+          notifications: arrayUnion(currentUser.uid),
+        });
+        await updateDoc(currentUserRef, {
+          following: arrayUnion(userId),
+        });
+      }
     } catch (error) {
-      // Reversão em caso de erro
-      setIsFollowing(true);
-      console.error("Error unfollowing user:", error);
+      console.error(
+        `Error ${isFollowing ? "unfollowing" : "following"} user:`,
+        error
+      );
+      // Reverte o estado em caso de erro
+      setIsFollowing(!isFollowing);
+    } finally {
+      setLoading(false);
     }
   };
 
   if (loading) {
-    return <Skeleton width={50} height={20} borderRadius={30} />;
+    return <Skeleton width={80} height={20} borderRadius={30} />;
   }
 
   return (
-    <>
+    <button onClick={handleFollowToggle}>
       {isFollowing ? (
-        <button onClick={handleUnfollow}>Seguindo</button>
+        <>
+          <FaUserCheck style={{ marginRight: "5px" }} /> Seguindo
+        </>
       ) : (
-        <button onClick={handleFollow}>Seguir</button>
+        <>
+          <FaUserPlus style={{ marginRight: "5px" }} /> Seguir
+        </>
       )}
-    </>
+    </button>
   );
 };
 

@@ -11,6 +11,10 @@ const HomeBar = () => {
   const { currentUser } = Blog();
   const queryClient = useQueryClient();
   const [userSelectedTopics, setUserSelectedTopics] = useState([]);
+  const [loadingUserTopics, setLoadingUserTopics] = useState(true); // State para controlar o carregamento inicial dos tópicos do usuário
+
+  // Utilizar useMemo para armazenar os tópicos selecionados e controlar a invalidação da query
+  const memoizedSelectedTopics = useMemo(() => userSelectedTopics, [userSelectedTopics]);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -21,7 +25,7 @@ const HomeBar = () => {
       const selectedTopics = userData?.selectedTopics || [];
       setUserSelectedTopics(selectedTopics);
 
-      // Invalidate and refetch topics when user selected topics change
+      // Invalidar e refetch dos tópicos quando os tópicos selecionados do usuário mudarem
       queryClient.invalidateQueries(["allTopics", selectedTopics]);
     });
 
@@ -29,11 +33,11 @@ const HomeBar = () => {
   }, [currentUser, queryClient]);
 
   const { data: topics = [], isLoading: isLoadingTopics } = useQuery(
-    ["allTopics", userSelectedTopics],
+    ["allTopics", memoizedSelectedTopics],
     async () => {
-      if (!userSelectedTopics.length) return [];
+      if (!memoizedSelectedTopics.length) return [];
 
-      const topicPromises = userSelectedTopics.map((topicId) =>
+      const topicPromises = memoizedSelectedTopics.map((topicId) =>
         getDoc(doc(db, "topics", topicId))
       );
       const topicDocs = await Promise.all(topicPromises);
@@ -48,11 +52,33 @@ const HomeBar = () => {
       return filteredTopics;
     },
     {
-      enabled: !!userSelectedTopics.length,
+      enabled: !!memoizedSelectedTopics.length,
+      refetchOnWindowFocus: false,
+      onSuccess: () => {
+        setLoadingUserTopics(false); // Marca que os tópicos do usuário terminaram de carregar
+      },
     }
   );
 
-  const memoizedTopics = useMemo(() => topics, [topics]);
+  // Determina o número de Skeletons baseado no número de tópicos selecionados pelo usuário
+  const numSkeletons = memoizedSelectedTopics.length;
+
+  // Agora, renderizamos o conteúdo do HomeBar apenas quando todos os dados estiverem prontos
+  if (isLoadingTopics || loadingUserTopics) {
+    return (
+      <div className="home-nav">
+        <NavLink to="all-posts">
+          <p>Todos</p>
+        </NavLink>
+        <NavLink to="following">
+          <p>Seguindo</p>
+        </NavLink>
+        {Array.from({ length: numSkeletons }).map((_, index) => (
+          <Skeleton key={index} width={75} height={10} />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="home-nav">
@@ -62,15 +88,8 @@ const HomeBar = () => {
       <NavLink to="following">
         <p>Seguindo</p>
       </NavLink>
-
-      {isLoadingTopics &&
-        Array.from({ length: 5 }).map((_, index) => (
-          <Skeleton key={index} width={100} height={10} />
-        ))}
-
-      {!isLoadingTopics &&
-        memoizedTopics.length > 0 &&
-        memoizedTopics.map((topic) => (
+      {topics.length > 0 &&
+        topics.map((topic) => (
           <NavLink key={topic.id} to={`topic/${topic.id}`}>
             <p>{topic.name}</p>
           </NavLink>

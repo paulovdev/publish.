@@ -10,15 +10,16 @@
     align-items: center;
     justify-content: center;
     z-index: 999;
-    backdrop-filter: blur(10px) brightness(75%);
+    backdrop-filter: brightness(50%);
 
     .modal-content {
         background: var(--bg);
 
-        padding: 20px;
+        padding: 1rem;
         border-radius: 0.5rem;
-        
-        width: 600px;
+
+        width: 650px;
+        height: fit-content;
 
         .header-text {
             width: 100%;

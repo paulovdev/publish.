@@ -10,13 +10,14 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "../../firebase/Firebase";
 import { Blog } from "../../context/Context";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import { IoImageOutline } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import { FaSave } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Editor from "../../utils/Editor/Editor";
 
+import Editor from "../../utils/Editor/Editor";
 import "./CreatePostPage.scss";
 
 const CreatePostPage = () => {
@@ -113,15 +114,17 @@ const CreatePostPage = () => {
                 posts: arrayUnion(newPostRef.id),
             });
 
+
+            // Limpar os campos do formulário e navegar para a página de todos os posts
             setTitle("");
+            setSubTitle("");
             setDesc("");
             setSelectedTopics([]);
             setImage(null);
 
-            alert("Post created successfully");
-            navigate("/feed/all-posts");
+            navigate(`/view-post/${newPostRef.id}`);
         } catch (error) {
-            console.error("Error creating post:", error);
+            console.error("Erro ao criar post:", error);
         }
     };
 
@@ -179,12 +182,9 @@ const CreatePostPage = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.5 }}
-
                         className="create-post-container"
                     >
                         <div className="grid-1">
-
-
                             <div className="input-container text-input">
                                 <input
                                     type="text"
@@ -201,11 +201,8 @@ const CreatePostPage = () => {
                                 )}
                             </div>
 
-
-
                             <div className="step-topic">
                                 <label>Tópico</label>
-
                                 <select
                                     value={selectedTopics.map((topic) => topic.id)}
                                     onChange={handleSelectChange}
@@ -299,7 +296,6 @@ const CreatePostPage = () => {
                     >
                         <div className="step-text">
                             <label>Edição de Texto</label>
-
                             <Editor
                                 placeholder="Escreva sobre o que quiser e compartilhe o seu conhecimento..."
                                 value={desc}
@@ -335,7 +331,7 @@ const CreatePostPage = () => {
                                     <FaSave size={26} />
                                 </div>
                                 <p>Publicar</p>
-                            </button> 
+                            </button>
                         </div>
                     </motion.div>
                 )}

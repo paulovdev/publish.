@@ -23,34 +23,39 @@ import CommentModal from "../../components/Modals/CommentModal/CommentModal";
 import "./ViewPostPage.scss";
 
 const fetchPost = async (id) => {
-  const postDoc = await getDoc(doc(db, "posts", id));
-  if (postDoc.exists()) {
-    const postData = postDoc.data();
+  try {
+    const postDoc = await getDoc(doc(db, "posts", id));
+    if (postDoc.exists()) {
+      const postData = postDoc.data();
 
-    // Increment view count
-    const currentViews = parseInt(postData.views);
-    const updatedViews = isNaN(currentViews) ? 1 : currentViews + 1;
+      // Incrementar contagem de visualizações
+      const currentViews = parseInt(postData.views);
+      const updatedViews = isNaN(currentViews) ? 1 : currentViews + 1;
 
-    await updateDoc(postDoc.ref, {
-      views: updatedViews,
-    });
+      await updateDoc(postDoc.ref, {
+        views: updatedViews,
+      });
 
-    // Get user data
-    const userDoc = await getDoc(doc(db, "users", postData.userId));
-    const userData = userDoc.exists() ? userDoc.data() : null;
+      // Buscar dados do usuário
+      const userDoc = await getDoc(doc(db, "users", postData.userId));
+      const userData = userDoc.exists() ? userDoc.data() : null;
 
-    // Get topic name
-    const topicDoc = await getDoc(doc(db, "topics", postData.topics));
-    const topicData = topicDoc.exists() ? topicDoc.data().name : null;
+      // Buscar nome do tópico
+      const topicDoc = await getDoc(doc(db, "topics", postData.topics));
+      const topicName = topicDoc.exists() ? topicDoc.data().name : "Nome do tópico não disponível";
 
-    return {
-      id: postDoc.id,
-      ...postData,
-      user: userData,
-      topicName: topicData,
-    };
-  } else {
-    throw new Error("Post not found");
+      return {
+        id: postDoc.id,
+        ...postData,
+        user: userData,
+        topicName: topicName,
+      };
+    } else {
+      throw new Error("Post not found");
+    }
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    throw error;
   }
 };
 
@@ -61,7 +66,16 @@ const ViewPostPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { data: post, isLoading } = useQuery(["post", id], () => fetchPost(id));
+  const { data: post, isLoading, isError } = useQuery(
+    ["post", id],
+    () => fetchPost(id),
+    {
+      refetchOnWindowFocus: false, 
+      onError: (error) => {
+        console.error("Error fetching post:", error);
+      },
+    }
+  );
 
   const likePostMutation = useMutation(
     async () => {
@@ -84,7 +98,7 @@ const ViewPostPage = () => {
     },
     {
       onMutate: async () => {
-        // Optimistically update UI
+        // Atualizar UI otimisticamente
         const optimisticLikes = { ...post.likes, [currentUser.uid]: true };
 
         queryClient.setQueryData(["post", id], (oldData) => ({
@@ -95,12 +109,12 @@ const ViewPostPage = () => {
         return () => queryClient.setQueryData(["post", id], post);
       },
       onError: (err, rollback) => {
-        // Rollback on error
+        // Rollback em caso de erro
         rollback();
         console.error("Like mutation error:", err);
       },
       onSuccess: () => {
-        // Invalidate post query on success
+        // Invalidar query do post ao sucesso
         queryClient.invalidateQueries(["post", id]);
       },
     }
@@ -128,14 +142,14 @@ const ViewPostPage = () => {
     }
   };
 
-  if (isLoading) {
+  const openCommentModal = () => {
+    setIsCommentModalOpen(true);
+  };
+
+  if (isLoading || !post) {
     return (
       <motion.section
         id="post-solo"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
       >
         <div className="container">
           <div className="image-background">
@@ -184,20 +198,24 @@ const ViewPostPage = () => {
     );
   }
 
+  if (isError) {
+    return (
+      <div>
+        Error fetching post. Please try again later.
+      </div>
+    );
+  }
+
+  // Renderizar conteúdo do post quando estiver pronto
   return (
     <>
       <motion.section
         id="post-solo"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
       >
         <div className="container">
           <div className="title-text">
             <div className="topic">
               <span>
-                {" "}
                 <MdCategory size={14} />
                 {post.topicName}
               </span>
@@ -221,7 +239,6 @@ const ViewPostPage = () => {
                   )}
                 </div>
                 <span>
-                  {" "}
                   <CiClock2 size={16} />
                   {readTime({ __html: post.desc })} min de leitura
                 </span>
@@ -231,13 +248,11 @@ const ViewPostPage = () => {
               </div>
 
               <div className="action-icons">
-
                 <div className="action-icon-wrapper">
                   <div
                     className="action-icon"
                     data-tooltip-id="my-tooltip"
-                    data-tooltip-content={`${Object.keys(post.likes || {}).length
-                      } Curtida`}
+                    data-tooltip-content={`${Object.keys(post.likes || {}).length} Curtida`}
                     onClick={handleLikePost}
                   >
                     <button>
@@ -264,7 +279,6 @@ const ViewPostPage = () => {
                   <FiShare2 size={16} />
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -273,7 +287,7 @@ const ViewPostPage = () => {
               <img
                 src={post.imageUrl}
                 loading="lazy"
-                width={100}
+  
                 alt="Post"
                 className="post-image"
               />

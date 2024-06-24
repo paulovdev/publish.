@@ -108,6 +108,7 @@ const FollowingPosts = () => {
     isFetchingNextPage,
   } = useInfiniteQuery(["followingPosts"], fetchPosts, {
     getNextPageParam: (lastPage) => lastPage?.lastDoc || undefined,
+    refetchOnWindowFocus: false, 
   });
 
   const lastPostElementRef = useRef();
@@ -127,6 +128,7 @@ const FollowingPosts = () => {
               <div className="post-left-content">
                 <Skeleton width={225} height={150} />
               </div>
+
               <div className="post-right-content">
                 <div className="profile-content">
                   <Skeleton width={24} height={24} borderRadius={100} />
@@ -144,6 +146,8 @@ const FollowingPosts = () => {
                   <Skeleton width={25} height={10} />
                 </div>
               </div>
+
+
             </div>
             <div className="border-bottom"></div>
           </Link>
@@ -160,7 +164,16 @@ const FollowingPosts = () => {
                 key={j}
               >
                 <div className="post-container">
-
+                  <div className="post-left-content">
+                    {post.imageUrl && (
+                      <img
+                        src={post.imageUrl}
+                        alt="Post"
+                        className="post-image"
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
                   <div className="post-right-content">
                     <div className="topic">
                       <span>
@@ -198,16 +211,7 @@ const FollowingPosts = () => {
                     </div>
                   </div>
 
-                  <div className="post-left-content">
-                    {post.imageUrl && (
-                      <img
-                        src={post.imageUrl}
-                        alt="Post"
-                        className="post-image"
-                        loading="lazy"
-                      />
-                    )}
-                  </div>
+
 
 
                 </div>

@@ -44,9 +44,6 @@ const Dashboard = () => {
         id: doc.id,
         ...doc.data(),
       }));
-    },
-    {
-      refetchOnWindowFocus: false,
     }
   );
 

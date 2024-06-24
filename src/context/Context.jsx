@@ -1,18 +1,26 @@
 import { onAuthStateChanged } from "firebase/auth";
-import React, { useContext, useEffect } from "react";
-import { useState } from "react";
-import { createContext } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase/Firebase";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, query, getDocs } from "firebase/firestore";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 
 const BlogContext = createContext();
 
-const Context = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [userLoading, setUserLoading] = useState(true);
-  const [allUsers, setAllUsers] = useState([]);
+const fetchUsers = async () => {
+  const postRef = query(collection(db, "users"));
+  const snapshot = await getDocs(postRef);
+  return snapshot.docs.map(doc => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
+};
 
+const Context = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const updatePosts = () => {
+    setPostsUpdated(true);
+  };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -24,23 +32,20 @@ const Context = ({ children }) => {
     });
 
     return () => unsubscribe();
-  }, [currentUser]);
-
-  useEffect(() => {
-    const getUsers = () => {
-      const postRef = query(collection(db, "users"));
-      onSnapshot(postRef, (snapshot) => {
-        setAllUsers(
-          snapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }))
-        );
-        setUserLoading(false);
-      });
-    };
-    getUsers();
   }, []);
+
+  const { data: allUsers = [], isLoading: userLoading } = useQuery("users", fetchUsers, {
+    staleTime: 1000 * 60 * 5, // 5 minutos
+    cacheTime: 1000 * 60 * 10, // 10 minutos
+  });
+
+  if (loading || userLoading) {
+    return (
+      <div className="loading-container initial">
+        <div className="loading initial"></div>
+      </div>
+    );
+  }
 
   return (
     <BlogContext.Provider
@@ -48,20 +53,22 @@ const Context = ({ children }) => {
         currentUser,
         setCurrentUser,
         allUsers,
-        userLoading,
+        userLoading
       }}
     >
-      {loading && userLoading ? (
-        <div className="loading-container initial">
-          <div className="loading initial"></div>{" "}
-        </div>
-      ) : (
-        children
-      )}
+      {children}
     </BlogContext.Provider>
   );
 };
 
-export default Context;
+const queryClient = new QueryClient();
+
+const App = ({ children }) => (
+  <QueryClientProvider client={queryClient}>
+    <Context>{children}</Context>
+  </QueryClientProvider>
+);
+
+export default App;
 
 export const Blog = () => useContext(BlogContext);

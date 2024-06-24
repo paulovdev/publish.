@@ -15,7 +15,6 @@ const UserModal = () => {
   const username = getUserData?.name;
   const firstWord = username ? username.split(" ").slice(0, 2).join(" ") : "";
   const [modal, setModal] = useState(false);
-  const dropdownRef = useRef(null);
   const [showConfigModal, setShowConfigModal] = useState(false);
 
   const openUserModal = () => {

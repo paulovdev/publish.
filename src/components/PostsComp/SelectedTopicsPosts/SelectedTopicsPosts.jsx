@@ -114,7 +114,7 @@ const SelectedTopicsPosts = () => {
   } = useInfiniteQuery(["selectedTopicsPosts", id], fetchPosts, {
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.lastDoc;
-    },
+    }
   });
 
   const lastPostElementRef = useRef();
@@ -150,6 +150,8 @@ const SelectedTopicsPosts = () => {
                 <Skeleton width={25} height={10} />
               </div>
             </div>
+
+
           </div>
           <div className="border-bottom"></div>
         </Link>
@@ -165,7 +167,16 @@ const SelectedTopicsPosts = () => {
                 key={j}
               >
                 <div className="post-container">
-
+                  <div className="post-left-content">
+                    {post.imageUrl && (
+                      <img
+                        src={post.imageUrl}
+                        alt="Post"
+                        className="post-image"
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
                   <div className="post-right-content">
                     <div className="topic">
                       <span>
@@ -203,16 +214,7 @@ const SelectedTopicsPosts = () => {
                     </div>
                   </div>
 
-                  <div className="post-left-content">
-                    {post.imageUrl && (
-                      <img
-                        src={post.imageUrl}
-                        alt="Post"
-                        className="post-image"
-                        loading="lazy"
-                      />
-                    )}
-                  </div>
+
 
 
                 </div>

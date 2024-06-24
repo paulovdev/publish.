@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import React from "react";
+import { useQuery } from "react-query";
 import {
   collection,
   query,
@@ -12,12 +12,9 @@ import {
 import { db } from "../../../firebase/Firebase";
 import Skeleton from "react-loading-skeleton";
 import { Blog } from "../../../context/Context";
-import { motion } from "framer-motion";
-
-import "./AllTopics.scss";
-import SelectedTopicsPosts from "../SelectedTopicsPosts/SelectedTopicsPosts";
 import { Link, useNavigate } from "react-router-dom";
 
+import "./AllTopics.scss";
 const fetchTopics = async () => {
   const topicsCollection = collection(db, "topics");
   const topicsQuery = query(topicsCollection, limit(15));
@@ -30,11 +27,10 @@ const fetchTopics = async () => {
 
 const AllTopics = () => {
   const { currentUser } = Blog();
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const { data: topics = [], isLoading } = useQuery("allTopics", fetchTopics, {
-    staleTime: 1000 * 60 * 5, // 5 minutes
+
   });
 
   const handleTopicClick = async (topicId) => {
@@ -49,7 +45,9 @@ const AllTopics = () => {
       await updateDoc(userDoc, {
         selectedTopics: [...userSelectedTopics, topicId],
       });
-      scrollTo({ top: 0, behavior: "smooth" });
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: "smooth" });
       navigate(`/feed/topic/${topicId}`);
     }
   };
@@ -63,16 +61,13 @@ const AllTopics = () => {
         <>
           <div className="topic-info-container">
             {topics.map((topic) => (
-              <motion.p
+              <p
                 key={topic.id}
                 className="topic-info"
                 onClick={() => handleTopicClick(topic.id)}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, ease: "easeInOut" }}
               >
                 {topic.name}
-              </motion.p>
+              </p>
             ))}
             <Link to={"/get-started/topics"}>Ver todos os tópicos</Link>
           </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { getDocs, collection, query } from "firebase/firestore";
 import { db } from "../../../firebase/Firebase";
@@ -19,19 +19,29 @@ const shuffleArray = (array) => {
 
 const AllUsers = () => {
   const queryClient = useQueryClient();
-  const { isLoading, data: users = [] } = useQuery("randomUsers", async () => {
-    const usersSnapshot = await getDocs(query(collection(db, "users")));
-    const shuffledUsers = shuffleArray(
-      usersSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-    );
-    return shuffledUsers.slice(0, 5);
-  });
+  const [loadMoreClicked, setLoadMoreClicked] = useState(false);
 
-  const loadMoreUsers = () => {
-    queryClient.invalidateQueries("randomUsers");
+  const { isLoading, data: users = [] } = useQuery(
+    "randomUsers",
+    async () => {
+      const usersSnapshot = await getDocs(query(collection(db, "users")));
+      const shuffledUsers = shuffleArray(
+        usersSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+      );
+      return shuffledUsers.slice(0, 5); 
+    },
+    {
+      refetchOnWindowFocus: false, 
+      enabled: !loadMoreClicked, 
+    }
+  );
+
+  const refetchUsers = async () => {
+    await queryClient.invalidateQueries("randomUsers"); 
+    setLoadMoreClicked(false); 
   };
 
   return (
@@ -76,9 +86,12 @@ const AllUsers = () => {
             <FollowButton userId={user.id} />
           </div>
         ))}
-      <button onClick={loadMoreUsers} className="more-users-button">
-        <LiaRandomSolid size={24} color="#fff" />
-      </button>
+
+      {!isLoading && (
+        <button onClick={refetchUsers} className="load-more-button">
+          <LiaRandomSolid size={24} color="#fff" />
+        </button>
+      )}
     </div>
   );
 };

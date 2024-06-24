@@ -74,6 +74,7 @@ const EditProfileModal = ({ user, setUser, onClick }) => {
       }));
       setLoading(false);
       onClick();
+      queryClient.invalidateQueries("users")
     } catch (error) {
       setLoading(false);
       setError("Erro ao salvar as alterações. Tente novamente mais tarde.");
@@ -97,7 +98,7 @@ const EditProfileModal = ({ user, setUser, onClick }) => {
         <MdOutlineClose size={32} />
       </div>
 
-      
+
       <div className="edit-profile-modal-content">
         <div className="head-text">
           <h1>Edite as informações do seu Perfil</h1>
