@@ -158,3 +158,41 @@
     }
   }
 }
+
+@media (max-width: 809px) {
+  #dashboard {
+    margin: 3rem 0; /* Reduz margens para economizar espaço */
+  }
+
+  .head-text {
+    width: 100%;
+    text-align: start; /* Ajusta o alinhamento do texto */
+    margin-bottom: 2rem; /* Reduz a margem inferior */
+  }
+
+  .posts {
+    width: 100%;
+    overflow-x: auto; /* Mantém o overflow-x para permitir rolagem horizontal se necessário */
+
+    .post-table {
+      width: 100%;
+      border-radius: 0.5rem;
+
+      th,
+      td {
+        padding: 1rem 0.5rem; /* Reduz o preenchimento das células */
+      }
+
+      img {
+        width: 40px; /* Reduz o tamanho das imagens */
+        height: 32px;
+      }
+
+      .action-icon {
+        width: 50px; /* Reduz o tamanho dos ícones de ação */
+        height: 30px;
+        padding: 0.3rem;
+      }
+    }
+  }
+}

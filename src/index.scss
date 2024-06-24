@@ -71,7 +71,6 @@ body {
 
 }
 
-
 button {
   outline: none;
   background: transparent;
@@ -165,34 +164,34 @@ section {
   }
 }
 
-.back {
-  position: relative;
-  margin-bottom: 1rem;
-  color: var(--p);
-  font-weight: 400;
+.btn {
+  position: fixed;
+  width: fit-content;
+  height: auto;
+
+  top: 100px;
+  right: 20px;
+
+  padding: 0.5rem 1rem;
+
+  background-color: var(--btn);
+  border-radius: 2rem;
+
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--fixed-c);
+
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 
-  gap: 0.2rem;
-
-  cursor: pointer;
-
-  svg {
-    transition: all 0.3s;
-  }
+  transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  z-index: 999;
 
   &:hover {
-    svg {
-      transform: translateX(1px);
-    }
+    background-color: var(--btn-2);
   }
-}
-
-.border-post {
-  width: 100%;
-  height: 1px;
-  background-color: var(--p);
-  opacity: .1;
 }
 
 ::selection {

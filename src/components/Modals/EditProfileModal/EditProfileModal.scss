@@ -194,7 +194,7 @@
 
                 &:focus~label,
                 &:not(:placeholder-shown)~label {
-                    transform: translateY(-3.5rem);
+                    transform: translateY(-4rem);
                     font-weight: 500;
                     font-size: 14px;
                     line-height: 1.3;
@@ -258,14 +258,23 @@
 
 @media (max-width: 809px) {
     #edit-profile-modal {
-        .modal-content {
-            position: fixed;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            padding: 1.5rem;
-            bottom: 0;
-            width: 100%;
-            height: 80vh;
+        .edit-profile-modal-content {
+            .head-text {
+                h1 {
+                    font-size: 52px;
+                    text-align: center;
+                }
+            }
+
+            margin: 5rem 0;
+            max-width: 100%;
+            padding: 10px !important;
+
+            form {
+                justify-content: center;
+                align-items: center;
+            }
         }
+
     }
 }

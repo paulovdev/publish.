@@ -252,3 +252,33 @@
     }
   }
 }
+
+@media (max-width: 809px) {
+  #register {
+    margin: 7rem 0;
+    padding: 10px !important;
+
+    h1 {
+      font-size: 52px;
+      text-align: center;
+    }
+
+
+    form {
+      .grid-1 {
+        flex-direction: column;
+
+      }
+
+      .cient-text {
+        position: relative;
+        width: 100%;
+
+        p {
+          max-width: 100%;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

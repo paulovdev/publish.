@@ -4,7 +4,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  
+
   margin: 5rem 0;
 
   display: flex;
@@ -172,6 +172,21 @@
             }
           }
         }
+      }
+    }
+  }
+}
+
+@media (max-width: 809px) {
+  #login {
+    margin: 7rem 0;
+    align-items: center;
+    padding: 0 10px !important;
+
+    .head-text {
+      h1 {
+        font-size: 52px;
+        text-align: center;
       }
     }
   }

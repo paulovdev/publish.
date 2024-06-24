@@ -113,10 +113,6 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  @media (max-width: 809px) {
-    padding: 1rem;
-  }
 }
 
 .logged-in {
@@ -133,11 +129,6 @@ header {
 }
 
 @media (max-width: 809px) {
-  header {
-    justify-content: space-between;
-    padding: 1rem;
-    right: 0; // Adjust for better centering on small screens
-  }
 
   .logo {
     font-size: 1.125rem; // 18px in rem for smaller screens
@@ -149,11 +140,19 @@ header {
 
   nav {
     gap: 0.5rem;
+  }
 
-    li a {
-      padding: 0.3rem 1rem;
-      font-size: 0.875rem; // Slightly smaller font size for small screens
-    }
+  .logged-in {
+    padding: 15px 10px;
+    justify-content: end;
+
+  }
+
+  .logged-out {
+    position: fixed;
+    padding: 10px 25px;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .notify-container .side-icon {
