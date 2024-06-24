@@ -217,7 +217,7 @@ const CreatePostPage = () => {
                         </div>
 
                         <div className="grid-1">
-                            <div className="input-container text-input">
+                            <div className="input-container text-input sub-text-input">
                                 <input
                                     type="text"
                                     required
@@ -231,6 +231,7 @@ const CreatePostPage = () => {
                                         <IoCloseOutline size={24} />
                                     </span>
                                 )}
+
                             </div>
                             <div className="step-image">
                                 <label>Selecione uma Imagem</label>
@@ -323,7 +324,7 @@ const CreatePostPage = () => {
 
                             <button
                                 type="submit"
-                                className="btn"
+                                className="save-btn"
                                 title="Salvar"
                                 disabled={!isTitleValid || !isPhotoValid || !isDescValid}
                             >

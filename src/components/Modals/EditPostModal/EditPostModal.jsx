@@ -135,7 +135,7 @@ const EditPostModal = ({ postId, onClick }) => {
 
           <button
             type="submit"
-            className="btn"
+            className="save-btn"
             title="Salvar"
             disabled={loading}
           >

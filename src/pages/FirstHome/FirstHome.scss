@@ -308,35 +308,35 @@
 @media (max-width: 809px) {
     #home-intro {
         margin: 7rem 0;
-        align-items: center;
-        padding: 0 10px !important;
+        padding: 0 15px !important;
 
         h1 {
-            font-size: 64px;
-            text-align: center;
+            font-size: 52px;
+            margin-bottom: 1rem;
         }
 
         p {
             max-width: 100%;
-            text-align: center;
+            font-size: 18px;
         }
 
         .home-buttons {
+            width: 100%;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 2rem;
 
             a {
-                width: fit-content;
+                width: 300px;
                 height: 50px;
-                padding: 0.3rem 1.5rem;
+
             }
 
         }
 
         .right-container {
-            padding: 10px;
+            padding: 15px;
 
             img {
                 width: 100%;
@@ -346,7 +346,7 @@
 
     #home-image {
         margin: 1rem 0;
-        padding: 10px !important;
+        padding: 15px !important;
 
         img {
             height: fit-content;

@@ -145,6 +145,7 @@
 
       span {
         position: absolute;
+        background-color: var(--p-2);
         right: 10px;
         bottom: 5px;
         cursor: pointer;
@@ -256,11 +257,11 @@
 @media (max-width: 809px) {
   #register {
     margin: 7rem 0;
-    padding: 10px !important;
+    padding: 15px !important;
 
     h1 {
       font-size: 52px;
-      text-align: center;
+      
     }
 
 
@@ -276,7 +277,7 @@
 
         p {
           max-width: 100%;
-          text-align: center;
+        
         }
       }
     }

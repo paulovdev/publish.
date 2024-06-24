@@ -209,6 +209,7 @@
 
                 span {
                     position: absolute;
+                    background-color: var(--p-2);
                     right: 10px;
                     bottom: 5px;
                     cursor: pointer;
@@ -268,7 +269,7 @@
 
             margin: 5rem 0;
             max-width: 100%;
-            padding: 10px !important;
+            padding: 15px !important;
 
             form {
                 justify-content: center;
