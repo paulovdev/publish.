@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   collection,
   query,
+  doc,
+  where,
   orderBy,
   getDocs,
+  deleteDoc,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { Blog } from "../../context/Context";
-import { useQuery } from "react-query";
+
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { db } from "../../firebase/Firebase";
 
 import { MdOutlineModeEditOutline } from "react-icons/md";
@@ -17,18 +20,24 @@ import Skeleton from "react-loading-skeleton";
 import { motion } from "framer-motion";
 import EditPostModal from "../../components/Modals/EditPostModal/EditPostModal";
 import "./Dashboard.scss";
+import { Blog } from "../../context/Context";
 
 const Dashboard = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const queryClient = useQueryClient()
   const navigate = useNavigate();
+  const { currentUser } = Blog(); 
 
-  // Query to fetch posts and aggregate total views and likes
-  const { data: posts, isLoading } = useQuery(
+
+  const { data: posts, isLoading} = useQuery(
     "posts",
     async () => {
+      if (!currentUser) return { posts: [], totalViews: 0, totalLikes: 0 };
+
       const q = query(
         collection(db, "posts"),
+        where("userId", "==", currentUser.uid), // Filter by current user's UID
         orderBy("created", "desc")
       );
       const querySnapshot = await getDocs(q);
@@ -45,6 +54,18 @@ const Dashboard = () => {
     }
   );
 
+  // Mutation to delete a post
+  const deletePost = useMutation(
+    async (postId) => {
+      await deleteDoc(doc(db, "posts", postId));
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("posts");
+      },
+    }
+  );
+
   const handleEditClick = (post) => {
     setSelectedPost(post);
     setShowEditModal(true);
@@ -52,11 +73,16 @@ const Dashboard = () => {
 
   const closeEditModal = () => {
     setShowEditModal(false);
-    // No need to refetch here since we're fetching on component mount
   };
 
   const handleDeleteClick = async (postId) => {
-    // Implement deletion logic here
+    if (window.confirm("Tem certeza que deseja excluir este post?")) {
+      try {
+        await deletePost.mutateAsync(postId);
+      } catch (error) {
+        console.error("Erro ao deletar o post:", error);
+      }
+    }
   };
 
   return (
@@ -66,7 +92,8 @@ const Dashboard = () => {
         {!isLoading && (
           <div>
             <h2>
-              Total de <span>{posts.totalViews}</span> visualizações e <span>{posts.totalLikes}</span> curtidas em todos os posts.
+              Total de <span>{posts.totalViews}</span> visualizações e{" "}
+              <span>{posts.totalLikes}</span> curtidas em todos os posts.
             </h2>
           </div>
         )}
@@ -135,7 +162,7 @@ const Dashboard = () => {
               <tr>
                 <th></th>
                 <th>Título</th>
-                <th>publicado</th>
+                <th>Publicado</th>
                 <th>Visualizações</th>
                 <th>Curtidas</th>
                 <th>Editar</th>
@@ -145,7 +172,9 @@ const Dashboard = () => {
             <tbody>
               {posts.posts.map((post) => (
                 <tr key={post.id}>
-                  <td><img src={post.imageUrl} alt="" /> </td>
+                  <td>
+                    <img src={post.imageUrl} alt="" style={{ width: "50px", height: "50px" }} />
+                  </td>
                   <td onClick={() => navigate(`/view-post/${post.id}`)}>{post.title}</td>
                   <td>{post.created}</td>
                   <td>{post.views}</td>

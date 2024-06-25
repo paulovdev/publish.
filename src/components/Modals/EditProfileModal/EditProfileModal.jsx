@@ -11,6 +11,7 @@ import { useQueryClient } from "react-query";
 import "./EditProfileModal.scss";
 
 const EditProfileModal = ({ user, setUser, onClick }) => {
+  const queryClient = useQueryClient();
   const [name, setName] = useState(user?.name || "");
   const [bio, setBio] = useState(user?.bio || "");
   const [profilePicture, setProfilePicture] = useState(null);
@@ -20,7 +21,7 @@ const EditProfileModal = ({ user, setUser, onClick }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isModified, setIsModified] = useState(false);
-  const queryClient = useQueryClient();
+
 
   useEffect(() => {
     if (name !== user.name || bio !== user.bio || profilePicture !== null) {
@@ -74,7 +75,6 @@ const EditProfileModal = ({ user, setUser, onClick }) => {
       }));
       setLoading(false);
       onClick();
-      queryClient.invalidateQueries("users")
     } catch (error) {
       setLoading(false);
       setError("Erro ao salvar as alterações. Tente novamente mais tarde.");

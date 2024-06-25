@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery} from "react-query";
+import { useQuery } from "react-query";
 import { doc, getDocs, collection, query, orderBy, limit, getDoc } from "firebase/firestore";
 import { db } from "../../../firebase/Firebase";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -66,7 +66,7 @@ const fetchPopularPosts = async () => {
 
 const PopularPosts = () => {
   const { isLoading, data: posts = [] } = useQuery("popularPosts", fetchPopularPosts, {
-    refetchOnWindowFocus: false, 
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {
@@ -128,6 +128,7 @@ const PopularPosts = () => {
                       src={post.imageUrl}
                       alt="Post"
                       className="post-image"
+                      loading="lazy"
                     />
                   )}
                 </div>

@@ -13,7 +13,7 @@ import { MdDateRange } from "react-icons/md";
 import { CiClock2 } from "react-icons/ci";
 import { MdCategory } from "react-icons/md";
 
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useQuery, useMutation, useQueryClient, isError } from "react-query";
 
 import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
@@ -42,7 +42,9 @@ const fetchPost = async (id) => {
 
       // Buscar nome do tópico
       const topicDoc = await getDoc(doc(db, "topics", postData.topics));
-      const topicName = topicDoc.exists() ? topicDoc.data().name : "Nome do tópico não disponível";
+      const topicName = topicDoc.exists()
+        ? topicDoc.data().name
+        : "Nome do tópico não disponível";
 
       return {
         id: postDoc.id,
@@ -66,15 +68,8 @@ const ViewPostPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { data: post, isLoading, isError } = useQuery(
-    ["post", id],
-    () => fetchPost(id),
-    {
-      refetchOnWindowFocus: false, 
-      onError: (error) => {
-        console.error("Error fetching post:", error);
-      },
-    }
+  const { data: post, isLoading, isError } = useQuery(["post", id], () =>
+    fetchPost(id)
   );
 
   const likePostMutation = useMutation(
@@ -106,7 +101,8 @@ const ViewPostPage = () => {
           likes: optimisticLikes,
         }));
 
-        return () => queryClient.setQueryData(["post", id], post);
+        return () =>
+          queryClient.setQueryData(["post", id], post); // Rollback
       },
       onError: (err, rollback) => {
         // Rollback em caso de erro
@@ -146,163 +142,140 @@ const ViewPostPage = () => {
     setIsCommentModalOpen(true);
   };
 
-  if (isLoading || !post) {
-    return (
-      <motion.section
-        id="post-solo"
-      >
-        <div className="container">
-          <div className="image-background">
-            <Skeleton width={800} height={400} />
-          </div>
-          <Skeleton width={120} height={20} />
-          <br />
-          <div className="title-text">
-            <Skeleton width={`100%`} height={30} />
-            <Skeleton width={250} height={15} />
-            <Skeleton width={250} height={15} />
-            <Skeleton width={250} height={15} />
-            <div className="profile">
-              <div className="profile-image">
-                <Skeleton circle={true} height={50} width={50} />
-              </div>
-              <div className="profile-info">
-                <Skeleton width={180} height={10} />
-              </div>
-            </div>
-            <div className="action-icons">
-              <div className="action-icon">
-                <Skeleton width={`40%`} height={20} />
-              </div>
-              <div className="action-icon">
-                <a href="#user-comments">
-                  <Skeleton width={`40%`} height={20} />
-                </a>
-              </div>
-              <div className="action-icon" onClick={sharePost}>
-                <Skeleton width={`40%`} height={20} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="post">
-          <div className="body-post">
-            <Skeleton width={`100%`} count={2} />
-            <br />
-            <Skeleton width={`100%`} count={4} />
-            <br />
-            <Skeleton width={`100%`} count={6} />
-          </div>
-        </div>
-      </motion.section>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div>
-        Error fetching post. Please try again later.
-      </div>
-    );
-  }
-
-  // Renderizar conteúdo do post quando estiver pronto
   return (
     <>
-      <motion.section
-        id="post-solo"
-      >
-        <div className="container">
-          <div className="title-text">
-            <div className="topic">
-              <span>
-                <MdCategory size={14} />
-                {post.topicName}
-              </span>
-            </div>
-            <h1>{post.title}</h1>
-            <p>{post.subTitle}</p>
-
-            <div className="all-content">
-              <div className="several-content">
-                <div className="profile-content" onClick={goToProfile}>
-                  {post.user && post.user.profilePicture && (
-                    <img
-                      src={post.user.profilePicture}
-                      loading="lazy"
-                      alt="User"
-                      className="user-photo"
-                    />
-                  )}
-                  {post.user && post.user.name && (
-                    <p>{post.user.name}</p>
-                  )}
+      <motion.section id="post-solo">
+        {isLoading && (
+          <div className="container">
+            <Skeleton width={120} height={20} />
+            <br />
+            <div className="title-text">
+              <Skeleton width={`100%`} height={30} />
+              <Skeleton width={250} height={15} />
+              <Skeleton width={250} height={15} />
+              <Skeleton width={250} height={15} />
+              <div className="profile">
+                <div className="profile-image">
+                  <Skeleton circle={true} height={50} width={50} />
                 </div>
-                <span>
-                  <CiClock2 size={16} />
-                  {readTime({ __html: post.desc })} min de leitura
-                </span>
-                <span>
-                  <MdDateRange size={14} />{post.created}
-                </span>
+                <div className="profile-info">
+                  <Skeleton width={180} height={10} />
+                </div>
               </div>
-
               <div className="action-icons">
-                <div className="action-icon-wrapper">
-                  <div
-                    className="action-icon"
-                    data-tooltip-id="my-tooltip"
-                    data-tooltip-content={`${Object.keys(post.likes || {}).length} Curtida`}
-                    onClick={handleLikePost}
-                  >
-                    <button>
-                      <FaRegHeart size={16} />
-                    </button>
-                  </div>
-
-                  <div
-                    className="action-icon"
-                    data-tooltip-id="my-tooltip"
-                    data-tooltip-content="Comentar"
-                    onClick={() => setIsCommentModalOpen(true)}
-                  >
-                    <FaRegComment size={16} />
-                  </div>
+                <div className="action-icon">
+                  <Skeleton width={`40%`} height={20} />
                 </div>
-
-                <div
-                  className="action-icon"
-                  data-tooltip-id="my-tooltip"
-                  data-tooltip-content="Compartilhar"
-                  onClick={sharePost}
-                >
-                  <FiShare2 size={16} />
+                <div className="action-icon">
+                  <a href="#user-comments">
+                    <Skeleton width={`40%`} height={20} />
+                  </a>
+                </div>
+                <div className="action-icon" onClick={sharePost}>
+                  <Skeleton width={`40%`} height={20} />
                 </div>
               </div>
             </div>
           </div>
+        )}
 
-          <div className="image-background">
-            {post.imageUrl && (
-              <img
-                src={post.imageUrl}
-                loading="lazy"
-  
-                alt="Post"
-                className="post-image"
-              />
-            )}
-          </div>
-        </div>
+        {isError && (
+          <div>Error fetching post. Please try again later.</div>
+        )}
+        {!isLoading && !isError && (
+          <>
+            <div className="container">
+              <div className="title-text">
+                <div className="topic">
+                  <span>
+                    <MdCategory size={14} />
+                    {post.topicName}
+                  </span>
+                </div>
+                <h1>{post.title}</h1>
+                <p>{post.subTitle}</p>
 
-        <div className="post">
-          <div
-            className="body-post"
-            dangerouslySetInnerHTML={{
-              __html: post.desc,
-            }}
-          ></div>
-        </div>
+                <div className="all-content">
+                  <div className="several-content">
+                    <div className="profile-content" onClick={goToProfile}>
+                      {post.user && post.user.profilePicture && (
+                        <img
+                          src={post.user.profilePicture}
+                          loading="lazy"
+                          alt="User"
+                          className="user-photo"
+                        />
+                      )}
+                      {post.user && post.user.name && <p>{post.user.name}</p>}
+                    </div>
+                    <span>
+                      <CiClock2 size={16} />
+                      {readTime(post.desc)} min de leitura
+                    </span>
+                    <span>
+                      <MdDateRange size={14} />
+                      {post.created}
+                    </span>
+                  </div>
+
+                  <div className="action-icons">
+                    <div className="action-icon-wrapper">
+                      <div
+                        className="action-icon"
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content={`${Object.keys(post.likes || {}).length
+                          } Curtida`}
+                        onClick={handleLikePost}
+                      >
+                        <button>
+                          <FaRegHeart size={16} />
+                        </button>
+                      </div>
+
+                      <div
+                        className="action-icon"
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Comentar"
+                        onClick={openCommentModal}
+                      >
+                        <FaRegComment size={16} />
+                      </div>
+                    </div>
+
+                    <div
+                      className="action-icon"
+                      data-tooltip-id="my-tooltip"
+                      data-tooltip-content="Compartilhar"
+                      onClick={sharePost}
+                    >
+                      <FiShare2 size={16} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="image-background">
+                {post.imageUrl && (
+                  <img
+                    src={post.imageUrl}
+                    loading="lazy"
+                    alt="Post"
+                    className="post-image"
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="post">
+              <div
+                className="body-post"
+                dangerouslySetInnerHTML={{
+                  __html: post.desc,
+                }}
+              ></div>
+            </div>
+          </>
+        )}
       </motion.section>
 
       {isCommentModalOpen && (
@@ -313,6 +286,7 @@ const ViewPostPage = () => {
           onClose={() => setIsCommentModalOpen(false)}
         />
       )}
+
       <Tooltip id="my-tooltip" />
     </>
   );

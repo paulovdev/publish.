@@ -7,9 +7,10 @@ import { motion } from "framer-motion";
 import { FaSave } from "react-icons/fa";
 import Editor from "../../../utils/Editor/Editor";
 import "./EditPostModal.scss";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 const EditPostModal = ({ postId, onClick }) => {
+  const queryClient = useQueryClient();
   const [title, setTitle] = useState(postId.title || "");
   const [subTitle, setSubTitle] = useState(postId.subTitle || "");
   const [desc, setDesc] = useState(postId.desc || "");
@@ -48,10 +49,11 @@ const EditPostModal = ({ postId, onClick }) => {
       };
       await updateDoc(doc(db, "posts", postId.id), updatedData);
       onClick();
+      queryClient.invalidateQueries("posts");
+
+      setLoading(false);
     } catch (error) {
       console.error("Error updating post:", error);
-    } finally {
-      setLoading(false);
     }
   };
 

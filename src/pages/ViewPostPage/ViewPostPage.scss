@@ -92,11 +92,12 @@
         letter-spacing: -3px;
 
         text-align: start;
-        text-wrap: balance;
         word-wrap: break-word;
       }
 
       p {
+        max-width: 100%;
+        width: 100%;
         margin: 1rem 0;
 
         color: var(--p);
@@ -105,7 +106,6 @@
         line-height: 1.5;
 
         text-align: start;
-        text-wrap: balance;
         word-wrap: break-word;
 
       }
@@ -176,11 +176,7 @@
           align-items: center;
           gap: 0.4rem;
         }
-
-
       }
-
-
 
       .action-icons {
         width: 100%;
@@ -238,7 +234,7 @@
   .post {
     position: relative;
     width: 100%;
-    padding: 0 200px;
+    padding: 0 150px;
     display: flex;
     align-items: start;
     justify-content: start;
@@ -254,6 +250,7 @@
   #post-solo {
     margin: 7rem 0;
     padding: 15px !important;
+
     .container {
       padding: 0 !important;
 

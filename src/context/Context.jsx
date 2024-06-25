@@ -2,7 +2,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase/Firebase";
 import { collection, query, getDocs } from "firebase/firestore";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
 const BlogContext = createContext();
 
@@ -18,9 +18,7 @@ const fetchUsers = async () => {
 const Context = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const updatePosts = () => {
-    setPostsUpdated(true);
-  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -61,12 +59,8 @@ const Context = ({ children }) => {
   );
 };
 
-const queryClient = new QueryClient();
-
 const App = ({ children }) => (
-  <QueryClientProvider client={queryClient}>
-    <Context>{children}</Context>
-  </QueryClientProvider>
+  <Context>{children}</Context>
 );
 
 export default App;

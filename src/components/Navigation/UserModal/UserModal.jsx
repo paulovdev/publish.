@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -35,8 +35,7 @@ const UserModal = () => {
         <div className="profile-image" onClick={openUserModal}>
           <img
             src={getUserData?.profilePicture || "/logo-publish.png"}
-            loading="eager"
-            fetchpriority="high"
+            loading="lazy"
             alt="Profile"
           />
         </div>

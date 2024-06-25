@@ -1,6 +1,7 @@
 import React from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Blog } from "./context/Context";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 import Navbar from "./components/Navigation/Navbar/Navbar";
@@ -15,7 +16,6 @@ import AddTopics from "./scripts/AddTopics";
 import Profile from "./pages/Profile/Profile";
 import CreatePostPage from "./pages/CreatePostPage/CreatePostPage";
 import ViewPostPage from "./pages/ViewPostPage/ViewPostPage";
-import { Blog } from "./context/Context";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 
@@ -53,6 +53,12 @@ const App = () => {
           path="/login"
           element={currentUser ? <Navigate to="/" /> : <Login />}
         />
+
+        <Route
+          path="*"
+          element={currentUser ? <Navigate to="/" /> : <Login />}
+        />
+
         <Route
           path="/register"
           element={currentUser ? <Navigate to="/" /> : <Register />}
@@ -81,7 +87,7 @@ const App = () => {
           path="/view-post/:id"
           element={!currentUser ? <Navigate to="/login" /> : <ViewPostPage />}
         />
-        
+
         <Route
           path="/search"
           element={!currentUser ? <Navigate to="/login" /> : <SearchPage />}
