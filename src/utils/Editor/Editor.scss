@@ -359,6 +359,17 @@
 
 }
 
+.body-post {
+  width: 100%;
+  word-wrap: break-word;
+  padding: 0 !important;
+
+  img {
+    width: 100%;
+    border-radius: 0.5rem;
+  }
+}
+
 @media (max-width:809px) {
   .body-posts {
     width: 100%;
