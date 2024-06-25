@@ -362,7 +362,7 @@
 @media (max-width:809px) {
   .body-posts {
     width: 100%;
-    padding: 15px !important;
+  
     color: var(--p);
 
     overflow: hidden;
@@ -372,7 +372,5 @@
     display: -webkit-box;
   }
 
-  .body-post {
-    padding: 15px !important;
-  }
+
 }
