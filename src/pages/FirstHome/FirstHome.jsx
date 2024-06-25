@@ -19,25 +19,25 @@ const FirstHome = () => {
       text: "A publique transformou a maneira como compartilho minhas histórias. A interface é incrível e a comunidade é muito acolhedora.",
       author: "Ana Souza",
       job: "Escritora",
-      img: "/landing-images/img-1.jpg"
+      img: "/landing-images/img-1.webp"
     },
     {
       text: "Finalmente encontrei uma plataforma que combina simplicidade com recursos avançados. Publicar meus artigos nunca foi tão fácil!",
       author: "João Matheus",
       job: "Blogger",
-      img: "/landing-images/img-2.jpg"
+      img: "/landing-images/img-2.webp"
     },
     {
       text: "A publique é o melhor lugar para qualquer pessoa que queira se expressar através da escrita.",
       author: "Carla Thomas",
       job: "Jornalista",
-      img: "/landing-images/img-3.jpg"
+      img: "/landing-images/img-3.webp"
     },
     {
       text: "Eu adoro como a publique me permite conectar com outros escritores e leitores. A plataforma é intuitiva e cheia de recursos úteis!",
       author: "Lucas Felipe",
       job: "Poeta",
-      img: "/landing-images/img-4.jpg"
+      img: "/landing-images/img-4.webp"
     }
   ];
 
