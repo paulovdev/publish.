@@ -57,16 +57,12 @@
             width: 100%;
 
             h1 {
-                font-size: 64px;
-                font-weight: 500;
-                line-height: 1.125;
-
-                letter-spacing: -3px;
+                font-size: 72px;
+                font-weight: 400;
+                letter-spacing: -2px;
 
                 color: var(--p);
                 text-align: start;
-                text-wrap: balance;
-                word-wrap: break-word;
                 margin-bottom: 3rem;
             }
         }
@@ -263,7 +259,7 @@
             .head-text {
                 h1 {
                     font-size: 52px;
-                    text-align: center;
+                    text-align: start;
                 }
             }
 

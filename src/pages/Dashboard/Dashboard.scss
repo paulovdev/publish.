@@ -18,17 +18,28 @@
     width: 100%;
 
     h1 {
-      font-size: 64px;
-      font-weight: 500;
-      line-height: 1.125;
-
-      letter-spacing: -3px;
+      font-size: 72px;
+      font-weight: 400;
+      letter-spacing: -2px;
 
       color: var(--p);
       text-align: start;
-      text-wrap: balance;
-      word-wrap: break-word;
       margin-bottom: 3rem;
+    }
+
+    h2,
+    span {
+      font-size: 32px;
+      font-weight: 400;
+      letter-spacing: -1px;
+
+      color: var(--p);
+      text-align: start;
+      margin-bottom: 3rem;
+    }
+
+    span {
+      font-weight: 900;
     }
   }
 
@@ -161,18 +172,22 @@
 
 @media (max-width: 809px) {
   #dashboard {
-    margin: 3rem 0; /* Reduz margens para economizar espaço */
+    margin: 7rem 0;
+    padding: 15px !important;
   }
 
   .head-text {
     width: 100%;
-    text-align: start; /* Ajusta o alinhamento do texto */
-    margin-bottom: 2rem; /* Reduz a margem inferior */
+    text-align: start;
+    /* Ajusta o alinhamento do texto */
+    margin-bottom: 2rem;
+    /* Reduz a margem inferior */
   }
 
   .posts {
     width: 100%;
-    overflow-x: auto; /* Mantém o overflow-x para permitir rolagem horizontal se necessário */
+    overflow-x: auto;
+    /* Mantém o overflow-x para permitir rolagem horizontal se necessário */
 
     .post-table {
       width: 100%;
@@ -180,16 +195,19 @@
 
       th,
       td {
-        padding: 1rem 0.5rem; /* Reduz o preenchimento das células */
+        padding: 1rem 0.5rem;
+        /* Reduz o preenchimento das células */
       }
 
       img {
-        width: 40px; /* Reduz o tamanho das imagens */
+        width: 40px;
+        /* Reduz o tamanho das imagens */
         height: 32px;
       }
 
       .action-icon {
-        width: 50px; /* Reduz o tamanho dos ícones de ação */
+        width: 50px;
+        /* Reduz o tamanho dos ícones de ação */
         height: 30px;
         padding: 0.3rem;
       }

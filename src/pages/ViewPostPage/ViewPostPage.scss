@@ -254,9 +254,8 @@
   #post-solo {
     margin: 7rem 0;
     padding: 15px !important;
-
     .container {
-      padding: 15px !important;
+      padding: 0 !important;
 
       .image-background {
         img {
@@ -273,7 +272,7 @@
     }
 
     .post {
-      padding: 15px !important;
+      padding: 0 !important;
     }
   }
 }

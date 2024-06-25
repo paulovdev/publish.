@@ -184,7 +184,7 @@ const CreatePostPage = () => {
                         transition={{ duration: 0.5 }}
                         className="create-post-container"
                     >
-                        <div className="grid-1">
+                        <div className="grid-column">
                             <div className="input-container text-input">
                                 <input
                                     type="text"
@@ -200,23 +200,6 @@ const CreatePostPage = () => {
                                     </span>
                                 )}
                             </div>
-
-                            <div className="step-topic">
-                                <label>Tópico</label>
-                                <select
-                                    value={selectedTopics.map((topic) => topic.id)}
-                                    onChange={handleSelectChange}
-                                >
-                                    {topics.map((topic) => (
-                                        <option key={topic.id} value={topic.id}>
-                                            {topic.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="grid-1">
                             <div className="input-container text-input sub-text-input">
                                 <input
                                     type="text"
@@ -232,6 +215,23 @@ const CreatePostPage = () => {
                                     </span>
                                 )}
 
+                            </div>
+
+                        </div>
+
+                        <div className="grid-flex">
+                            <div className="step-topic">
+                                <label>Tópico</label>
+                                <select
+                                    value={selectedTopics.map((topic) => topic.id)}
+                                    onChange={handleSelectChange}
+                                >
+                                    {topics.map((topic) => (
+                                        <option key={topic.id} value={topic.id}>
+                                            {topic.name}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="step-image">
                                 <label>Selecione uma Imagem</label>

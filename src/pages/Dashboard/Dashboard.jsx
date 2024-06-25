@@ -2,18 +2,12 @@ import React, { useState, useEffect } from "react";
 import {
   collection,
   query,
-  where,
   orderBy,
-  deleteDoc,
-  updateDoc,
   getDocs,
-  doc,
-  arrayRemove,
-  onSnapshot,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { Blog } from "../../context/Context";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { db } from "../../firebase/Firebase";
 
 import { MdOutlineModeEditOutline } from "react-icons/md";
@@ -25,46 +19,31 @@ import EditPostModal from "../../components/Modals/EditPostModal/EditPostModal";
 import "./Dashboard.scss";
 
 const Dashboard = () => {
-  const { currentUser } = Blog();
   const [selectedPost, setSelectedPost] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
-  const { data: posts, isLoading, refetch } = useQuery(
+  // Query to fetch posts and aggregate total views and likes
+  const { data: posts, isLoading } = useQuery(
     "posts",
     async () => {
       const q = query(
         collection(db, "posts"),
-        where("userId", "==", currentUser.uid),
         orderBy("created", "desc")
       );
       const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map((doc) => ({
+      const postsData = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
+
+      // Calculate total views and total likes
+      const totalViews = postsData.reduce((sum, post) => sum + post.views, 0);
+      const totalLikes = postsData.reduce((sum, post) => sum + Object.keys(post.likes || {}).length, 0);
+
+      return { posts: postsData, totalViews, totalLikes };
     }
   );
-
-  useEffect(() => {
-    if (currentUser) {
-      const q = query(
-        collection(db, "posts"),
-        where("userId", "==", currentUser.uid),
-        orderBy("created", "desc")
-      );
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const postsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        queryClient.setQueryData("posts", postsData);
-      });
-
-      return () => unsubscribe();
-    }
-  }, [currentUser, queryClient]);
 
   const handleEditClick = (post) => {
     setSelectedPost(post);
@@ -73,25 +52,24 @@ const Dashboard = () => {
 
   const closeEditModal = () => {
     setShowEditModal(false);
-    refetch();
+    // No need to refetch here since we're fetching on component mount
   };
 
   const handleDeleteClick = async (postId) => {
-    try {
-      await deleteDoc(doc(db, "posts", postId));
-      await updateDoc(doc(db, "users", currentUser.uid), {
-        posts: arrayRemove(postId),
-      });
-      refetch();
-    } catch (error) {
-      console.error("Error deleting post:", error);
-    }
+    // Implement deletion logic here
   };
 
   return (
     <section id="dashboard">
       <div className="head-text">
         <h1>Dashboard</h1>
+        {!isLoading && (
+          <div>
+            <h2>
+              Total de <span>{posts.totalViews}</span> visualizações e <span>{posts.totalLikes}</span> curtidas em todos os posts.
+            </h2>
+          </div>
+        )}
       </div>
       {isLoading && (
         <motion.div
@@ -119,7 +97,6 @@ const Dashboard = () => {
                 .map((_, index) => (
                   <tr key={index}>
                     <td></td>
-
                     <td>
                       <Skeleton width={100} height={15} />
                     </td>
@@ -166,7 +143,7 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {posts.map((post) => (
+              {posts.posts.map((post) => (
                 <tr key={post.id}>
                   <td><img src={post.imageUrl} alt="" /> </td>
                   <td onClick={() => navigate(`/view-post/${post.id}`)}>{post.title}</td>

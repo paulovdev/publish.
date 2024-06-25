@@ -17,6 +17,8 @@
     flex-direction: column;
     z-index: 999;
 
+
+
     .close-edit {
         position: absolute;
         top: 50px;
@@ -39,25 +41,6 @@
         }
     }
 
-    .head-text {
-        position: relative;
-        width: 100%;
-
-        h1 {
-            font-size: 64px;
-            font-weight: 500;
-            line-height: 1.125;
-
-            letter-spacing: -3px;
-
-            color: var(--p);
-            text-align: start;
-            text-wrap: balance;
-            word-wrap: break-word;
-            margin-bottom: 3rem;
-        }
-    }
-
     .edit-post-modal-content {
         position: relative;
         width: 100%;
@@ -71,6 +54,21 @@
         align-items: start;
         justify-content: start;
         flex-direction: column;
+
+        .head-text {
+            position: relative;
+            width: 100%;
+
+            h1 {
+                font-size: 72px;
+                font-weight: 400;
+                letter-spacing: -2px;
+
+                color: var(--p);
+                text-align: start;
+                margin-bottom: 3rem;
+            }
+        }
 
         form {
             position: relative;
