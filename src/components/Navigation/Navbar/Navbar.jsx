@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Blog } from "../../../context/Context";
 import { db } from "../../../firebase/Firebase";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -16,6 +16,7 @@ const Navbar = () => {
   const { currentUser } = Blog();
   const [notifications, setNotifications] = useState([]);
   const [notificationModal, setNotificationModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let unsubscribe;
@@ -50,6 +51,9 @@ const Navbar = () => {
     setNotificationModal(!notificationModal);
   };
 
+  const goToHome = () => {
+    navigate("/")
+  }
   return (
     <>
       <header className={currentUser ? "logged-in" : "logged-out"}>
@@ -69,7 +73,7 @@ const Navbar = () => {
         )}
 
         {!currentUser && (
-          <div className="logo">
+          <div className="logo" onClick={goToHome}>
             <IoBookSharp />publique
           </div>
         )}
@@ -79,9 +83,6 @@ const Navbar = () => {
           <nav>
 
             <>
-              <li>
-                <NavLink to="/">Inicio</NavLink>
-              </li>
               <li>
                 <NavLink to="/login">Entrar</NavLink>
               </li>

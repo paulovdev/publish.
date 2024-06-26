@@ -96,94 +96,11 @@ const FirstHome = () => {
         <p>
           A <span>publique</span> é uma plataforma intuitiva e poderosa, projetada para escritores de todos os níveis. Nossa aplicação permite que você crie, edite e publique seus textos com facilidade. Seja você um blogueiro, jornalista, escritor ou apenas alguém com uma história para contar, a publique é o lugar perfeito para compartilhar suas ideias com o mundo.
         </p>
-      </section>
-
-      {/* Seção 3: Recursos Principais */}
-      <section id="home-features">
-        <h1>Recursos Principais</h1>
-        <div className="feature-container">
-          <div className="feature">
-            <MdDesignServices size={32} />
-            <h1>Editor de Texto Avançado</h1>
-            <p>Desfrute de um editor de texto limpo e fácil de usar, com todas as ferramentas que você precisa para formatar suas publicações de forma profissional.</p>
-          </div>
-          <div className="feature">
-            <MdDesignServices size={32} />
-            <h1>Editor de Texto Avançado</h1>
-            <p>Desfrute de um editor de texto limpo e fácil de usar, com todas as ferramentas que você precisa para formatar suas publicações de forma profissional.</p>
-          </div>
-          <div className="feature">
-            <MdDesignServices size={32} />
-            <h1>Editor de Texto Avançado</h1>
-            <p>Desfrute de um editor de texto limpo e fácil de usar, com todas as ferramentas que você precisa para formatar suas publicações de forma profissional.</p>
-          </div>
-          <div className="feature">
-            <RiCommunityFill size={32} />
-            <h1>Comunidade Vibrante</h1>
-            <p>Conecte-se com outros escritores e leitores, receba feedback e construa sua audiência.</p>
-          </div>
-          <div className="feature">
-            <RiFunctionAddFill size={32} />
-            <h1>Publicação Simples</h1>
-            <p>Publique seus textos com apenas alguns cliques e alcance leitores de todo o mundo.</p>
-          </div>
-          <div className="feature">
-            <MdDesignServices size={32} />
-            <h1>Personalização</h1>
-            <p>Customize o layout e o design do seu perfil e das suas publicações para refletir seu estilo pessoal.</p>
-          </div>
-        </div>
-      </section>
-
-
-      {/* Seção 4: Depoimentos */}
-      <section id="home-testimonials">
-        <h1>O que nossos usuários dizem</h1>
-        <Swiper className="testimonials-container"
-          slidesPerView={3}
-          spaceBetween={25}>
-          {testimonials.map((testimonial, index) => (
-            <SwiperSlide key={index} className="testimonial">
-              <p>"{testimonial.text}"</p>
-              <img src={testimonial.img} alt="" />
-              <span>{testimonial.job}</span>
-              <h2>{testimonial.author}</h2>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </section>
-
-      {/* Seção 5: Como Funciona */}
-      <section id="home-how-it-works">
-        <h1>Como Funciona</h1>
-        <p>
-          Publicar na publique é simples e direto:
-        </p>
-        <ul>
-          {howItWorksSteps.map((step, index) => (
-            <li key={index}>{step}</li>
-          ))}
-        </ul>
-      </section>
-
-      {/* Seção 6: Chamada para Ação */}
-      <section id="home-call-to-action">
-        <h1>Junte-se à Comunidade publique</h1>
-        <p>Comece hoje mesmo a compartilhar suas histórias e conectar-se com uma comunidade global de escritores e leitores. Não espere mais, sua voz merece ser ouvida.</p>
-        <Link to={!currentUser ? "/register" : "post/create"} className="cta-button">
-          Crie Sua Conta Gratuitamente
-        </Link>
-      </section>
-
-      {/* Seção 7: Perguntas Frequentes (FAQ) */}
-      <section id="home-faq">
-        <h1>Perguntas Frequentes</h1>
-        {faqItems.map((faqItem, index) => (
-          <div className="faq-item" key={index}>
-            <h2>{faqItem.question}</h2>
-            <p>{faqItem.answer}</p>
-          </div>
-        ))}
+       
+          <Link to={!currentUser ? "/register" : "post/create"}>
+            Comece a publicar
+          </Link>
+      
       </section>
     </>
   );
