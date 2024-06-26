@@ -34,6 +34,11 @@ const Profile = () => {
     const userData = userDocSnapshot.data();
     const userPostIds = userData.posts || [];
 
+    if (userPostIds.length === 0) {
+      // Caso userPostIds esteja vazio, retorne um array vazio ou outro comportamento desejado
+      return [];
+    }
+
     const userPostsQuery = query(collection(db, "posts"), where("__name__", "in", userPostIds));
     const userPostsSnapshot = await getDocs(userPostsQuery);
 

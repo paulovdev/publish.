@@ -4,7 +4,7 @@ import { useRegister } from "../../../hooks/useRegister";
 import { ToastContainer } from "react-toastify";
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
-
+import { useQueryClient } from "react-query";
 import "react-toastify/dist/ReactToastify.css";
 import "./Register.scss";
 
@@ -12,7 +12,7 @@ const Register = () => {
   const { registerUser, error, loading } = useRegister();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const queryClient = useQueryClient();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,6 +35,7 @@ const Register = () => {
       bio,
       profilePicture: "public/logo-publish.png",
     });
+    queryClient.invalidateQueries("users")
     navigate("/get-started/topics");
   };
 
@@ -61,7 +62,7 @@ const Register = () => {
       <h1>Complete os campos abaixo para criar sua conta</h1>
       <form onSubmit={handleRegister}>
         <div className="grid-1">
-          
+
           <div className="input-container text-input">
             <input
               type="text"

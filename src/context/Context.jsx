@@ -2,7 +2,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase/Firebase";
 import { collection, query, getDocs } from "firebase/firestore";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 const BlogContext = createContext();
 
@@ -18,7 +18,7 @@ const fetchUsers = async () => {
 const Context = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const queryClient = useQueryClient();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -32,12 +32,14 @@ const Context = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+
   const { data: allUsers = [], isLoading: userLoading } = useQuery("users", fetchUsers, {
-    staleTime: 1000 * 60 * 5, // 5 minutos
-    cacheTime: 1000 * 60 * 10, // 10 minutos
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
   });
 
   if (loading || userLoading) {
+    queryClient.invalidateQueries("users")
     return (
       <div className="loading-container initial">
         <div className="loading initial"></div>

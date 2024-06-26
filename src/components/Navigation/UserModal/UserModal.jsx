@@ -34,7 +34,7 @@ const UserModal = () => {
       <div className="user-modal">
         <div className="profile-image" onClick={openUserModal}>
           <img
-            src={getUserData?.profilePicture || "/logo-publish.png"}
+            src={currentUser.uid?.profilePicture || "/logo-publish.png"}
             loading="lazy"
             alt="Profile"
           />
